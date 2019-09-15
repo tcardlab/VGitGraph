@@ -1,19 +1,19 @@
 <template>
   <div class="container">
-    {{ _$.branches1.Branch1[0].Coord }}
+    {{ _$.Branch1[0].Coord }}
     <!-- <ul v-for="(itmes, branch) in _$.branches1" :key="(itmes, branch)">
       <li>{{branch}}</li>
       <ul v-for="i in itmes" :key="i">
         <li>{{i.Coord[0]}}</li>
       </ul>
     </ul>-->
-    <div v-for="itmes1 in _$.branches1" :key="itmes1">
+    <div v-for="itmes1 in _$" :key="itmes1">
       <p>{{dString(itmes1)}}</p>
     </div>
 
     <div>
       <svg xmlns="http://www.w3.org/2000/svg" height="300" wigth="300" overflow="visible">
-        <g v-for="itmes2 in _$.branches1" :key="itmes2">
+        <g v-for="itmes2 in _$" :key="itmes2">
           <path :d="dString(itmes2)" fill="none" stroke="#008fb5" stroke-width="7"></path>
         </g>
         <!--<branches></branches>-->
