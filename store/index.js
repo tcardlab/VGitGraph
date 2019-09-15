@@ -36,7 +36,7 @@ export const state = () => ({
         event: "link",
         link: { }
       },
-      4: {
+      3: {
         unix: 1569580240,
         glyph: "dot",
         event: "link",
@@ -60,8 +60,28 @@ export const state = () => ({
         unix: 1569580240,
         glyph: "dot",
         event: "link",
-        link: { }
+        link: { coord: [2, 3], type: "branch" }
       }
+    },
+    '2': {
+      1: {
+        unix: 1569580240,
+        glyph: "dot",
+        event: "link",
+        link: { coord: [0, 0], type: "branch" }
+      },
+      3: {
+        unix: 1569580240,
+        glyph: "dot",
+        event: "link",
+        link: { coord: [1,2], type: "branch" }
+      },
+      4: {
+        unix: 1569580240,
+        glyph: "dot",
+        event: "link",
+        link: { }
+      },
     }
   }
 });

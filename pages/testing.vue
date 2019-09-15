@@ -46,7 +46,7 @@ export default {
 
         var link = branch[ycoords[i]].link
         if (Object.keys(link).length > 0){
-          d = d.concat(this.addLink(link, x, y));
+          d = d.concat(this.addLink(link, x, y, scale));
         } else if (d === "") {
           //'move-to' origin
           d = d.concat(`M${x} ${y}`);
@@ -61,8 +61,9 @@ export default {
       return d;
     },
 
-    addLink(link, x, y) {
-        var [xprior, yprior] = link.coord;
+    addLink(link, x, y, scale) {
+        var xprior = link.coord[0]*scale
+        var yprior = link.coord[1]*scale
         var midY = (yprior + y) / 2;
         return `M${xprior} ${yprior} C${xprior} ${midY} ${x} ${midY} ${x} ${y}`;
     }
