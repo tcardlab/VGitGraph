@@ -1,22 +1,22 @@
 <template>
   <div class="container">
-    {{ _$.Branch1[0].Coord }}
+    {{ Object.keys(_$["-1"]) }}
     <!-- <ul v-for="(itmes, branch) in _$.branches1" :key="(itmes, branch)">
       <li>{{branch}}</li>
       <ul v-for="i in itmes" :key="i">
         <li>{{i.Coord[0]}}</li>
       </ul>
     </ul>-->
-    <div v-for="itmes1 in _$" :key="itmes1">
-      <p>{{dString(itmes1)}}</p>
+    <div v-for="(itmes1, k1) in _$" :key="(itmes1, k1)">
+      {{itmes1[1].link}}
+      <p>{{dString(k1, itmes1)}}</p>
     </div>
 
     <div>
       <svg xmlns="http://www.w3.org/2000/svg" height="300" wigth="300" overflow="visible">
-        <g v-for="itmes2 in _$" :key="itmes2">
-          <path :d="dString(itmes2)" fill="none" stroke="#008fb5" stroke-width="7"></path>
+        <g v-for="(itmes2, k) in _$" :key="(k, itmes2)">
+          <path :d="dString(k, itmes2)" fill="none" stroke="#008fb5" stroke-width="7"></path>
         </g>
-        <!--<branches></branches>-->
         <Glyphs></Glyphs>
       </svg>
     </div>
@@ -37,27 +37,31 @@ export default {
     return {};
   },
   methods: {
-    dString(branch, scale = 50) {
+    dString(k, branch, scale = 50) {
       let d = "";
-      var coords = _.map(branch, "Coord");
-      coords = coords.map(x => [x[0] * scale, x[1] * scale]);
-      for (var i of _.range(coords.length)) {
-        var [x, y] = coords[i];
+      var x = Number.parseFloat(k) * scale
+      var ycoords = Object.keys(branch)
+      for (var i in _.range(ycoords.length)) {
+        var y = ycoords[i] * scale;
         if (d === "") {
           //'move-to' origin
           d = d.concat(`M${x} ${y}`);
-        } else if (x - coords[i - 1][0] !== 0) {
-          //'branch/merge' off prior
-          var [xprior, yprior] = coords[i - 1];
-          var midY = (yprior + y) / 2;
-          d = d.concat(` C${xprior} ${midY} ${x} ${midY} ${x} ${y}`);
-        } else if (y - coords[i - 1][1] > 1 * scale) {
+        } else if (y - ycoords[i - 1][1] > 1 * scale) {
           //discontinuity
-          console.log(y - coords[i - 1][1]);
+          console.log(y - ycoords[i - 1][1]);
           d = d.concat(` M${x} ${y}`);
         } else {
           //just a line
           d = d.concat(` L${x} ${y}`);
+        }
+
+        var link = branch[ycoords[i]].link
+        if (Object.keys(link).length > 0) {
+          //'branch/merge' off prior
+          console.log(link)
+          var [xprior, yprior] = link.coord;
+          var midY = (yprior + y) / 2;
+          d = d.concat(` C${xprior} ${midY} ${x} ${midY} ${x} ${y}`);
         }
       }
       return d;

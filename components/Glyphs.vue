@@ -1,7 +1,7 @@
 <template>
   <svg overflow="visible">
-    <g v-for="(itmes, branch) in _$" :key="(itmes, branch)">
-      <Dot v-for="i in itmes" :key="i" :x="i.Coord[0]*50" :y="i.Coord[1]*50" r="5"></Dot>
+    <g v-for="(path, x) in _$" :key="(path, x)">
+      <Dot v-for="(data, y) in path" :key="(data, y)" :x="x*50" :y="y*50" r="5"></Dot>
     </g>
   </svg>
 </template>
@@ -14,10 +14,5 @@ export default {
   components: {
     Dot: Dot
   },
-  methods: {
-    dString(branch) {
-      return _.map(branch, "Coords");
-    }
-  }
 };
 </script>

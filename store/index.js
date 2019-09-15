@@ -24,28 +24,44 @@ export const state = () => ({
   },
   branches2: {
     "-1": {
-      origin: [0, 0], // off characters branch, ie not his action. so no data?
-      path: {
-        1: {
-          unix: 1569580240,
-          glyph: "book",
-          event: "link",
-          link: { coord: "get-self-origin", type: "branch" }
-        },
-        2: {
-          unix: 1569580240,
-          glyph: "book",
-          event: "link",
-          link: { coord: [0, 0], type: "time jump" }
-        },
-        4: {
-          unix: 1569580240,
-          glyph: "book",
-          event: "link",
-          link: { coord: "terminus", type: "merge" }
-        }
+      1: {
+        unix: 1569580240,
+        glyph: "dot",
+        event: "link",
+        link: { coord: [0, 0], type: "branch" }
       },
-      terminus: [3, 7]
+      2: {
+        unix: 1569580240,
+        glyph: "dot",
+        event: "link",
+        link: { }
+      },
+      4: {
+        unix: 1569580240,
+        glyph: "dot",
+        event: "link",
+        link: { }
+      }
+    },
+    '1': {
+      1: {
+        unix: 1569580240,
+        glyph: "dot",
+        event: "link",
+        link: { coord: [0, 0], type: "branch" }
+      },
+      2: {
+        unix: 1569580240,
+        glyph: "dot",
+        event: "link",
+        link: { }
+      },
+      4: {
+        unix: 1569580240,
+        glyph: "dot",
+        event: "link",
+        link: { }
+      }
     }
   }
 });

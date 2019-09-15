@@ -3,7 +3,7 @@ import Vue from "vue";
 Vue.mixin({
   computed: {
     _$() {
-      return this.$store.state.branches1;
+      return this.$store.state.branches2;
     }
   }
 });
