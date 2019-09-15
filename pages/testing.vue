@@ -43,28 +43,28 @@ export default {
       var ycoords = Object.keys(branch)
       for (var i in _.range(ycoords.length)) {
         var y = ycoords[i] * scale;
-        if (d === "") {
+
+        var link = branch[ycoords[i]].link
+        if (Object.keys(link).length > 0){
+          d = d.concat(this.addLink(link, x, y));
+        } else if (d === "") {
           //'move-to' origin
           d = d.concat(`M${x} ${y}`);
-        } else if (y - ycoords[i - 1][1] > 1 * scale) {
+        } else if (ycoords[i] - ycoords[i - 1] > 1) {
           //discontinuity
-          console.log(y - ycoords[i - 1][1]);
           d = d.concat(` M${x} ${y}`);
         } else {
           //just a line
           d = d.concat(` L${x} ${y}`);
         }
-
-        var link = branch[ycoords[i]].link
-        if (Object.keys(link).length > 0) {
-          //'branch/merge' off prior
-          console.log(link)
-          var [xprior, yprior] = link.coord;
-          var midY = (yprior + y) / 2;
-          d = d.concat(` C${xprior} ${midY} ${x} ${midY} ${x} ${y}`);
-        }
       }
       return d;
+    },
+
+    addLink(link, x, y) {
+        var [xprior, yprior] = link.coord;
+        var midY = (yprior + y) / 2;
+        return `M${xprior} ${yprior} C${xprior} ${midY} ${x} ${midY} ${x} ${y}`;
     }
   }
 };
