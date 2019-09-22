@@ -47,5 +47,49 @@ export const state = () => ({
       },
       terminus: [3, 7]
     }
+  },
+  branches3: {
+    "GM": {
+      x: [-1],
+      dx: 0,
+      children: [],
+      path: [
+        { turn: 0,
+          y: [0,0],
+          unix: 1569580240,
+          glyph: "book",
+          event: "link",
+          link: { coord: "get-self-origin", type: "branch" }
+        },
+        { turn: 0,
+          y: 1,
+          unix: 1569580240,
+          glyph: "book",
+          event: "link",
+          link: { coord: "get-self-origin", type: "branch" }
+        },
+        { turn: 0,
+          y: 2,
+          unix: 1569580240,
+          glyph: "book",
+          event: "link",
+          link: { coord: "get-self-origin", type: "branch" }
+        },
+        { turn: 0,
+          y: 3,
+          unix: 1569580240,
+          glyph: "book",
+          event: "link",
+          link: { coord: "get-self-origin", type: "branch" }
+        },
+        { turn: 0,
+          y: 5,
+          unix: 1569580240,
+          glyph: "book",
+          event: "link",
+          link: { coord: "get-self-origin", type: "branch" }
+        }
+      ],
+    }
   }
 });

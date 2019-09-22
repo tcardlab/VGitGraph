@@ -1,7 +1,10 @@
 <template>
   <svg overflow="visible">
-    <g v-for="(itmes, branch) in _$.branches1" :key="(itmes, branch)">
-      <Dot v-for="i in itmes" :key="i" :x="i.Coord[0]*50" :y="i.Coord[1]*50" r="5"></Dot>
+    <g v-for="(items3, branchName) in _$" :key="(items3, branchName)">
+      <Dot v-for="i in items3.path" :key="i" 
+      :x="(Array.isArray(i['y']) ? i['y'][0] : items3['x']) * 50" 
+      :y="(Array.isArray(i['y']) ? i['y'][1] : i['y']) * 50" 
+      r="5"/>
     </g>
   </svg>
 </template>
