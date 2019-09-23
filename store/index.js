@@ -6,26 +6,26 @@ export const state = () => ({
       x: [-1],
       dx: 0,
       children: [],
+      color: '#008fb5',
       path: [
         { turn: 0, y: [0,0], unix: 1569580240,
-          glyph: "book", event: "link",
+          glyph: "Book", event: "url",
           link: { }
         },
         { turn: 0, y: 1, unix: 1569580240,
-          glyph: "book",
-          event: "link",
+          glyph: "", event: "url",
           link: { }
         },
         { turn: 0, y: 2, unix: 1569580240,
-          glyph: "book", event: "link",
+          glyph: "", event: "url",
           link: { }
         },
         { turn: 0, y: 3, unix: 1569580240,
-          glyph: "book", event: "link",
+          glyph: "", event: "url",
           link: { }
         },
         { turn: 0, y: 5, unix: 1569580240,
-          glyph: "book", event: "link",
+          glyph: "", event: "url",
           link: { }
         }
       ],
@@ -34,30 +34,30 @@ export const state = () => ({
       x: [1],
       dx: 0,
       children: [],
+      color:'#f00fff',
       path: [
-        { turn: 0, y: [0,0], unix: 1569580240,
-          glyph: "book", event: "link",
+        /* { turn: 0, y: [0,0], unix: 1569580240,
+          glyph: "", event: "url",
           link: { }
-        },
+        }, */
         { turn: 0, y: 1, unix: 1569580240,
-          glyph: "book",
-          event: "link",
-          link: { }
+          glyph: "", event: "url",
+          link: { coord: [0, 0], type: "branch" }
         },
         { turn: 0, y: [2, 2], unix: 1569580240,
-          glyph: "book", event: "link",
+          glyph: "", event: "url",
           link: { }
         },
         { turn: 0, y: [2,3], unix: 1569580240,
-          glyph: "book", event: "link",
+          glyph: "", event: "url",
           link: { }
         },
         { turn: 0, y: [1,4], unix: 1569580240,
-          glyph: "book", event: "link",
+          glyph: "", event: "url",
           link: { }
         },
         { turn: 0, y: [1,5], unix: 1569580240,
-          glyph: "book", event: "link",
+          glyph: "", event: "url",
           link: { }
         }
       ],
@@ -66,26 +66,26 @@ export const state = () => ({
       x: [-2],
       dx: 0,
       children: [],
+      color:'#0fb500',
       path: [
         { turn: 0, y: 2, unix: 1569580240,
-          glyph: "book", event: "link",
+          glyph: "Dot", event: "url",
           link: { coord: [-1, 1], type: "branch" }
         },
         { turn: 0, y: 3, unix: 1569580240,
-          glyph: "book",
-          event: "link",
+          glyph: "Dot", event: "url",
           link: { }
         },
         { turn: 0, y: 4, unix: 1569580240,
-          glyph: "book", event: "link",
+          glyph: "Dot", event: "url",
           link: { }
         },
         { turn: 0, y: 5, unix: 1569580240,
-          glyph: "book", event: "link",
+          glyph: "Dot", event: "url",
           link: { }
         },
         { turn: 0, y: 6, unix: 1569580240,
-          glyph: "book", event: "link",
+          glyph: "Dot", event: "url",
           link: { }
         }
       ],
