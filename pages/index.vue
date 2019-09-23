@@ -8,7 +8,6 @@
       <h2 class="subtitle">Starter for CodeSandBox</h2>
       <div class="links">
         <a href="https://nuxtjs.org/" target="_blank" class="button--green">Documentation
-          <IconLink/>
         </a>
         <NLink to="/testing" class="button--grey">Testing</NLink>
       </div>
@@ -18,12 +17,10 @@
 
 <script>
 import Logo from "~/components/Logo.vue";
-import IconLink from "~/components/IconLink.vue";
 
 export default {
   components: {
-    Logo,
-    IconLink
+    Logo
   }
 };
 </script>
