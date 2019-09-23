@@ -12,7 +12,7 @@
     <div v-for="(items1, branchName) in _$" :key="(items1, branchName)">
       <!-- <p>{{branchName}}</p> -->
       <!-- <p>{{items1}}</p> -->
-      <p>{{dString(items1)}}</p>
+      <!-- <p>{{dString(items1)}}</p> -->
       <!-- <p>{{getCoords(items1)}}</p> -->
     </div>
 
@@ -96,6 +96,7 @@ export default {
       }
       return d.join(' ');
     },
+
   }
 };
 </script>
