@@ -1,9 +1,11 @@
 <template>
-  <svg overflow="visible">
-    <Paths/>
-    <!--<Links/>-->
-    <Glyphs/>
-  </svg>
+  <div>
+    <svg overflow="visible">
+      <Paths/>
+      <Links/>
+      <Glyphs/>
+    </svg>
+  </div>
 </template>
 
 <script>

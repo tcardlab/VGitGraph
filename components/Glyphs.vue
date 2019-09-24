@@ -4,7 +4,7 @@
       <component 
       :is="i.glyph? i.glyph: 'Dot'" 
       v-for="i in items3.path" :key="i" 
-      
+
       :x="(Array.isArray(i['y']) ? i['y'][0] : items3['x']) * 50" 
       :y="(Array.isArray(i['y']) ? i['y'][1] : i['y']) * 50" 
       :color="items3.color"/>

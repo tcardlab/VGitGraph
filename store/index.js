@@ -22,11 +22,11 @@ export const state = () => ({
         },
         { turn: 0, y: 3, unix: 1569580240,
           glyph: "", event: "url",
-          link: { }
+          link: {coord:[1, 4], type:"Dotted" }
         },
         { turn: 0, y: 5, unix: 1569580240,
           glyph: "", event: "url",
-          link: { }
+          link: {coord:[1, 4], type:"Dotted" }
         }
       ],
     },
@@ -42,7 +42,7 @@ export const state = () => ({
         }, */
         { turn: 0, y: 1, unix: 1569580240,
           glyph: "", event: "url",
-          link: { coord: [0, 0], type: "branch" }
+          link: { coord: [0, 0], type: "path" }
         },
         { turn: 0, y: [2, 2], unix: 1569580240,
           glyph: "", event: "url",
@@ -70,7 +70,7 @@ export const state = () => ({
       path: [
         { turn: 0, y: 2, unix: 1569580240,
           glyph: "Dot", event: "url",
-          link: { coord: [-1, 1], type: "branch" }
+          link: { coord: [-1, 1], type: "path" }
         },
         { turn: 0, y: 3, unix: 1569580240,
           glyph: "Dot", event: "url",

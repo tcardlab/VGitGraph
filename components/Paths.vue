@@ -60,7 +60,7 @@ export default {
 
         // Prefix link dStrting at given point if type==path
         var link = bItems.path[i].link
-        if (Object.keys(link).length > 0){ 
+        if (Object.keys(link).length > 0 && link.type==="path"){ 
           d.unshift(this.addLink(link, x, y, scale))
         }
       }
