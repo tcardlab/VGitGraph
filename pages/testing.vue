@@ -28,13 +28,13 @@
 </template>
 
 <script>
-import Branches from "~/components/Branches.vue";
+// import Branches from "~/components/Branches.vue";
 import Glyphs from "~/components/Glyphs.vue";
 import _ from "lodash";
 
 export default {
   components: {
-    Branches: Branches,
+    // Branches: Branches,
     Glyphs: Glyphs
   },
   data() {
@@ -68,7 +68,11 @@ export default {
         var dLink = ''
         if (Object.keys(link).length > 0){
           // dStrting link can be prefixed to any point 
+
+          // if type path append using path rules?
           dLink = this.addLink(link, x, y, scale);
+
+          // if other use call raw component?
         }
 
         if (d.length === 0) {
