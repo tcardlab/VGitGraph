@@ -1,3 +1,14 @@
+<!--
+If I move getPath and getDisplay off file
+(so Links&Glyphs.vue have access), as well as move all links to
+Links.vue, then I'm mostly left with dString logic. 
+Thats pretty clean
+svg and g for loop need to be moved to parent component as well.
+
+I'd like to figure out a better place to store dString values.
+then they could be easier to modify and make logic a little cleaner
+and more intuitive. 
+-->
 <template>
   <svg xmlns="http://www.w3.org/2000/svg" height="300" wigth="300" overflow="visible">
     <g v-for="(items2, branchName) in _$" :key="branchName">
@@ -13,26 +24,15 @@ export default {
   methods: {
     getPath(bItems) {
       // returns [[x, y], ...]
-      // This returns path continuity data
-      // this data is used to determine behavior
+      // continuity data is held in path used in dString logic.
       const xConst = bItems.x[0]
       const yArr = _.map(bItems.path, 'y')
       const coords = yArr.map(i => Array.isArray(i) ? i : [xConst, i])
       return coords
     },
     getDisplay(bItems, path, display, scale) {
-      /* Ignore
-      // this returns a y value that corrisponds to display
-      // continuity data is held in y.
-      yDispArr = _.map(bItems.path, ['y', 'turns', 'unix'][display])
-      yDispArr = yDispArr.map(i => Array.isArray(i) ? i[1] : i)
-      return yDispArr */
-
-      /*  Ignore2
-      // returns x,y but x is a little messy... for some reason
-      const xConst = bItems.x[0]
-      var yDispArr = _.map(bItems.path, ['y', 'turn', 'unix'][display])
-      return yDispArr.map(x => Array.isArray(x) ? [x[0]*scale, x[1]*scale] : [xConst*scale, x*scale]); */
+      // Returns [[x*scale,y*scale]..] corrisponding to display(particularly y)
+      // continuity data is held in path used in dString logic.
       switch(display){
         case '1':
           let yDispArr = _.map(bItems.path, 'turn')
@@ -48,6 +48,7 @@ export default {
     },
 
     addLink(link, x, y, scale) {
+        // Might delete in favor of Links.vue
         var xprior = link.coord[0]*scale
         var yprior = link.coord[1]*scale
         var midY = (yprior + y) / 2;
@@ -63,6 +64,7 @@ export default {
         let [x, y] = path[i]
         let [xDisp, yDisp]= dispCoords[i]
 
+        // Logic (move outside? idk)
         if (d.length === 0) {
           // 'move-to' start
           d.push(`M${xDisp} ${yDisp}`);
