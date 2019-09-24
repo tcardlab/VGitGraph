@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div>
+      <label>Display</label>
+      <input v-model="$store.state.display" type="range" min="0" max="2" />
+      <span>{{ ['Paths', 'Turns', 'Time'][$store.state.display] }}</span>
+    </div>
+
     <svg overflow="visible">
       <Paths/>
       <Links/>
@@ -18,6 +24,12 @@ export default {
     Paths,
     Links,
     Glyphs
-  }
+  },
+
+  data() {
+    return {
+      // display: 0,
+    };
+  },
 };
 </script>

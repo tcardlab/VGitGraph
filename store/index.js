@@ -1,6 +1,7 @@
 export const strict = false;
 
 export const state = () => ({  
+  display: 0, 
   branches3: {
     "GM": {
       x: [-1],
@@ -12,19 +13,19 @@ export const state = () => ({
           glyph: "Book", event: "url",
           link: { }
         },
-        { turn: 0, y: 1, unix: 1569580240,
+        { turn: 2, y: 1, unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        { turn: 0, y: 2, unix: 1569580240,
+        { turn: 4, y: 2, unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        { turn: 0, y: 3, unix: 1569580240,
+        { turn: 7, y: 3, unix: 1569580240,
           glyph: "", event: "url",
           link: {coord:[1, 4], type:"Dotted" }
         },
-        { turn: 0, y: 5, unix: 1569580240,
+        { turn: 10, y: 5, unix: 1569580240,
           glyph: "", event: "url",
           link: {coord:[1, 4], type:"Dotted" }
         }
@@ -40,23 +41,23 @@ export const state = () => ({
           glyph: "", event: "url",
           link: { }
         }, */
-        { turn: 0, y: 1, unix: 1569580240,
+        { turn: 1, y: 1, unix: 1569580240,
           glyph: "", event: "url",
           link: { coord: [0, 0], type: "path" }
         },
-        { turn: 0, y: [2, 2], unix: 1569580240,
+        { turn: 5, y: [2, 2], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        { turn: 0, y: [2,3], unix: 1569580240,
+        { turn: 8, y: [2,3], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        { turn: 0, y: [1,4], unix: 1569580240,
+        { turn: 11, y: [1,4], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        { turn: 0, y: [1,5], unix: 1569580240,
+        { turn: 13, y: [1,5], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         }
@@ -68,23 +69,23 @@ export const state = () => ({
       children: [],
       color:'#0fb500',
       path: [
-        { turn: 0, y: 2, unix: 1569580240,
+        { turn: 3, y: 2, unix: 1569580240,
           glyph: "Dot", event: "url",
           link: { coord: [-1, 1], type: "path" }
         },
-        { turn: 0, y: 3, unix: 1569580240,
+        { turn: 6, y: 3, unix: 1569580240,
           glyph: "Dot", event: "url",
           link: { }
         },
-        { turn: 0, y: 4, unix: 1569580240,
+        { turn: 9, y: 4, unix: 1569580240,
           glyph: "Dot", event: "url",
           link: { }
         },
-        { turn: 0, y: 5, unix: 1569580240,
+        { turn: 12, y: 5, unix: 1569580240,
           glyph: "Dot", event: "url",
           link: { }
         },
-        { turn: 0, y: 6, unix: 1569580240,
+        { turn: 14, y: 6, unix: 1569580240,
           glyph: "Dot", event: "url",
           link: { }
         }
