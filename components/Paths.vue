@@ -10,17 +10,14 @@ then they could be easier to modify and make logic a little cleaner
 and more intuitive. 
 -->
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" height="300" wigth="300" overflow="visible">
-    <g v-for="(items2, branchName) in _$" :key="branchName">
-      <path :d="dString(items2, $store.state.display)" fill="none" :stroke="items2.color" stroke-width="7"></path>
-    </g>
-  </svg>
+  <path :d="dString(items, $store.state.display)" fill="none" :stroke="items.color" stroke-width="7"/>
 </template>
 
 <script>
 import _ from "lodash";
 
 export default {
+  props: ['items'],
   methods: {
     getPath(bItems) {
       // returns [[x, y], ...]

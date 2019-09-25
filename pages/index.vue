@@ -6,11 +6,29 @@
       <span>{{ ['Paths', 'Turns', 'Time'][$store.state.display] }}</span>
     </div>
 
-    <svg overflow="visible">
+
+    <!-- <svg overflow="visible">
       <Paths/>
       <Links/>
       <Glyphs/>
+    </svg> -->
+    <svg overflow="visible">
+      <g v-for="(items, branchName) in _$" :key="branchName">
+        <Paths :items="items"/>
+        <g v-for="(i, turn) in items.path" :key="turn">
+          <Links :items="items" :i="i" :turn="turn"/>
+          <Glyphs :items="items" :i="i" :turn="turn"/>
+        </g>
+      </g>
     </svg>
+
+ <!--    <svg v-for="(items, branchName) in _$" :key="branchName" overflow="visible">
+      <Paths :items="items"/>
+      <g v-for="(i, turn) in items.path" :key="turn">
+        <Links :items="items" :i="i" :turn="turn"/>
+        <Glyphs :items="items" :i="i" :turn="turn"/>
+      </g>
+    </svg>  -->
   </div>
 </template>
 
