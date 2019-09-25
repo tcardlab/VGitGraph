@@ -35,8 +35,8 @@ export default {
       // continuity data is held in path used in dString logic.
       switch(display){
         case '1':
-          let yDispArr = _.map(bItems.path, 'turn')
-          let scaleY = scale / (Object.keys(this._$).length-0.5)
+          let yDispArr = Object.keys(bItems.path)
+          let scaleY = scale // (Object.keys(this._$).length-0.5)
           yDispArr = yDispArr.map((el, i) => [path[i][0]*scale, el*scaleY])
           return yDispArr
         case '2':
@@ -47,10 +47,21 @@ export default {
       }
     },
 
-    addLink(link, x, y, scale) {
-        // Might delete in favor of Links.vue
-        var xprior = link.coord[0]*scale
-        var yprior = link.coord[1]*scale
+    // Might delete in favor of Links.vue
+    addLink(link, display, x, y, scale) {
+        // relative link
+        if (Object.keys(this._$).includes(link.coord[0])) {
+          var [branchName, turn] = link.coord
+          var branch = this._$[branchName]
+          var yprior = [branch.path[turn]['y'], turn][display]
+
+          var xConst = +branch['x']
+          var [xprior, yprior] = Array.isArray(yprior) ? [yprior[0], yprior[1]] : [xConst, yprior]
+        } else {
+          // hard link
+          var [xprior, yprior] = link.coord
+        }
+        var [xprior, yprior] = [xprior*scale, yprior*scale] 
         var midY = (yprior + y) / 2;
         return `M${xprior} ${yprior} C${xprior} ${midY} ${x} ${midY} ${x} ${y}`;
     },
@@ -90,9 +101,9 @@ export default {
         }
 
         // Prefix link dStrting at given point if type==path
-        var link = bItems.path[i].link
+        var link = Object.values(bItems.path)[i].link
         if (Object.keys(link).length > 0 && link.type==="path"){ 
-          d.unshift(this.addLink(link, xDisp, yDisp, scale))
+          d.unshift(this.addLink(link, display, xDisp, yDisp, scale))
         }
       }
       return d.join(' ');

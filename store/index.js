@@ -1,5 +1,25 @@
 export const strict = false;
 
+/* Due to the need of relative links when y-display changes, I need a key 
+to reference an event so i can get the coordinates.
+
+I have chosen "turn" to be the key, as globaly it is the most intuitive to 
+sort and search by. However, it doesnt make the methods any simpler...
+
+Alternative:
+I believe using "y" as the key would improve simplicity. I would lose the 
+x-override however, I would make this a dx key to shift from the xConst of 
+the branch:
+x=xConst
+path: {
+    y: {turn:0, dx:"if applicable", ...}
+}
+i'll play around with this as well later. 
+If i can figure out general coordinate functions/methods, this will be
+easier as json and that file are the only ones that need editing.
+perhaps a mixin? I think this makes sense.
+*/
+
 export const state = () => ({  
   display: 0, 
   branches3: {
@@ -8,88 +28,84 @@ export const state = () => ({
       dx: 0,
       children: [],
       color: '#008fb5',
-      path: [
-        { turn: 0, y: [0,0], unix: 1569580240,
+      path: {
+        0: { y: [0,0], unix: 1569580240,
           glyph: "Book", event: "url",
           link: { }
         },
-        { turn: 2, y: 1, unix: 1569580240,
+        2: { y: 1, unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        { turn: 4, y: 2, unix: 1569580240,
+        4: { y: 2, unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        { turn: 7, y: 3, unix: 1569580240,
+        7: { y: 3, unix: 1569580240,
           glyph: "", event: "url",
-          link: {coord:[1, 4], type:"Dotted" }
+          link: {coord:['P1', 11], type:"Dotted" } // relative link
         },
-        { turn: 10, y: 5, unix: 1569580240,
+        13: { y: 5, unix: 1569580240,
           glyph: "", event: "url",
-          link: {coord:[1, 4], type:"Dotted" }
+          link: {coord:['P1', 11], type:"Dotted" } // relative link
         }
-      ],
+      },
     },
     "P1": {
       x: [1],
       dx: 0,
       children: [],
       color:'#f00fff',
-      path: [
-        /* { turn: 0, y: [0,0], unix: 1569580240,
+      path: {
+        1: { y: 1, unix: 1569580240,
           glyph: "", event: "url",
-          link: { }
-        }, */
-        { turn: 1, y: 1, unix: 1569580240,
-          glyph: "", event: "url",
-          link: { coord: [0, 0], type: "path" }
+          link: { coord: [0, 0], type: "path" } // hard link
         },
-        { turn: 5, y: [2, 2], unix: 1569580240,
+        5: { y: [2, 2], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        { turn: 8, y: [2,3], unix: 1569580240,
+        8: { y: [2,3], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        { turn: 11, y: [1,4], unix: 1569580240,
+        11: { y: [1,4], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        { turn: 13, y: [1,5], unix: 1569580240,
+        14: { y: [1,5], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         }
-      ],
+      },
     },
     "GM2": {
       x: [-2],
       dx: 0,
       children: [],
       color:'#0fb500',
-      path: [
-        { turn: 3, y: 2, unix: 1569580240,
+      path: {
+        3: { y: 2, unix: 1569580240,
           glyph: "Dot", event: "url",
-          link: { coord: [-1, 1], type: "path" }
+          link: { coord: ['GM', 2], type: "path" } // relative link
         },
-        { turn: 6, y: 3, unix: 1569580240,
-          glyph: "Dot", event: "url",
-          link: { }
-        },
-        { turn: 9, y: 4, unix: 1569580240,
+        6: { y: 3, unix: 1569580240,
           glyph: "Dot", event: "url",
           link: { }
         },
-        { turn: 12, y: 5, unix: 1569580240,
+        9: { y: 4, unix: 1569580240,
           glyph: "Dot", event: "url",
           link: { }
         },
-        { turn: 14, y: 6, unix: 1569580240,
+        12: { y: 5, unix: 1569580240,
+          glyph: "Dot", event: "url",
+          link: { }
+        },
+        15: { y: 6, unix: 1569580240,
           glyph: "Dot", event: "url",
           link: { }
         }
-      ],
+      },
     },
   }
 });
