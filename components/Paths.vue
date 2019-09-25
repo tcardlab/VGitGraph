@@ -35,7 +35,7 @@ export default {
       // continuity data is held in path used in dString logic.
       switch(display){
         case '1':
-          let yDispArr = _.map(bItems.path, 'turn')
+          let yDispArr = Object.keys(bItems.path)
           let scaleY = scale / (Object.keys(this._$).length-0.5)
           yDispArr = yDispArr.map((el, i) => [path[i][0]*scale, el*scaleY])
           return yDispArr
@@ -90,7 +90,7 @@ export default {
         }
 
         // Prefix link dStrting at given point if type==path
-        var link = bItems.path[i].link
+        var link = Object.values(bItems.path)[i].link
         if (Object.keys(link).length > 0 && link.type==="path"){ 
           d.unshift(this.addLink(link, xDisp, yDisp, scale))
         }
