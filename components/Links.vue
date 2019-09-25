@@ -7,14 +7,15 @@ if not, maybe i suck it up and plot "path" here too...
 -->
 <template>
   <component
-  :is="i.link.type"
-  v-if="i.link.type === 'Dotted'"
+    :is="i.link.type"
+    v-if="i.link.type === 'Dotted'"
 
-  :x="(Array.isArray(i['y']) ? i['y'][0] : items['x']) * 50"
-  :y="[(Array.isArray(i['y']) ? i['y'][1] : i['y']) * 50, turn*50][$store.state.display]"
-  :xLink="addLink(i.link, $store.state.display, 50)[0]"
-  :yLink="addLink(i.link, $store.state.display, 50)[1]"
-  :color="items.color"/>
+    :x="(Array.isArray(i['y']) ? i['y'][0] : items['x']) * 50"
+    :y="[(Array.isArray(i['y']) ? i['y'][1] : i['y']) * 50, turn*50][$store.state.display]"
+    :xLink="addLink(i.link, $store.state.display, 50)[0]"
+    :yLink="addLink(i.link, $store.state.display, 50)[1]"
+    :color="items.color"
+  />
 </template>
 
 <script>

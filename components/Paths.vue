@@ -10,7 +10,12 @@ then they could be easier to modify and make logic a little cleaner
 and more intuitive. 
 -->
 <template>
-  <path :d="dString(items, $store.state.display)" fill="none" :stroke="items.color" stroke-width="7"/>
+  <path 
+    :d="dString(items, $store.state.display)" 
+    fill="none" 
+    :stroke="items.color" 
+    stroke-width="7"
+  />
 </template>
 
 <script>

@@ -1,10 +1,11 @@
 <template>
   <component 
-  :is="i.glyph? i.glyph: 'Dot'" 
+    :is="i.glyph? i.glyph: 'Dot'" 
 
-  :x="(Array.isArray(i['y']) ? i['y'][0] : items['x']) * 50" 
-  :y="[(Array.isArray(i['y']) ? i['y'][1] : i['y']) * 50, turn*50][$store.state.display]" 
-  :color="items.color"/>
+    :x="(Array.isArray(i['y']) ? i['y'][0] : items['x']) * 50" 
+    :y="[(Array.isArray(i['y']) ? i['y'][1] : i['y']) * 50, turn*50][$store.state.display]" 
+    :color="items.color"
+  />
 </template>
 
 <script>
