@@ -57,7 +57,6 @@ export default {
 
           var xConst = +branch['x']
           var [xprior, yprior] = Array.isArray(yprior) ? [yprior[0], yprior[1]] : [xConst, yprior]
-          console.log(xprior)
         } else {
           // hard link
           var [xprior, yprior] = link.coord

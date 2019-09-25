@@ -1,5 +1,25 @@
 export const strict = false;
 
+/* Due to the need of relative links when y-display changes, I need a key 
+to reference an event so i can get the coordinates.
+
+I have chosen "turn" to be the key, as globaly it is the most intuitive to 
+sort and search by. However, it doesnt make the methods any simpler...
+
+Alternative:
+I believe using "y" as the key would improve simplicity. I would lose the 
+x-override however, I would make this a dx key to shift from the xConst of 
+the branch:
+x=xConst
+path: {
+    y: {turn:0, dx:"if applicable", ...}
+}
+i'll play around with this as well later. 
+If i can figure out general coordinate functions/methods, this will be
+easier as json and that file are the only ones that need editing.
+perhaps a mixin? I think this makes sense.
+*/
+
 export const state = () => ({  
   display: 0, 
   branches3: {

@@ -3,10 +3,10 @@
     <g v-for="(items3, branchName) in _$" :key="(items3, branchName)">
       <component 
       :is="i.glyph? i.glyph: 'Dot'" 
-      v-for="i in items3.path" :key="i" 
+      v-for="(i, turn) in items3.path" :key="turn" 
 
       :x="(Array.isArray(i['y']) ? i['y'][0] : items3['x']) * 50" 
-      :y="(Array.isArray(i['y']) ? i['y'][1] : i['y']) * 50" 
+      :y="[(Array.isArray(i['y']) ? i['y'][1] : i['y']) * 50, turn*50][$store.state.display]" 
       :color="items3.color"/>
     </g>
   </svg>
