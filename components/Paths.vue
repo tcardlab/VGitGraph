@@ -51,10 +51,11 @@ export default {
     addLink(link, display, x, y, scale) {
         // relative link
         if (Object.keys(this._$).includes(link.coord[0])) {
-          var [branch, turn] = link.coord
-          var yprior = [this._$[branch].path[turn]['y'], turn][display]
+          var [branchName, turn] = link.coord
+          var branch = this._$[branchName]
+          var yprior = [branch.path[turn]['y'], turn][display]
 
-          var xConst = +this._$[branch]['x']
+          var xConst = +branch['x']
           var [xprior, yprior] = Array.isArray(yprior) ? [yprior[0], yprior[1]] : [xConst, yprior]
           console.log(xprior)
         } else {
