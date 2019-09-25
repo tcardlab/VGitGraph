@@ -23,11 +23,11 @@ export const state = () => ({
         },
         7: { y: 3, unix: 1569580240,
           glyph: "", event: "url",
-          link: {coord:[1, 4], type:"Dotted" }
+          link: {coord:['P1', 11], type:"Dotted" } // relative link
         },
-        10: { y: 5, unix: 1569580240,
+        13: { y: 5, unix: 1569580240,
           glyph: "", event: "url",
-          link: {coord:[1, 4], type:"Dotted" }
+          link: {coord:['P1', 11], type:"Dotted" } // relative link
         }
       },
     },
@@ -39,7 +39,7 @@ export const state = () => ({
       path: {
         1: { y: 1, unix: 1569580240,
           glyph: "", event: "url",
-          link: { coord: [0, 0], type: "path" }
+          link: { coord: [0, 0], type: "path" } // hard link
         },
         5: { y: [2, 2], unix: 1569580240,
           glyph: "", event: "url",
@@ -53,7 +53,7 @@ export const state = () => ({
           glyph: "", event: "url",
           link: { }
         },
-        13: { y: [1,5], unix: 1569580240,
+        14: { y: [1,5], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         }
@@ -67,7 +67,7 @@ export const state = () => ({
       path: {
         3: { y: 2, unix: 1569580240,
           glyph: "Dot", event: "url",
-          link: { coord: [-1, 1], type: "path" }
+          link: { coord: ['GM', 2], type: "path" } // relative link
         },
         6: { y: 3, unix: 1569580240,
           glyph: "Dot", event: "url",
@@ -81,7 +81,7 @@ export const state = () => ({
           glyph: "Dot", event: "url",
           link: { }
         },
-        14: { y: 6, unix: 1569580240,
+        15: { y: 6, unix: 1569580240,
           glyph: "Dot", event: "url",
           link: { }
         }
