@@ -34,10 +34,11 @@ export const PathsMixin = {
       }
       return [xLink, yLink]
     },
-    inPathLink(bItems, index, display){
+    inPathLink(bItems, index, display, scale){
       var link = Object.values(bItems.path)[index].link
       if (Object.keys(link).length > 0 && link.type==="path"){ 
-        return this.getLink(link, display) // returns XYLink coords
+        var XYLink = this.getLink(link, display)
+        return XYLink.map(el => el*scale)
       } else {
         return false
       }

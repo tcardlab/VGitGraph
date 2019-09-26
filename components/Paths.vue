@@ -71,9 +71,8 @@ export default {
         }
 
         //Inpath link: Prefix link dStrting at given point if type==path
-        var XYLink = this.inPathLink(bItems, i, display)
+        var XYLink = this.inPathLink(bItems, i, display, scale)
         if (XYLink !== false) {
-          XYLink = XYLink.map(el => el*scale)
           this.moveTo(d, ...XYLink)
           this.Branch(d, xDisp, yDisp, XYLink)
         }
