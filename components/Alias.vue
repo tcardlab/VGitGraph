@@ -1,5 +1,5 @@
 <template>
-  <svg :id="svgId+'-alias'">
+  <g :id="svgId+'-alias'">
     <g :id="'alias-'+branchName" v-for="(items, branchName) in _$" 
         :key="'alias-'+branchName">
       <use
@@ -7,7 +7,7 @@
         :href="'#'+svgId+'-'+turn"
       />
     </g>
-  </svg>
+  </g>
 </template>
 
 <script>

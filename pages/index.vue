@@ -40,15 +40,15 @@
           <Glyphs :items="items" :i="i" :turn="turn" :id="'glyph-'+turn"/>
         </g>
       </g>
-      <!-- <Alias svgId="link"/> -->
-      <!-- <Alias svgId="glyph"/> -->
-      <g :id="'alias-'+branchName" v-for="(items, branchName) in _$" 
+      <Alias svgId="link"/>
+      <Alias svgId="glyph"/>
+      <!-- <g v-for="(items, branchName) in _$" :id="'alias-'+branchName" 
          :key="'alias-'+branchName">
         <use
           v-for="(i, turn) in items.path" :key="turn"
           :href="'#glyph-'+turn"
         />
-      </g>
+      </g> -->
 
     </svg>
 
