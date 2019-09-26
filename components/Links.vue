@@ -6,21 +6,16 @@ as a method or computed perhaps.
 if not, maybe i suck it up and plot "path" here too...
 -->
 <template>
-  <svg overflow="visible">
-    <g v-for="(items3, branchName) in _$" :key="(items3, branchName)">
-      <g v-for="(i, turn) in items3.path" :key="turn">
-        <component
-        :is="i.link.type"
-        v-if="i.link.type === 'Dotted'"
+  <component
+    :is="i.link.type"
+    v-if="i.link.type === 'Dotted'"
 
-        :x="(Array.isArray(i['y']) ? i['y'][0] : items3['x']) * 50"
-        :y="[(Array.isArray(i['y']) ? i['y'][1] : i['y']) * 50, turn*50][$store.state.display]"
-        :xLink="addLink(i.link, $store.state.display, 50)[0]"
-        :yLink="addLink(i.link, $store.state.display, 50)[1]"
-        :color="items3.color"/>
-      </g>
-    </g>
-  </svg>
+    :x="(Array.isArray(i['y']) ? i['y'][0] : items['x']) * 50"
+    :y="[(Array.isArray(i['y']) ? i['y'][1] : i['y']) * 50, turn*50][$store.state.display]"
+    :xLink="addLink(i.link, $store.state.display, 50)[0]"
+    :yLink="addLink(i.link, $store.state.display, 50)[1]"
+    :color="items.color"
+  />
 </template>
 
 <script>
@@ -28,6 +23,7 @@ import _ from "lodash";
 import Dotted from "./Links/Dotted.vue";
 
 export default {
+  props:['items', 'i', 'turn'],
   components: {
     Dotted: Dotted,
   },

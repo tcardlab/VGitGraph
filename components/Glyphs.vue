@@ -1,15 +1,11 @@
 <template>
-  <svg overflow="visible">
-    <g v-for="(items3, branchName) in _$" :key="(items3, branchName)">
-      <component 
-      :is="i.glyph? i.glyph: 'Dot'" 
-      v-for="(i, turn) in items3.path" :key="turn" 
+  <component 
+    :is="i.glyph? i.glyph: 'Dot'" 
 
-      :x="(Array.isArray(i['y']) ? i['y'][0] : items3['x']) * 50" 
-      :y="[(Array.isArray(i['y']) ? i['y'][1] : i['y']) * 50, turn*50][$store.state.display]" 
-      :color="items3.color"/>
-    </g>
-  </svg>
+    :x="(Array.isArray(i['y']) ? i['y'][0] : items['x']) * 50" 
+    :y="[(Array.isArray(i['y']) ? i['y'][1] : i['y']) * 50, turn*50][$store.state.display]" 
+    :color="items.color"
+  />
 </template>
 
 <script>
@@ -18,6 +14,7 @@ import Dot from "./Glyphs/Dot.vue";
 import Book from "./Glyphs/Book.vue";
 
 export default {
+  props:['items', 'i', 'turn'],
   components: {
     Dot: Dot,
     Book: Book
