@@ -61,7 +61,11 @@ export default {
         } else if (x - path[i-1][0] !== 0) {
           // 'branch/merge' from prior
           var priorXYDisp = dispCoords[i - 1]
-          this.Branch(d, xDisp, yDisp, priorXYDisp)
+          var maxHeight = priorXYDisp[1]+scale
+          this.Branch(d, xDisp, maxHeight, priorXYDisp)
+          if (maxHeight>yDisp){
+            this.Line(d, xDisp, yDisp)
+          }
         } else if (y - path[i - 1][1] > 1) {
           // discontinuity
           this.moveTo(d, xDisp, yDisp)
