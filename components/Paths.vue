@@ -61,11 +61,7 @@ export default {
         } else if (x - path[i-1][0] !== 0) {
           // 'branch/merge' from prior
           var priorXYDisp = dispCoords[i - 1]
-          var maxHeight = priorXYDisp[1]+scale
-          this.Branch(d, xDisp, maxHeight, priorXYDisp)
-          if (maxHeight>yDisp){
-            this.Line(d, xDisp, yDisp)
-          }
+          this.Branch(d, xDisp, yDisp, priorXYDisp, scale)
         } else if (y - path[i - 1][1] > 1) {
           // discontinuity
           this.moveTo(d, xDisp, yDisp)
@@ -78,7 +74,7 @@ export default {
         var XYLink = this.inPathLink(bItems, i, display, scale)
         if (XYLink !== false) {
           this.moveTo(d, ...XYLink)
-          this.Branch(d, xDisp, yDisp, XYLink)
+          this.Branch(d, xDisp, yDisp, XYLink, scale)
         }
       }
       return d.join(' ');

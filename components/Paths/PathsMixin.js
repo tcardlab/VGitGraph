@@ -3,10 +3,15 @@ export const PathsMixin = {
     moveTo(d, x, y){
       return d.push(`M${x} ${y}`)
     }, 
-    Branch(d, x, y, priorXYDisp) {
+    Branch(d, x, y, priorXYDisp, scale) {
       var [xprior, yprior] = priorXYDisp;
-      var midY = (yprior + y) / 2;
-      return d.push(`C${xprior} ${midY} ${x} ${midY} ${x} ${y}`);
+      var maxHeight = yprior+scale
+      var midY = (yprior + maxHeight) / 2;
+      d.push(`C${xprior} ${midY} ${x} ${midY} ${x} ${maxHeight}`);
+      if (maxHeight>y){
+        this.Line(d, x, y)
+      }
+      return d
     },
     Line(d, x ,y) {
       // vertical Line
