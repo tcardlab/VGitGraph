@@ -70,7 +70,7 @@ export default {
           this.Line(d, xDisp, yDisp)
         }
 
-        //Inpath link: Prefix link dStrting at given point if type==path
+        //In-path link: Prefix link dStrting at given point if type==path
         var XYLink = this.inPathLink(bItems, i, display, scale)
         if (XYLink !== false) {
           this.moveTo(d, ...XYLink)
