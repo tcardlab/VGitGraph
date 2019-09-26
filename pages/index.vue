@@ -7,16 +7,31 @@
     </div>
 
     <!--stuff inside svg to be moved to a seperate component-->
-    <svg overflow="visible" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-      <g v-for="(items, branchName) in _$" :key="branchName">
-        <Paths :items="items"/>
-        <g v-for="(i, turn) in items.path" :key="turn">
-          <Links :items="items" :i="i" :turn="turn"/>
-          <Glyphs :items="items" :i="i" :turn="turn"/>
-        </g>
+    <svg overflow="visible">
+      <!-- 
+        It looks as if they can be combined, however it will
+        mess up svg render order as there is no z-index...
+      -->
+      <Paths
+        v-for="(items, branchName) in _$" :key="'path-'+branchName"
+        :items="items"
+      />
+
+      <g v-for="(items, branchName) in _$" :key="'link-'+branchName">
+        <Links
+          v-for="(actions, turn) in items.path" :key="turn" 
+          :items="items" :i="actions" :turn="turn"
+        />
+      </g>
+
+      <g v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
+        <Glyphs
+          v-for="(actions, turn) in items.path" :key="turn"
+          :items="items" :i="actions" :turn="turn"
+        />
       </g>
     </svg>
-    
+
   </div>
 </template>
 

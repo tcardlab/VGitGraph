@@ -23,34 +23,6 @@ perhaps a mixin? I think this makes sense.
 export const state = () => ({  
   display: 0, 
   branches3: {
-    "GM": {
-      x: [-1],
-      dx: 0,
-      children: [],
-      color: '#008fb5',
-      path: {
-        0: { y: [0,0], unix: 1569580240,
-          glyph: "Book", event: "url",
-          link: { }
-        },
-        2: { y: 1, unix: 1569580240,
-          glyph: "", event: "url",
-          link: { }
-        },
-        4: { y: 2, unix: 1569580240,
-          glyph: "", event: "url",
-          link: { }
-        },
-        7: { y: 3, unix: 1569580240,
-          glyph: "", event: "url",
-          link: {coord:['P1', 11], type:"Dotted" } // relative link
-        },
-        13: { y: 5, unix: 1569580240,
-          glyph: "", event: "url",
-          link: {coord:['P1', 11], type:"Dotted" } // relative link
-        }
-      },
-    },
     "P1": {
       x: [1],
       dx: 0,
@@ -76,6 +48,34 @@ export const state = () => ({
         14: { y: [1,5], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
+        }
+      },
+    },
+    "GM": {
+      x: [-1],
+      dx: 0,
+      children: [],
+      color: '#008fb5',
+      path: {
+        0: { y: [0,0], unix: 1569580240,
+          glyph: "Book", event: "url",
+          link: { }
+        },
+        2: { y: 1, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        4: { y: 2, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        7: { y: 3, unix: 1569580240,
+          glyph: "", event: "url",
+          link: {coord:['P1', 11], type:"Dotted" } // relative link
+        },
+        13: { y: 5, unix: 1569580240,
+          glyph: "", event: "url",
+          link: {coord:['P1', 11], type:"Dotted" } // relative link
         }
       },
     },
