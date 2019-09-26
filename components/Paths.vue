@@ -1,13 +1,8 @@
 <!--
-If I move getPath and getDisplay off file
-(so Links&Glyphs.vue have access), as well as move all links to
-Links.vue, then I'm mostly left with dString logic. 
-Thats pretty clean
-svg and g for loop need to be moved to parent component as well.
+move getPath an getDisplay to display mixin
+(so Links&Glyphs.vue have access), 
 
-I'd like to figure out a better place to store dString values.
-then they could be easier to modify and make logic a little cleaner
-and more intuitive. 
+
 -->
 <template>
   <path 
@@ -20,9 +15,11 @@ and more intuitive.
 
 <script>
 import _ from "lodash";
+import { PathsMixin } from "./Paths/PathsMixin.js";
 
 export default {
   props: ['items'],
+  mixins: [PathsMixin],
   methods: {
     getPath(bItems) {
       // returns [[x, y], ...]
@@ -48,28 +45,8 @@ export default {
           return path.map(x => [x[0] * scale, x[1] * scale]);
       }
     },
-
-    // Might delete in favor of Links.vue
-    addLink(link, display, x, y, scale) {
-        // relative link
-        if (Object.keys(this._$).includes(link.coord[0])) {
-          var [branchName, turn] = link.coord
-          var branch = this._$[branchName]
-          var yprior = [branch.path[turn]['y'], turn][display]
-
-          var xConst = +branch['x']
-          var [xprior, yprior] = Array.isArray(yprior) ? [yprior[0], yprior[1]] : [xConst, yprior]
-        } else {
-          // hard link
-          var [xprior, yprior] = link.coord
-        }
-        var [xprior, yprior] = [xprior*scale, yprior*scale] 
-        var midY = (yprior + y) / 2;
-        return `M${xprior} ${yprior} C${xprior} ${midY} ${x} ${midY} ${x} ${y}`;
-    },
-
     dString(bItems, display, scale = 50) {
-      let d = [];
+      var d = [];
       var path = this.getPath(bItems)
       var dispCoords = this.getDisplay(bItems, path, display, scale)
 
@@ -80,32 +57,24 @@ export default {
         // Logic (move outside? idk)
         if (d.length === 0) {
           // 'move-to' start
-          d.push(`M${xDisp} ${yDisp}`);
-
+          this.moveTo(d, xDisp, yDisp)
         } else if (x - path[i-1][0] !== 0) {
           // 'branch/merge' from prior
-          var [xprior, yprior] = dispCoords[i - 1];
-          var midY = (yprior + yDisp) / 2;
-          d.push(`C${xprior} ${midY} ${xDisp} ${midY} ${xDisp} ${yDisp}`);
-
+          var priorXYDisp = dispCoords[i - 1]
+          this.Branch(d, xDisp, yDisp, priorXYDisp)
         } else if (y - path[i - 1][1] > 1) {
           // discontinuity
-          d.push(`M${xDisp} ${yDisp}`);
-
+          this.moveTo(d, xDisp, yDisp)
         } else {
           // vertical Line
-          let last_index = d.length-1
-          if (d[last_index][0] === "L") {
-            d[last_index] = (`L${xDisp} ${yDisp}`) // Extend prior line
-          } else {
-            d.push(`L${xDisp} ${yDisp}`) // Start new line
-          }
+          this.Line(d, xDisp, yDisp)
         }
 
-        // Prefix link dStrting at given point if type==path
-        var link = Object.values(bItems.path)[i].link
-        if (Object.keys(link).length > 0 && link.type==="path"){ 
-          d.unshift(this.addLink(link, display, xDisp, yDisp, scale))
+        //In-path link: Prefix link dStrting at given point if type==path
+        var XYLink = this.inPathLink(bItems, i, display, scale)
+        if (XYLink !== false) {
+          this.moveTo(d, ...XYLink)
+          this.Branch(d, xDisp, yDisp, XYLink)
         }
       }
       return d.join(' ');
