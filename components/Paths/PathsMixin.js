@@ -5,7 +5,7 @@ export const PathsMixin = {
     }, 
     Branch(d, x, y, priorXYDisp, scale) {
       var [xprior, yprior] = priorXYDisp;
-      var maxHeight = yprior+scale
+      var maxHeight = yprior + +this.$store.state.scale
       var midY = (yprior + maxHeight) / 2;
       d.push(`C${xprior} ${midY} ${x} ${midY} ${x} ${maxHeight}`);
       if (maxHeight>y){
@@ -14,7 +14,6 @@ export const PathsMixin = {
       return d
     },
     Line(d, x ,y) {
-      // vertical Line
       let last_index = d.length-1
       if (d[last_index][0] === "L") {
         d[last_index] = (`L${x} ${y}`) // Extend prior line
@@ -23,30 +22,17 @@ export const PathsMixin = {
         return d.push(`L${x} ${y}`) // Start new line
       }
     }, 
-    // Might move to display mixin
-    getLink(link, display) {
-      // relative link
-      if (Object.keys(this._$).includes(link.coord[0])) {
-        var [branchName, turn] = link.coord
-        var branch = this._$[branchName]
-        var yprior = [branch.path[turn]['y'], turn][display]
 
-        var xConst = +branch['x']
-        var [xLink, yLink] = Array.isArray(yprior) ? [yprior[0], yprior[1]] : [xConst, yprior]
-      } else {
-        // hard link
-        var [xLink, yLink] = link.coord
-      }
-      return [xLink, yLink]
-    },
-    inPathLink(bItems, index, display, scale){
+    // In-path Link
+    inPathLink(bItems, index){
       var link = Object.values(bItems.path)[index].link
-      if (Object.keys(link).length > 0 && link.type==="path"){ 
-        var XYLink = this.getLink(link, display)
-        return XYLink.map(el => el*scale)
+      if (Object.keys(link).length > 0 && link.type==="Path"){
+        return this.getLink(link)
       } else {
         return false
       }
-    }
+    // custom in=path links require link.type to be checked against list
+    // ["Path", 'your_link'].includes(link.type)
+    },
   }
 }

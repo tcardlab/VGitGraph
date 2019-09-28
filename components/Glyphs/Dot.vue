@@ -1,10 +1,10 @@
 <template>
   <circle 
-  :cx="x" :cy="y" r="5" 
-  stroke-width="2" 
-  :stroke="color"
-  :style="cssProps"
-  ></circle>
+    :cx="x" :cy="y" r="5" 
+    stroke-width="2" 
+    :stroke="color"
+    :style="cssProps"
+  />
 </template>
 
 <script>

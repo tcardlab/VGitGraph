@@ -22,6 +22,7 @@ perhaps a mixin? I think this makes sense.
 
 export const state = () => ({  
   display: 0, 
+  scale: 50,
   branches3: {
     "P1": {
       x: [1],
@@ -31,7 +32,7 @@ export const state = () => ({
       path: {
         1: { y: 1, unix: 1569580240,
           glyph: "", event: "url",
-          link: { coord: [0, 0], type: "path" } // hard link
+          link: { coord: [0, 0], type: "Path" } // hard link
         },
         5: { y: [2, 2], unix: 1569580240,
           glyph: "", event: "url",
@@ -87,7 +88,7 @@ export const state = () => ({
       path: {
         3: { y: 2, unix: 1569580240,
           glyph: "Dot", event: "url",
-          link: { coord: ['GM', 2], type: "path" } // relative link
+          link: { coord: ['GM', 2], type: "Path" } // relative link
         },
         6: { y: 3, unix: 1569580240,
           glyph: "Dot", event: "url",
@@ -105,7 +106,7 @@ export const state = () => ({
           glyph: "Dot", event: "url",
           link: { }
         }
-      },
-    },
+      }
+    }
   }
 });

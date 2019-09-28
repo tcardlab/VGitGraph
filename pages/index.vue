@@ -5,6 +5,11 @@
       <input v-model="$store.state.display" type="range" min="0" max="2" />
       <span>{{ ['Paths', 'Turns', 'Time'][$store.state.display] }}</span>
     </div>
+    <div>
+      <label>Scale</label>
+      <input v-model="$store.state.scale" type="range" min="20" max="80" />
+      <span>{{ $store.state.scale }}</span>
+    </div>
 
     <!--stuff inside svg to be moved to a seperate component-->
     <svg overflow="visible">
@@ -14,7 +19,7 @@
       -->
       <Paths
         v-for="(items, branchName) in _$" :key="'path-'+branchName"
-        :items="items"
+        :items="items" :branchName="branchName"
       />
 
       <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
