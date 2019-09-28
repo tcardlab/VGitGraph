@@ -22,7 +22,7 @@ export default {
       // it is used in dString logic.
       const xConst = bItems.x[0]
       const yArr = _.map(bItems.path, 'y')
-      const coords = yArr.map(i => Array.isArray(i) ? i : [xConst, i])
+      const coords = yArr.map(i => Array.isArray(i) ? [xConst+i[0], i[1]] : [xConst, i])
       return coords
     },
 

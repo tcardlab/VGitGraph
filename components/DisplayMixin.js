@@ -26,7 +26,7 @@ export const DisplayMixin = {
     getXDisp(xConst, action){ // –> #  // will need dx too once children added
       xConst = xConst.reduce((a, b) => a + b, 0) //children branches [1,2] x=0+dx of 2. etc
       const y = action['y']
-      const xDisp = Array.isArray(y) ? y[0] : xConst // test If overriden (change to displacement later)
+      const xDisp = Array.isArray(y) ? y[0]+xConst : xConst // test If overriden (change to displacement later)
       return this.scaler(xDisp, 50) 
       // remove 50 so scale uniformly could make x&y scales... added to to-do
     },

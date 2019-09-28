@@ -34,19 +34,19 @@ export const state = () => ({
           glyph: "", event: "url",
           link: { coord: [0, 0], type: "Path" } // hard link
         },
-        5: { y: [2, 2], unix: 1569580240,
+        5: { y: [1, 2], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        8: { y: [2,3], unix: 1569580240,
+        8: { y: [1, 3], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        11: { y: [1,4], unix: 1569580240,
+        11: { y: [0, 4], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        14: { y: [1,5], unix: 1569580240,
+        14: { y: [0, 5], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         }
@@ -58,7 +58,7 @@ export const state = () => ({
       children: [],
       color: '#008fb5',
       path: {
-        0: { y: [0,0], unix: 1569580240,
+        0: { y: [1, 0], unix: 1569580240,
           glyph: "Book", event: "url",
           link: { }
         },
