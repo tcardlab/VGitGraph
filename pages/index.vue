@@ -5,60 +5,24 @@
       <input v-model="$store.state.display" type="range" min="0" max="2" />
       <span>{{ ['Paths', 'Turns', 'Time'][$store.state.display] }}</span>
     </div>
+
     <div>
       <label>Scale</label>
       <input v-model="$store.state.scale" type="range" min="20" max="80" />
       <span>{{ $store.state.scale }}</span>
     </div>
 
-    <!--stuff inside svg to be moved to a seperate component-->
-    <svg overflow="visible">
-      <!-- 
-        It looks as if they can be combined, however it will
-        mess up svg render order as there is no z-index...
-      -->
-      <Paths
-        v-for="(items, branchName) in _$" :key="'path-'+branchName"
-        :items="items" :branchName="branchName"
-      />
-
-      <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
-        <Links
-          v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
-          :items="items" :i="actions" :turn="turn"
-        />
-      </g>
-
-      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
-        <Glyphs
-          v-for="(actions, turn) in items.path" :key="turn"
-          :items="items" :i="actions" :turn="turn"
-        />
-      </g>
-    </svg>
+    <VGitGraph/>
 
   </div>
 </template>
 
 <script>
-import _ from "lodash";
-import Paths from "~/components/Paths.vue";
-import Links from "~/components/Links.vue";
-import Glyphs from "~/components/Glyphs.vue";
+import VGitGraph from "~/components/VGitGraph.vue";
 
 export default {
   components: {
-    Paths,
-    Links,
-    Glyphs
+    VGitGraph
   },
-  methods: {
-    filterLinks(path) {
-      //_.filter if path is list of objects?
-      return _.pickBy(path, function(value, key) {
-                        return Object.keys(value['link']).length>0;
-                      });
-    }
-  }
 };
 </script>
