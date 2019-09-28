@@ -22,6 +22,7 @@ perhaps a mixin? I think this makes sense.
 
 export const state = () => ({  
   display: 0, 
+  scale: 50,
   branches3: {
     "P1": {
       x: [1],

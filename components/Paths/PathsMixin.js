@@ -5,7 +5,7 @@ export const PathsMixin = {
     }, 
     Branch(d, x, y, priorXYDisp, scale) {
       var [xprior, yprior] = priorXYDisp;
-      var maxHeight = yprior+scale
+      var maxHeight = yprior + +this.$store.state.scale
       var midY = (yprior + maxHeight) / 2;
       d.push(`C${xprior} ${midY} ${x} ${midY} ${x} ${maxHeight}`);
       if (maxHeight>y){

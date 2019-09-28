@@ -1,5 +1,10 @@
 <template>
-    <path :stroke="color" stroke-width="5" stroke-dasharray="10 10" :d="dString(x, y, ...XYLink)"/>
+    <path 
+      :stroke="color" 
+      stroke-width="5" 
+      stroke-dasharray="10 10" 
+      :d="dString(x, y, ...XYLink)"
+    />
 </template>
 
 <script>

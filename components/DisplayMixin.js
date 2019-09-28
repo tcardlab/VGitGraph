@@ -2,7 +2,7 @@ export const DisplayMixin = {
   // Should probably store display variable in data{} of this file...
   methods: {
     // Modifier functions
-    scaler(input, scale=50){ // –> scale #s of any given input.
+    scaler(input, scale=+this.$store.state.scale){ // –> scale #s of any given input.
       switch(input.constructor){
         case Number:
           return input * scale

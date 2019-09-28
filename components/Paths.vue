@@ -26,7 +26,7 @@ export default {
       return coords
     },
 
-    dString(bItems, scale = 50) {
+    dString(bItems) {
       var d = [];
       var path = this.getPath(bItems)
       var dispCoords = this.getDispPath(bItems)
@@ -42,7 +42,7 @@ export default {
         } else if (x - path[i-1][0] !== 0) {
           // 'branch/merge' from prior
           var priorXYDisp = dispCoords[i - 1]
-          this.Branch(d, xDisp, yDisp, priorXYDisp, scale)
+          this.Branch(d, xDisp, yDisp, priorXYDisp)
         } else if (y - path[i - 1][1] > 1) {
           // discontinuity
           this.moveTo(d, xDisp, yDisp)
@@ -55,7 +55,7 @@ export default {
         var XYLink = this.inPathLink(bItems, i)
         if (XYLink !== false) { 
           this.moveTo(d, ...XYLink)
-          this.Branch(d, xDisp, yDisp, XYLink, scale)
+          this.Branch(d, xDisp, yDisp, XYLink)
         }
         // Assumes 'Path' link, custom in-path links require some 
         // modification, see PathsMixin for more. Could be reworked 
