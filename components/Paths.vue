@@ -1,9 +1,3 @@
-<!--
-move getPath an getDisplay to display mixin
-(so Links&Glyphs.vue have access), 
-
-
--->
 <template>
   <path 
     :id = "branchName"
@@ -59,10 +53,13 @@ export default {
 
         // In-path link: Prefix link dStrting at given point if type==path
         var XYLink = this.inPathLink(bItems, i)
-        if (XYLink !== false) {
+        if (XYLink !== false) { 
           this.moveTo(d, ...XYLink)
           this.Branch(d, xDisp, yDisp, XYLink, scale)
         }
+        // Assumes 'Path' link, custom in-path links require some 
+        // modification, see PathsMixin for more. Could be reworked 
+        // as switch() cases on that file. Added to to-do
       }
       return d.join(' ');
     },

@@ -26,11 +26,13 @@ export const PathsMixin = {
     // In-path Link
     inPathLink(bItems, index){
       var link = Object.values(bItems.path)[index].link
-      if (Object.keys(link).length > 0 && link.type==="path"){ 
+      if (Object.keys(link).length > 0 && link.type==="Path"){
         return this.getLink(link)
       } else {
         return false
       }
+    // custom in=path links require link.type to be checked against list
+    // ["Path", 'your_link'].includes(link.type)
     },
   }
 }

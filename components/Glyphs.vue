@@ -1,9 +1,8 @@
 <template>
   <component 
     :is="i.glyph? i.glyph: 'Dot'" 
-
-    :x="(Array.isArray(i['y']) ? i['y'][0] : items['x']) * 50" 
-    :y="[(Array.isArray(i['y']) ? i['y'][1] : i['y']) * 50, turn*50][$store.state.display]" 
+    :x="getXDisp(items.x, i)"
+    :y="getYDisp(turn, i)"
     :color="items.color"
   />
 </template>
@@ -12,17 +11,14 @@
 import _ from "lodash";
 import Dot from "./Glyphs/Dot.vue";
 import Book from "./Glyphs/Book.vue";
+import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
   props:['items', 'i', 'turn'],
+  mixins: [DisplayMixin],
   components: {
     Dot: Dot,
     Book: Book
   },
-  methods: {
-    dString(branch) {
-      return _.map(branch, "Coords");
-    }
-  }
 };
 </script>
