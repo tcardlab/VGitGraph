@@ -27,18 +27,19 @@ export const DisplayMixin = {
       xConst = xConst.reduce((a, b) => a + b, 0) //children branches [1,2] x=0+dx of 2. etc
       const y = action['y']
       const xDisp = Array.isArray(y) ? y[0] : xConst // test If overriden (change to displacement later)
-      return this.scaler(xDisp, 50)
+      return this.scaler(xDisp, 50) 
+      // remove 50 so scale uniformly could make x&y scales... added to to-do
     },
     getYDisp(key, action){ // –> #
       switch(+this.$store.state.display) {
         case 1:
-          return this.scaler(+key, 50)
+          return this.scaler(+key)
         case 2:
           // future cases
         default: 
           const y = action['y']
           const yDisp = Array.isArray(y) ? y[1] : y
-          return this.scaler(yDisp, 50)
+          return this.scaler(yDisp)
       }
     },
 
@@ -75,7 +76,7 @@ export const DisplayMixin = {
         var XYLink = this.getXYDisp(event, xConst, action)
       } else {
         // hard link
-        var XYLink = this.scaler(link.coord, 50)
+        var XYLink = this.scaler(link.coord)
       }
       return XYLink
     },
