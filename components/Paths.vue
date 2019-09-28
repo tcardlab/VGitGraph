@@ -35,7 +35,7 @@ export default {
       switch(display){
         case '1':
           let yDispArr = Object.keys(bItems.path)
-          let scaleY = scale // (Object.keys(this._$).length-0.5)
+          let scaleY = scale// / (Object.keys(this._$).length-1)
           yDispArr = yDispArr.map((el, i) => [path[i][0]*scale, el*scaleY])
           return yDispArr
         case '2':
