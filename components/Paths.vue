@@ -6,7 +6,8 @@ move getPath an getDisplay to display mixin
 -->
 <template>
   <path 
-    :d="dString(items, $store.state.display)" 
+    :id = "branchName"
+    :d="dString(items)" 
     fill="none" 
     :stroke="items.color" 
     stroke-width="7"
@@ -16,45 +17,31 @@ move getPath an getDisplay to display mixin
 <script>
 import _ from "lodash";
 import { PathsMixin } from "./Paths/PathsMixin.js";
+import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
-  props: ['items'],
-  mixins: [PathsMixin],
+  props: ['items', 'branchName'],
+  mixins: [PathsMixin, DisplayMixin],
   methods: {
-    getPath(bItems) {
-      // returns [[x, y], ...]
-      // continuity data is held in path used in dString logic.
+    getPath(bItems) { // –> [[x, y], ...]
+      // continuity data is held in 'y' of path items 
+      // it is used in dString logic.
       const xConst = bItems.x[0]
       const yArr = _.map(bItems.path, 'y')
       const coords = yArr.map(i => Array.isArray(i) ? i : [xConst, i])
       return coords
     },
-    getDisplay(bItems, path, display, scale) {
-      // Returns [[x*scale,y*scale]..] corrisponding to display(particularly y)
-      // continuity data is held in path used in dString logic.
-      switch(display){
-        case '1':
-          let yDispArr = Object.keys(bItems.path)
-          let scaleY = scale// / (Object.keys(this._$).length-1)
-          yDispArr = yDispArr.map((el, i) => [path[i][0]*scale, el*scaleY])
-          return yDispArr
-        case '2':
-          // time might not even be necessary as its identical to turn, 
-          // just with time axis.... 
-        default: 
-          return path.map(x => [x[0] * scale, x[1] * scale]);
-      }
-    },
-    dString(bItems, display, scale = 50) {
+
+    dString(bItems, scale = 50) {
       var d = [];
       var path = this.getPath(bItems)
-      var dispCoords = this.getDisplay(bItems, path, display, scale)
+      var dispCoords = this.getDispPath(bItems)
 
       for (var i of _.range(path.length)) {
-        let [x, y] = path[i]
-        let [xDisp, yDisp]= dispCoords[i]
+        let [x, y] = path[i] // Logic variables
+        let [xDisp, yDisp]= dispCoords[i] // scaled display variables
 
-        // Logic (move outside? idk)
+        // Logic
         if (d.length === 0) {
           // 'move-to' start
           this.moveTo(d, xDisp, yDisp)
@@ -70,8 +57,8 @@ export default {
           this.Line(d, xDisp, yDisp)
         }
 
-        //In-path link: Prefix link dStrting at given point if type==path
-        var XYLink = this.inPathLink(bItems, i, display, scale)
+        // In-path link: Prefix link dStrting at given point if type==path
+        var XYLink = this.inPathLink(bItems, i)
         if (XYLink !== false) {
           this.moveTo(d, ...XYLink)
           this.Branch(d, xDisp, yDisp, XYLink, scale)

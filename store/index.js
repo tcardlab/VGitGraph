@@ -105,7 +105,7 @@ export const state = () => ({
           glyph: "Dot", event: "url",
           link: { }
         }
-      },
-    },
+      }
+    }
   }
 });

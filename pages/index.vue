@@ -14,7 +14,7 @@
       -->
       <Paths
         v-for="(items, branchName) in _$" :key="'path-'+branchName"
-        :items="items"
+        :items="items" :branchName="branchName"
       />
 
       <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">

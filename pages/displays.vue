@@ -46,7 +46,7 @@
     {{ getYDispPath(_$['GM']) }}
 
      <h2>getDispPath</h2>
-    {{ getDispPath(_$['GM']) }}
+    {{ getDispPath(_$['GM2']) }}
 
   </div>
 </template>
