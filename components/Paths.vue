@@ -20,7 +20,7 @@ export default {
     getPath(bItems) { // –> [[x, y], ...]
       // continuity data is held in 'y' of path items 
       // it is used in dString logic.
-      const xConst = bItems.x[0]
+      const xConst = bItems.x.reduce((a, b) => a + b, 0) // sum here?
       const yArr = _.map(bItems.path, 'y')
       const coords = yArr.map(i => Array.isArray(i) ? i : [xConst, i])
       return coords
