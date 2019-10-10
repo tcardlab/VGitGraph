@@ -2,19 +2,21 @@
     <svg overflow="visible">
       <!-- Each must loop independantly for proper render order-->
       <Paths
+        class="transition-move"
         v-for="(items, branchName) in _$" :key="'path-'+branchName"
         :items="items" :branchName="branchName"
       />
 
       <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
         <Links
+          class="transition-move"
           v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
           :items="items" :i="actions" :turn="turn"
         />
       </g>
-
       <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
         <Glyphs
+          class="transition-move"
           v-for="(actions, turn) in items.path" :key="turn"
           :items="items" :i="actions" :turn="turn"
         />
@@ -44,3 +46,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.transition-move {
+  transition: all 1s;
+}
+</style>
