@@ -1,6 +1,9 @@
 <template>
   <path 
-    :id = "branchName"
+    :class="{active: isActive}"
+    v-on:dblclick="toggleChildren(items.children)"
+
+    :id="branchName"
     :d="dString(items)" 
     fill="none" 
     :stroke="items.color" 
@@ -16,7 +19,36 @@ import { DisplayMixin } from "~/components/DisplayMixin.js";
 export default {
   props: ['items', 'branchName'],
   mixins: [PathsMixin, DisplayMixin],
+  data() {
+    return {
+      isActive: false, 
+    }
+  },
+  created () {
+    this.toggleChildren(this.items.children);
+  },
   methods: {
+    toggleChildren(children) {
+      // This will change when implementing official vuex mutations
+      if (children.length) {
+        this.isActive = !this.isActive
+        if (this.isActive === false) {
+          var obj = {};
+          for (var key of children){  
+            var x = this._$[key].x     
+            obj[key] = x;
+          }
+          Object.assign(this.$store.state.show , obj)
+          //this.$store.state.show =  {...this.$store.state.show, ...obj}
+        } else {
+          for (var key of children){
+            delete this.$store.state.show[key];
+          }
+        }
+        console.log("state.show: ", this.$store.state.show)
+      }
+    },
+
     getPath(bItems) { // –> [[x, y], ...]
       // continuity data is held in 'y' of path items 
       // it is used in dString logic.

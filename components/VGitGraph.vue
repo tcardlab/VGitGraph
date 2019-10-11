@@ -1,5 +1,17 @@
 <template>
     <svg overflow="visible">
+      <defs>
+        <filter id="glow">
+          <fegaussianblur class="blur" result="coloredBlur" stddeviation="4"></fegaussianblur>
+          <femerge>
+            <femergenode in="coloredBlur"></femergenode>
+            <!-- <femergenode in="coloredBlur"></femergenode> -->
+            <femergenode in="SourceGraphic"></femergenode>
+          </femerge>
+        </filter>
+      </defs>
+
+
       <!-- Each must loop independantly for proper render order-->
       <Paths
         v-for="(items, branchName) in _$" :key="'path-'+branchName"
@@ -44,3 +56,9 @@ export default {
   }
 };
 </script>
+
+<style>
+path.active{
+  filter: url(#glow);
+}
+</style>

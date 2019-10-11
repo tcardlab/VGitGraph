@@ -23,6 +23,7 @@ perhaps a mixin? I think this makes sense.
 export const state = () => ({  
   display: 0, 
   scale: 50,
+  show: {},
   branches3: {
     "P1": {
       x: [1],
@@ -79,7 +80,7 @@ export const state = () => ({
     "P2": {
       x: [3],
       dx: 1,
-      children: ["P1.1"],
+      children: [],
       color:'#6f0fff',
       path: {
         1: { y: 2, unix: 1569580240,
@@ -107,7 +108,7 @@ export const state = () => ({
     "GM": {
       x: [-1],
       dx: 0,
-      children: [],
+      children: ['GM2'],
       color: '#008fb5',
       path: {
         0: { y: [0,0], unix: 1569580240,
