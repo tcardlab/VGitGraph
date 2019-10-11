@@ -47,10 +47,9 @@ export default {
     Glyphs
   },
   created() {
-    var rootBranch = _.pickBy(this._$, function(value, key) {
-                        return Object.keys(value['x']).length==1;
-                      });
-    this.$store.state.show =  {...rootBranch}
+    var filtered = Object.keys(this.$store.getters.rootBranches)
+    this.$store.commit('addVisible', filtered)
+    console.log('otp: ', this.$store.state.show)
   },
   methods: {
     filterLinks(path) {

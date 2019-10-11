@@ -163,3 +163,25 @@ export const state = () => ({
     }
   }
 });
+
+
+export const mutations = {
+  addVisible (state, key) {
+    var updated = state.show.concat(key)
+    state.show = [... new Set(updated)]  // remove duplicates
+  },
+  removeVisible (state, key) {
+    state.show.pop(state.show.indexOf(key))
+  },
+}
+
+import _ from "lodash";
+
+export const getters = {
+  rootBranches: state => {
+    var filtered = _.pickBy(state.branches, function(value, key) {
+      return Object.keys(value['x']).length===1;
+    });
+    return filtered
+  }
+}
