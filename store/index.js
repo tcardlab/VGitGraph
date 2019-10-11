@@ -24,7 +24,7 @@ export const state = () => ({
   display: 0, 
   scale: 50,
   show: {},
-  branches3: {
+  branches: {
     "P1": {
       x: [1],
       dx: 0,
