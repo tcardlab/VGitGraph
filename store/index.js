@@ -171,7 +171,7 @@ export const mutations = {
     state.show = [... new Set(updated)]  // remove duplicates
   },
   removeVisible (state, key) {
-    state.show.pop(state.show.indexOf(key))
+    state.show.splice(state.show.indexOf(key), 1)
   },
 }
 

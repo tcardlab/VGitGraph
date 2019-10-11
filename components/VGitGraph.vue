@@ -14,11 +14,13 @@
 
       <!-- Each must loop independantly for proper render order-->
       <Paths
+        v-show="$store.state.show.includes(branchName)"
         v-for="(items, branchName) in _$" :key="'path-'+branchName"
         :items="items" :branchName="branchName"
       />
 
-      <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
+      <g v-show="$store.state.show.includes(branchName)"
+        :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
         <Links
           v-for="(actions, turn) in items.path" :key="turn" 
           :items="items" :i="actions" :turn="turn"
@@ -27,6 +29,7 @@
 
       <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
         <Glyphs
+          v-show="$store.state.show.includes(branchName)"
           v-for="(actions, turn) in items.path" :key="turn"
           :items="items" :i="actions" :turn="turn"
         />

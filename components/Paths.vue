@@ -2,7 +2,6 @@
   <path 
     :class="{active: isActive}"
     v-on:dblclick="toggleChildren(items.children)"
-    v-if="this.$store.state.show.includes(branchName)"
 
     :id="branchName"
     :d="dString(items)" 
