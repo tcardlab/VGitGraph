@@ -2,6 +2,7 @@
   <path 
     :class="{active: isActive}"
     v-on:dblclick="toggleChildren(items.children)"
+    v-if="this.$store.state.show.hasOwnProperty(branchName)"
 
     :id="branchName"
     :d="dString(items)" 
@@ -15,6 +16,9 @@
 import _ from "lodash";
 import { PathsMixin } from "./Paths/PathsMixin.js";
 import { DisplayMixin } from "~/components/DisplayMixin.js";
+//v-if="branchName in this.$store.state.show || items.x.length===1"
+//myObj.hasOwnProperty('key')
+//v-if="branchName in this.$store.state.show"
 
 export default {
   props: ['items', 'branchName'],
@@ -31,20 +35,23 @@ export default {
     toggleChildren(children) {
       // This will change when implementing official vuex mutations
       if (children.length) {
-        this.isActive = !this.isActive
-        if (this.isActive === false) {
+        
+        if (this.isActive === true) {
           var obj = {};
           for (var key of children){  
             var x = this._$[key].x     
             obj[key] = x;
+            // update others dx for each.
           }
-          Object.assign(this.$store.state.show , obj)
-          //this.$store.state.show =  {...this.$store.state.show, ...obj}
+          //Object.assign(this.$store.state.show , obj)
+          this.$store.state.show =  {...this.$store.state.show, ...obj}
         } else {
           for (var key of children){
             delete this.$store.state.show[key];
+            // update others dx for each.
           }
         }
+        this.isActive = !this.isActive
         console.log("state.show: ", this.$store.state.show)
       }
     },

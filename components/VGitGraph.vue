@@ -20,7 +20,7 @@
 
       <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
         <Links
-          v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
+          v-for="(actions, turn) in items.path" :key="turn" 
           :items="items" :i="actions" :turn="turn"
         />
       </g>
@@ -45,6 +45,12 @@ export default {
     Paths,
     Links,
     Glyphs
+  },
+  created() {
+    var rootBranch = _.pickBy(this._$, function(value, key) {
+                        return Object.keys(value['x']).length==1;
+                      });
+    this.$store.state.show =  {...rootBranch}
   },
   methods: {
     filterLinks(path) {
