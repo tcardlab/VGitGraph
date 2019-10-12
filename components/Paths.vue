@@ -39,6 +39,29 @@ export default {
     }
   },
   methods: {
+    compareX(arr1, arr2) { 
+      const ln = Math.max(arr1.length, arr2.length)
+      for(i=0; i<ln; i++) {
+        var sign = Math.sign(arr1[i]-arr2[i])
+        switch(sign) {
+          case 0: 
+            if (i === ln-1) {
+              return sign  // arr1===arr2
+            } else { break } // keep looping
+          case 1: 
+            return sign  // arr1>arr2
+          case -1:
+            return sign  // arr1<arr2
+          default: // assume one is longer
+            arr1Large = arr1.length>arr2.length
+            if(arr1Large) {  // arr1 is child
+              return Math.sign(arr1[i])  // branch + or -
+            } else if (!arr1Large) { // arr2 is child
+              return -1*Math.sign(arr2[i]) // branch + or -
+            } // not sure what to do with bad values
+        }
+      }
+    },
     dXUpdate(){
       // x is [0]
         // add dx to all braches on side of branch
