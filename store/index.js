@@ -79,7 +79,7 @@ export const state = () => ({
     },
     "P2": {
       x: [3],
-      dx: 1,
+      dx: 0,
       children: [],
       color:'#6f0fff',
       path: {
@@ -173,7 +173,11 @@ export const mutations = {
   removeVisible (state, key) {
     state.show.splice(state.show.indexOf(key), 1)
   },
+  dx (state, payload) {
+    state.branches[payload.key].dx += payload.value
+  },
 }
+
 
 import _ from "lodash";
 
@@ -183,5 +187,11 @@ export const getters = {
       return Object.keys(value['x']).length===1;
     });
     return filtered
+  }, 
+  dx (key) {
+    maxDXitem = _.maxBy(state.branches[key].path, function(o) {
+      return o.x;
+    })
+    return maxDXitem.dx
   }
 }

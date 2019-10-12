@@ -41,7 +41,7 @@ export default {
   methods: {
     compareX(arr1, arr2) { 
       const ln = Math.max(arr1.length, arr2.length)
-      for(i=0; i<ln; i++) {
+      for(var i=0; i<ln; i++) {
         var sign = Math.sign(arr1[i]-arr2[i])
         switch(sign) {
           case 0: 
@@ -62,15 +62,22 @@ export default {
         }
       }
     },
-    dXUpdate(parentX, childKey){
-      RelativePos = this.compareX(this._$[childKey].x, parentX)
-      pSign = Math.sign(parentX[0])
+    dXUpdate(parentX, childKey, mod=1){
+      const RelativePos = this.compareX(this._$[childKey].x, parentX)
+      const pSign = Math.sign(parentX[0])
+      //const dx = this.$store.getters.dx(childKey)
+      const dx = 1*mod
+      console.log(mod)
+      var payload = {type:'dx', key:'P2', value:dx}
       if (parentX === [0]) {  // x is [0]
         // add dx to all braches on side of branch
+        this.$store.commit(payload)
       } else if (pSign !== RelativePos) {  // branches toward 0
         // add dx to parent and all braches continuing
+        this.$store.commit(payload)
       } else if (pSign === RelativePos) {  // branches awayfrom 0
         // add dx all braches continuing
+        this.$store.commit(payload)
       }
     },
     toggleChildren(children) {
@@ -80,10 +87,12 @@ export default {
         if (this.isActive === false) {
           for (var key of children){  
             var x = this._$[key].x
+            this.dXUpdate(this.items.x, key, +1)
           }
           this.$store.commit('addVisible', children)
         } else {
           for (var key of children){
+            this.dXUpdate(this.items.x, key, -1)
             this.$store.commit('removeVisible', key)
           }
         }
