@@ -62,12 +62,10 @@ export default {
         }
       }
     },
-    dXUpdate(parentX, childKey, mod=1){
+    dXUpdate(parentX, childKey, mod=1){ // +/- modifier
       const RelativePos = this.compareX(this._$[childKey].x, parentX)
       const pSign = Math.sign(parentX[0])
-      //const dx = this.$store.getters.dx(childKey)
-      const dx = 1*mod
-      console.log(mod)
+      const dx = mod * this.$store.getters.maxDx(childKey)
       var payload = {type:'dx', key:'P2', value:dx}
       if (parentX === [0]) {  // x is [0]
         // add dx to all braches on side of branch

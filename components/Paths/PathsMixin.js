@@ -8,7 +8,7 @@ export const PathsMixin = {
       var maxHeight = yprior + +this.$store.state.scale
       var midY = (yprior + maxHeight) / 2;
       d.push(`C${xprior} ${midY} ${x} ${midY} ${x} ${maxHeight}`);
-      if (maxHeight>y){
+      if (maxHeight<y){
         this.Line(d, x, y)
       }
       return d

@@ -63,11 +63,11 @@ export const state = () => ({
           glyph: "", event: "url",
           link: { coord: ["P1", 5], type: "Path" } // hard link
         },
-        11: { y: 4, unix: 1569580240,
+        11: { y: [3, 4], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        14: { y: 5, unix: 1569580240,
+        14: { y: [4,5], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
@@ -188,10 +188,11 @@ export const getters = {
     });
     return filtered
   }, 
-  dx (key) {
-    maxDXitem = _.maxBy(state.branches[key].path, function(o) {
-      return o.x;
-    })
-    return maxDXitem.dx
+  maxDx: (state) => (key) => {
+    const path = state.branches[key].path
+    const dxArr = _.mapValues(path, function(o) { 
+        return o.y.length==2? o.y[0]:1 
+      })
+    return _.max(_.values(dxArr))
   }
 }
