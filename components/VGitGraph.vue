@@ -1,20 +1,35 @@
 <template>
     <svg overflow="visible">
+      <defs>
+        <filter id="glow">
+          <fegaussianblur class="blur" result="coloredBlur" stddeviation="4"></fegaussianblur>
+          <femerge>
+            <femergenode in="coloredBlur"></femergenode>
+            <!-- <femergenode in="coloredBlur"></femergenode> -->
+            <femergenode in="SourceGraphic"></femergenode>
+          </femerge>
+        </filter>
+      </defs>
+
+
       <!-- Each must loop independantly for proper render order-->
       <Paths
+        v-show="$store.state.show.includes(branchName)"
         v-for="(items, branchName) in _$" :key="'path-'+branchName"
         :items="items" :branchName="branchName"
       />
 
-      <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
+      <g v-show="$store.state.show.includes(branchName)"
+        :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
         <Links
-          v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
+          v-for="(actions, turn) in items.path" :key="turn" 
           :items="items" :i="actions" :turn="turn"
         />
       </g>
 
       <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
         <Glyphs
+          v-show="$store.state.show.includes(branchName)"
           v-for="(actions, turn) in items.path" :key="turn"
           :items="items" :i="actions" :turn="turn"
         />
@@ -34,6 +49,11 @@ export default {
     Links,
     Glyphs
   },
+  created() {
+    var filtered = Object.keys(this.$store.getters.rootBranches)
+    this.$store.commit('addVisible', filtered)
+    console.log('otp: ', this.$store.state.show)
+  },
   methods: {
     filterLinks(path) {
       //_.filter if path is list of objects?
@@ -44,3 +64,9 @@ export default {
   }
 };
 </script>
+
+<style>
+path.active{
+  filter: url(#glow);
+}
+</style>
