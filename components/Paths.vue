@@ -62,16 +62,16 @@ export default {
         }
       }
     },
-    dXUpdate(){
-      // x is [0]
+    dXUpdate(parentX, childKey){
+      RelativePos = this.compareX(this._$[childKey].x, parentX)
+      pSign = Math.sign(parentX[0])
+      if (parentX === [0]) {  // x is [0]
         // add dx to all braches on side of branch
-
-      // branches toward 0
+      } else if (pSign !== RelativePos) {  // branches toward 0
         // add dx to parent and all braches continuing
-
-      // branches awayfrom 0
+      } else if (pSign === RelativePos) {  // branches awayfrom 0
         // add dx all braches continuing
-
+      }
     },
     toggleChildren(children) {
       // This will change when implementing official vuex mutations
