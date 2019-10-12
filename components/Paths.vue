@@ -105,7 +105,7 @@ export default {
       // it is used in dString logic.
       const xConst = bItems.x.reduce((a, b) => a + b, 0) // sum here?
       const yArr = _.map(bItems.path, 'y')
-      const coords = yArr.map(i => Array.isArray(i) ? i : [xConst, i])
+      const coords = yArr.map(i => Array.isArray(i) ? [xConst+i[0], i[1]] : [xConst, i])
       return coords
     },
 
