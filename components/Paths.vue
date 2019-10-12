@@ -66,15 +66,17 @@ export default {
       const RelativePos = this.compareX(this._$[childKey].x, parentX)
       const pSign = Math.sign(parentX[0])
       const dx = mod * this.$store.getters.maxDx(childKey)
-      var payload = {type:'dx', key:'P2', value:dx}
       if (parentX === [0]) {  // x is [0]
         // add dx to all braches on side of branch
+        var payload = {type:'dx', key:'P2', value:dx}
         this.$store.commit(payload)
       } else if (pSign !== RelativePos) {  // branches toward 0
         // add dx to parent and all braches continuing
+        var payload = {type:'dx', key:'P2', value:dx}
         this.$store.commit(payload)
       } else if (pSign === RelativePos) {  // branches awayfrom 0
         // add dx all braches continuing
+        var payload = {type:'dx', key:'P2', value:dx}
         this.$store.commit(payload)
       }
     },
