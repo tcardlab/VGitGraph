@@ -23,8 +23,8 @@ perhaps a mixin? I think this makes sense.
 export const state = () => ({  
   display: 0, 
   scale: 50,
-  show: {},
-  branches3: {
+  show: [],
+  branches: {
     "P1": {
       x: [1],
       dx: 0,
@@ -163,3 +163,25 @@ export const state = () => ({
     }
   }
 });
+
+
+export const mutations = {
+  addVisible (state, key) {
+    var updated = state.show.concat(key)
+    state.show = [... new Set(updated)]  // remove duplicates
+  },
+  removeVisible (state, key) {
+    state.show.splice(state.show.indexOf(key), 1)
+  },
+}
+
+import _ from "lodash";
+
+export const getters = {
+  rootBranches: state => {
+    var filtered = _.pickBy(state.branches, function(value, key) {
+      return Object.keys(value['x']).length===1;
+    });
+    return filtered
+  }
+}

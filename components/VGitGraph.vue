@@ -14,11 +14,13 @@
 
       <!-- Each must loop independantly for proper render order-->
       <Paths
+        v-show="$store.state.show.includes(branchName)"
         v-for="(items, branchName) in _$" :key="'path-'+branchName"
         :items="items" :branchName="branchName"
       />
 
-      <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
+      <g v-show="$store.state.show.includes(branchName)"
+        :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
         <Links
           v-for="(actions, turn) in items.path" :key="turn" 
           :items="items" :i="actions" :turn="turn"
@@ -27,6 +29,7 @@
 
       <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
         <Glyphs
+          v-show="$store.state.show.includes(branchName)"
           v-for="(actions, turn) in items.path" :key="turn"
           :items="items" :i="actions" :turn="turn"
         />
@@ -47,10 +50,9 @@ export default {
     Glyphs
   },
   created() {
-    var rootBranch = _.pickBy(this._$, function(value, key) {
-                        return Object.keys(value['x']).length==1;
-                      });
-    this.$store.state.show =  {...rootBranch}
+    var filtered = Object.keys(this.$store.getters.rootBranches)
+    this.$store.commit('addVisible', filtered)
+    console.log('otp: ', this.$store.state.show)
   },
   methods: {
     filterLinks(path) {
