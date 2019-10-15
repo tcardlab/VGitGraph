@@ -363,7 +363,10 @@ export const mutations = {
     state.show = [... new Set(updated)]  // remove duplicates
   },
   removeVisible (state, key) {
-    state.show.splice(state.show.indexOf(key), 1)
+    var index = state.show.indexOf(key) // -1 if none
+    if (index>-1) {
+      state.show.splice(index, 1)
+    }
   },
   dx (state, payload) {
     state.branches[payload.key].dx += payload.value
