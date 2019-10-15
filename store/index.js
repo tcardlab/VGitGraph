@@ -63,11 +63,11 @@ export const state = () => ({
           glyph: "", event: "url",
           link: { coord: ["P1", 5], type: "Path" } // hard link
         },
-        11: { y: [3, 4], unix: 1569580240,
+        11: { y: [0, 4], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
-        14: { y: [4,5], unix: 1569580240,
+        14: { y: [1,5], unix: 1569580240,
           glyph: "", event: "url",
           link: { }
         },
@@ -77,10 +77,86 @@ export const state = () => ({
         }
       }
     },
-    "P2": {
-      x: [3],
+    "P0": {
+      x: [0],
+      dx: 0,
+      children: ["P0.1", "P0.-1"],
+      color:'#6f0606',
+      path: {
+        0: { y: [0, 0], unix: 1569580240,
+          glyph: "Book", event: "url",
+          link: { }
+        },
+        5: { y: 1, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        8: { y: 2, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        11: { y: 3, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        14: { y: 4, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        }
+      },
+    },
+    "P0.1": {
+      x: [0, 1],
       dx: 0,
       children: [],
+      color:'#000864',
+      path: {
+        8: { y: 4, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { coord: ["P0", 5], type: "Path" } // hard link
+        },
+        11: { y: 5, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        14: { y: 6, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        17: { y: 7, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        }
+      }
+    },
+    "P0.-1": {
+      x: [0, -1],
+      dx: 0,
+      children: [],
+      color:'#000864',
+      path: {
+        8: { y: 4, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { coord: ["P0", 5], type: "Path" } // hard link
+        },
+        11: { y: 5, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        14: { y: 6, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        17: { y: 7, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        }
+      }
+    },
+    "P3": {
+      x: [-3],
+      dx: 0,
+      children: ["P3.1"],
       color:'#6f0fff',
       path: {
         1: { y: 2, unix: 1569580240,
@@ -105,19 +181,135 @@ export const state = () => ({
         }
       },
     },
+    "P3.1": {
+      x: [-3, 1],
+      dx: 0,
+      children: [],
+      color:'#000864',
+      path: {
+        8: { y: 4, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { coord: ["P3", 5], type: "Path" } // hard link
+        },
+        11: { y: 5, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        14: { y: 6, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        17: { y: 7, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        }
+      }
+    },
+    "P2": {
+      x: [3],
+      dx: 0,
+      children: ["P2.-1", "P2.-2"],
+      color:'#6f0fff',
+      path: {
+        1: { y: 2, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { coord: [0, 0], type: "Path" } // hard link
+        },
+        5: { y: 3, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        8: { y: 4, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        11: { y: 5, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        14: { y: 6, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        }
+      },
+    },
+    "P2.-1": {
+      x: [3, -1],
+      dx: 0,
+      children: ["P2.-1.-1"],
+      color:'#000864',
+      path: {
+        8: { y: 4, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { coord: ["P2", 5], type: "Path" } // hard link
+        },
+        11: { y: 5, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        14: { y: 6, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        17: { y: 7, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        }
+      }
+    },
+    "P2.-2": {
+      x: [3, -2],
+      dx: 0,
+      children: [],
+      color:'#000864',
+      path: {
+        8: { y: 4, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { coord: ["P2", 5], type: "Path" } // hard link
+        },
+        11: { y: 5, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        14: { y: 6, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        },
+        17: { y: 7, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        }
+      }
+    },
+    "P2.-1.-1": {
+      x: [3, -1, -1],
+      dx: 0,
+      children: [],
+      color:'#000864',
+      path: {
+        14: { y: 6, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { coord: ["P2.-1", 11], type: "Path" }
+        },
+        17: { y: 7, unix: 1569580240,
+          glyph: "", event: "url",
+          link: { }
+        }
+      }
+    },
     "GM": {
       x: [-1],
       dx: 0,
       children: ['GM2'],
       color: '#008fb5',
       path: {
-        0: { y: [1, 0], unix: 1569580240,
+        /* 0: { y: [1, 0], unix: 1569580240,
           glyph: "Book", event: "url",
           link: { }
-        },
+        }, */
         2: { y: 1, unix: 1569580240,
           glyph: "", event: "url",
-          link: { }
+          link: {coord:['P0', 0], type: "Path" }
         },
         4: { y: 2, unix: 1569580240,
           glyph: "", event: "url",
@@ -191,8 +383,10 @@ export const getters = {
   maxDx: (state) => (key) => {
     const path = state.branches[key].path
     const dxArr = _.mapValues(path, function(o) { 
-        return o.y.length==2? o.y[0]:1 
+        return o.y.length==2? Math.abs(o.y[0])+1:1 // should be childs last x val, not 1?
       })
-    return _.max(_.values(dxArr))
+    return _.max(_.values(dxArr)) 
+    // there may be more complexity to this than i initially thought.
+    // given negative numbers, i wont know which direction things branch with abs...
   }
 }

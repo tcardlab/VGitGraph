@@ -53,7 +53,7 @@ export default {
           case -1:
             return sign  // arr1<arr2
           default: // assume one is longer
-            arr1Large = arr1.length>arr2.length
+            var arr1Large = arr1.length>arr2.length
             if(arr1Large) {  // arr1 is child
               return Math.sign(arr1[i])  // branch + or -
             } else if (!arr1Large) { // arr2 is child
@@ -63,21 +63,40 @@ export default {
       }
     },
     dXUpdate(parentX, childKey, mod=1){ // +/- modifier
-      const RelativePos = this.compareX(this._$[childKey].x, parentX)
-      const pSign = Math.sign(parentX[0])
+      const childX = this._$[childKey].x
       const dx = mod * this.$store.getters.maxDx(childKey)
-      if (parentX === [0]) {  // x is [0]
+
+      const RelativePos = this.compareX(childX, parentX)
+      const pSign = Math.sign(parentX[0])
+      if (pSign===0 && parentX.length===1) {  // x is [0]
         // add dx to all braches on side of branch
-        var payload = {type:'dx', key:'P2', value:dx}
-        this.$store.commit(payload)
+        for(var branch of Object.keys(this._$)) {
+          var compare = this.compareX(this._$[branch].x, childX)
+          if (compare === Math.sign(childX[1])) {
+            var payload = {type:'dx', key:branch, value:compare*dx}
+            this.$store.commit(payload)
+          }
+        }
       } else if (pSign !== RelativePos) {  // branches toward 0
-        // add dx to parent and all braches continuing
-        var payload = {type:'dx', key:'P2', value:dx}
-        this.$store.commit(payload)
+        // add dx to parent, self, and all braches continuing
+        for(var branch of Object.keys(this._$)) {
+          var compare = this.compareX(childX, this._$[branch].x)
+          // children include themselves, as they dont inherit parents X
+          var branchX = this._$[branch].x
+          if (compare !== pSign || _.isEqual(branchX.slice(0, parentX.length), parentX)) { 
+            var payload = {type:'dx', key:branch, value:pSign*dx}
+            this.$store.commit(payload)
+          }
+        }
       } else if (pSign === RelativePos) {  // branches awayfrom 0
-        // add dx all braches continuing
-        var payload = {type:'dx', key:'P2', value:dx}
-        this.$store.commit(payload)
+        // add dx all peripheral braches
+        for(var branch of Object.keys(this._$)) {
+          var compare = this.compareX(this._$[branch].x, childX)
+          if (compare === pSign) {
+            var payload = {type:'dx', key:branch, value:pSign*dx}
+            this.$store.commit(payload)
+          }
+        }
       }
     },
     toggleChildren(children) {
@@ -85,15 +104,17 @@ export default {
       if (children.length) {
         this.isActive = !this.isActive
         if (this.isActive === false) {
+          // assuming all children are spaced appropriately i should 
+          // only have to do the 2 most extreme child +/- children
           for (var key of children){  
             var x = this._$[key].x
-            this.dXUpdate(this.items.x, key, +1)
+            this.dXUpdate(this.items.x, key, +1) //add dx value
           }
           this.$store.commit('addVisible', children)
         } else {
           for (var key of children){
-            this.dXUpdate(this.items.x, key, -1)
-            this.$store.commit('removeVisible', key)
+            this.dXUpdate(this.items.x, key, -1) //subtract dx value
+            this.$store.commit('removeVisible', key) //need to recursively remove for sub children...
           }
         }
         console.log("state.show: ", this.$store.state.show)
