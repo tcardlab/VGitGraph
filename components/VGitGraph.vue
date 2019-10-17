@@ -24,7 +24,7 @@
         :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
         <Links
           v-for="(actions, turn) in items.path" :key="turn" 
-          :items="items" :i="actions" :turn="turn"
+          :items="items" :i="actions" :turn="turn" :branchName="branchName"
         />
       </g>
 
@@ -32,7 +32,7 @@
         <Glyphs
           v-show="$store.state.show.includes(branchName)"
           v-for="(actions, turn) in items.path" :key="turn"
-          :items="items" :i="actions" :turn="turn"
+          :items="items" :i="actions" :turn="turn" :branchName="branchName"
         />
       </g>
     </svg>

@@ -50,19 +50,19 @@ export const DisplayMixin = {
       return [xDisp, yDisp]
     },
 
-    getXDispPath(bItems){ // –> [x1, x2, ...]
+    getXDispPath(bItems, branchName){ // –> [x1, x2, ...]
       const xConst = bItems.x
-      const dx = bItems.dx
+      var dx = this.$store.state.dx[branchName]
       const path = Object.values(bItems.path)
       return path.map(actions => this.getXDisp(xConst, actions, dx))
     },
-    getYDispPath(bItems){ // –> [y1, y2, ...]
+    getYDispPath(bItems, branchName){ // –> [y1, y2, ...]
       const kv = Object.entries(bItems.path)
       return kv.map(kv => this.getYDisp(kv[0], kv[1]))
     },
-    getDispPath(bItems){ // –> [[x, y], ...]
+    getDispPath(bItems, branchName){ // –> [[x, y], ...]
       const xConst = bItems.x
-      const dx = bItems.dx
+      var dx = this.$store.state.dx[branchName]
       const kvArr = Object.entries(bItems.path)
       return kvArr.map(kv => this.getXYDisp(kv[0], xConst, dx, kv[1]))
     },
@@ -74,7 +74,8 @@ export const DisplayMixin = {
         var [branchName, event] = link.coord
         var branch = this._$[branchName]
         var action = branch.path[event]
-        var XYLink = this.getXYDisp(event, branch['x'], branch['dx'], action)
+        var dx = this.$store.state.dx[branchName]
+        var XYLink = this.getXYDisp(event, branch['x'], dx, action)
       } else {
         // hard link
         var XYLink = this.scaler(link.coord)

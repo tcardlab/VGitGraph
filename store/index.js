@@ -24,10 +24,10 @@ export const state = () => ({
   display: 0, 
   scale: 50,
   show: [],
+  dx: {},
   branches: {
     "P1": {
       x: [1],
-      dx: 0,
       children: ["P1.1"],
       color:'#f00fff',
       path: {
@@ -55,7 +55,6 @@ export const state = () => ({
     },
     "P1.1": {
       x: [2, 1],
-      dx: 0,
       children: [],
       color:'#000864',
       path: {
@@ -79,7 +78,6 @@ export const state = () => ({
     },
     "P0": {
       x: [0],
-      dx: 0,
       children: ["P0.1", "P0.-1"],
       color:'#6f0606',
       path: {
@@ -107,7 +105,6 @@ export const state = () => ({
     },
     "P0.1": {
       x: [0, 1],
-      dx: 0,
       children: [],
       color:'#000864',
       path: {
@@ -131,7 +128,6 @@ export const state = () => ({
     },
     "P0.-1": {
       x: [0, -1],
-      dx: 0,
       children: [],
       color:'#000864',
       path: {
@@ -155,7 +151,6 @@ export const state = () => ({
     },
     "P3": {
       x: [-3],
-      dx: 0,
       children: ["P3.1"],
       color:'#6f0fff',
       path: {
@@ -183,7 +178,6 @@ export const state = () => ({
     },
     "P3.1": {
       x: [-3, 1],
-      dx: 0,
       children: [],
       color:'#000864',
       path: {
@@ -207,7 +201,6 @@ export const state = () => ({
     },
     "P2": {
       x: [3],
-      dx: 0,
       children: ["P2.-1", "P2.-2"],
       color:'#6f0fff',
       path: {
@@ -235,7 +228,6 @@ export const state = () => ({
     },
     "P2.-1": {
       x: [3, -1],
-      dx: 0,
       children: ["P2.-1.-1"],
       color:'#000864',
       path: {
@@ -259,7 +251,6 @@ export const state = () => ({
     },
     "P2.-2": {
       x: [3, -2],
-      dx: 0,
       children: [],
       color:'#000864',
       path: {
@@ -283,7 +274,6 @@ export const state = () => ({
     },
     "P2.-1.-1": {
       x: [3, -1, -1],
-      dx: 0,
       children: [],
       color:'#000864',
       path: {
@@ -299,7 +289,6 @@ export const state = () => ({
     },
     "GM": {
       x: [-1],
-      dx: 0,
       children: ['GM2'],
       color: '#008fb5',
       path: {
@@ -327,7 +316,6 @@ export const state = () => ({
     },
     "GM2": {
       x: [-2],
-      dx: 0,
       children: [],
       color:'#0fb500',
       path: {
@@ -368,8 +356,11 @@ export const mutations = {
       state.show.splice(index, 1)
     }
   },
+  dxCreate (state, payload) {
+    state.dx[payload.key] = payload.value
+  },
   dx (state, payload) {
-    state.branches[payload.key].dx += payload.value
+    state.dx[payload.key] += payload.value
   },
 }
 

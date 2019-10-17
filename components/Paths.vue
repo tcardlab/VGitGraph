@@ -4,7 +4,7 @@
     v-on:dblclick="toggleChildren(items.children, branchName)"
 
     :id="branchName"
-    :d="dString(items)" 
+    :d="dString(items, branchName)" 
     fill="none" 
     :stroke="items.color" 
     stroke-width="7"
@@ -19,6 +19,9 @@ import { DisplayMixin } from "~/components/DisplayMixin.js";
 export default {
   props: ['items', 'branchName'],
   mixins: [PathsMixin, DisplayMixin],
+  created() {
+    this.$store.commit('dxCreate', {key:this.branchName, value:0})
+  },
   computed: {
     isActive() {
       var displayed = this.$store.state.show
@@ -110,7 +113,6 @@ export default {
             // Update current parent dx/show
             this.dXUpdate(this._$[branchName].x, key, -1) //-1 subtract dx value
             this.$store.commit('removeVisible', key)
-            
           }
         }
         console.log("state.show: ", this.$store.state.show)
@@ -126,10 +128,10 @@ export default {
       return coords
     },
 
-    dString(bItems) {
+    dString(bItems, branchName) {
       var d = [];
       var path = this.getPath(bItems)
-      var dispCoords = this.getDispPath(bItems)
+      var dispCoords = this.getDispPath(bItems, branchName)
 
       for (var i of _.range(path.length)) {
         let [x, y] = path[i] // Logic variables
