@@ -1,24 +1,38 @@
 <template>
     <svg overflow="visible">
+      <defs>
+        <!-- https://stackoverflow.com/questions/36284828/svg-adding-shadow-filter-makes-straight-line-invisible -->
+        <filter id="glow" x="-500" y="-500" height="1000" width="1000" filterUnits="userSpaceOnUse">
+          <fegaussianblur class="blur" result="coloredBlur" stddeviation="4"/>
+          <femerge>
+            <femergenode in="coloredBlur"></femergenode>
+            <!-- <femergenode in="coloredBlur"></femergenode> -->
+            <femergenode in="SourceGraphic"></femergenode>
+          </femerge>
+        </filter>
+      </defs>
+
+
       <!-- Each must loop independantly for proper render order-->
       <Paths
+        v-for="(items, branchName) in displayed" :key="'path-'+branchName"
         class="transition-move"
-        v-for="(items, branchName) in _$" :key="'path-'+branchName"
         :items="items" :branchName="branchName"
       />
 
-      <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
+      <g :id="branchName+'-Links'" v-for="(items, branchName) in displayed" :key="'link-'+branchName">
         <Links
           class="transition-move"
           v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
-          :items="items" :i="actions" :turn="turn"
+          :items="items" :i="actions" :turn="turn" :branchName="branchName"
         />
       </g>
-      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
+
+      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in displayed" :key="'glyph-'+branchName">
         <Glyphs
           class="transition-move"
           v-for="(actions, turn) in items.path" :key="turn"
-          :items="items" :i="actions" :turn="turn"
+          :items="items" :i="actions" :turn="turn" :branchName="branchName"
         />
       </g>
     </svg>
@@ -36,6 +50,16 @@ export default {
     Links,
     Glyphs
   },
+  created() {
+    var filtered = Object.keys(this.$store.getters.rootBranches)
+    this.$store.commit('addVisible', {branches: filtered})
+    console.log('Roots: ', this.$store.state.show)
+  },
+  computed: {
+    displayed() {
+      return _.pickBy(this._$, (v,k) => k in this.$store.state.show)
+    }
+  },
   methods: {
     filterLinks(path) {
       //_.filter if path is list of objects?
@@ -48,6 +72,8 @@ export default {
 </script>
 
 <style>
+path.active{
+  filter: url(#glow);
 .transition-move {
   transition: all 1s;
 }
