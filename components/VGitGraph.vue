@@ -48,7 +48,7 @@ export default {
       // as in-path links cause false positives
       var test = _.pickBy(displayed, 
                   (o) => _.some(o.path, 
-                    (v, k)=>!_.isEmpty(v.link)
+                    (v, k)=> !(_.isEmpty(v.link)) && v.link.type!=='Path'
                   )
                 )
       console.log("link: ", test)
