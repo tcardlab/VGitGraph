@@ -1,7 +1,7 @@
 <template>
   <component 
     :is="i.glyph? i.glyph: 'Dot'" 
-    :x="getXDisp(items.x, i, items.dx)"
+    :x="getXDisp(items.x, i, $store.state.show[branchName])"
     :y="getYDisp(turn, i)"
     :color="items.color"
   />
@@ -14,7 +14,7 @@ import Book from "./Glyphs/Book.vue";
 import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
-  props:['items', 'i', 'turn'],
+  props:['items', 'i', 'turn', 'branchName'],
   mixins: [DisplayMixin],
   components: {
     Dot: Dot,
