@@ -19,13 +19,10 @@ import { DisplayMixin } from "~/components/DisplayMixin.js";
 export default {
   props: ['items', 'branchName'],
   mixins: [PathsMixin, DisplayMixin],
-  created() {
-    this.$store.commit('dxCreate', {key:this.branchName, value:0})
-  },
   computed: {
     isActive() {
-      var displayed = this.$store.state.show
-      return !this.items.children.every((val) => displayed.includes(val))
+      var display = this.$store.state.show
+      return !this.items.children.every((val) => val in display)
     }
   },
   methods: {
@@ -63,7 +60,7 @@ export default {
       const pSign = Math.sign(parentX[0])
       if (pSign===0 && parentX.length===1) {  // x is [0]
         // add dx to all braches on side of branch
-        for(var branch of Object.keys(this._$)) {
+        for(var branch of Object.keys(this.$store.state.show)) {
           var compare = this.compareX(this._$[branch].x, childX)
           if (compare === Math.sign(childX[1])) {
             var payload = {type:'dx', key:branch, value:compare*dx}
@@ -72,7 +69,7 @@ export default {
         }
       } else if (pSign !== RelativePos) {  // branches toward 0
         // add dx to parent, self, and all braches continuing
-        for(var branch of Object.keys(this._$)) {
+        for(var branch of Object.keys(this.$store.state.show)) {
           var compare = this.compareX(childX, this._$[branch].x)
           // children include themselves, as they dont inherit parents X
           var branchX = this._$[branch].x
@@ -83,7 +80,7 @@ export default {
         }
       } else if (pSign === RelativePos) {  // branches awayfrom 0
         // add dx all peripheral braches
-        for(var branch of Object.keys(this._$)) {
+        for(var branch of Object.keys(this.$store.state.show)) {
           var compare = this.compareX(this._$[branch].x, childX)
           if (compare === pSign) {
             var payload = {type:'dx', key:branch, value:pSign*dx}
@@ -97,15 +94,16 @@ export default {
         if (this.isActive === true) {
           // assuming all children are spaced appropriately i should 
           // only have to do the 2 most extreme child +/- children
-          for (var key of children){ 
+          var payload = {branches:children, parent:branchName}
+          this.$store.commit('addVisible', payload)
+          for (var key of children){
             this.dXUpdate(this.items.x, key, +1) //add dx value
           }
-          this.$store.commit('addVisible', children)
         } else {
           for (var key of children){
             var subChild = this._$[key].children
             var show = this.$store.state.show
-            var activeChildren = subChild.filter(branch => show.includes(branch))
+            var activeChildren = subChild.filter(branch => branch in show)
             // Recusrion for children with descendants
             if (activeChildren.length>0){
               this.toggleChildren(activeChildren, key)

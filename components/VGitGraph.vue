@@ -15,22 +15,19 @@
 
       <!-- Each must loop independantly for proper render order-->
       <Paths
-        v-show="$store.state.show.includes(branchName)"
-        v-for="(items, branchName) in _$" :key="'path-'+branchName"
+        v-for="(items, branchName) in displayed" :key="'path-'+branchName"
         :items="items" :branchName="branchName"
       />
 
-      <g v-show="$store.state.show.includes(branchName)"
-        :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
+      <g :id="branchName+'-Links'" v-for="(items, branchName) in displayed" :key="'link-'+branchName">
         <Links
           v-for="(actions, turn) in items.path" :key="turn" 
           :items="items" :i="actions" :turn="turn" :branchName="branchName"
         />
       </g>
 
-      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
+      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in displayed" :key="'glyph-'+branchName">
         <Glyphs
-          v-show="$store.state.show.includes(branchName)"
           v-for="(actions, turn) in items.path" :key="turn"
           :items="items" :i="actions" :turn="turn" :branchName="branchName"
         />
@@ -52,8 +49,13 @@ export default {
   },
   created() {
     var filtered = Object.keys(this.$store.getters.rootBranches)
-    this.$store.commit('addVisible', filtered)
-    console.log('otp: ', this.$store.state.show)
+    this.$store.commit('addVisible', {branches: filtered})
+    console.log('Roots: ', this.$store.state.show)
+  },
+  computed: {
+    displayed() {
+      return _.pickBy(this._$, (v,k) => k in this.$store.state.show)
+    }
   },
   methods: {
     filterLinks(path) {

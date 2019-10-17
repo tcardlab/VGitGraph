@@ -23,8 +23,7 @@ perhaps a mixin? I think this makes sense.
 export const state = () => ({  
   display: 0, 
   scale: 50,
-  show: [],
-  dx: {},
+  show: {},
   branches: {
     "P1": {
       x: [1],
@@ -344,23 +343,26 @@ export const state = () => ({
   }
 });
 
-
+import Vue from "vue";
 export const mutations = {
-  addVisible (state, key) {
-    var updated = state.show.concat(key)
-    state.show = [... new Set(updated)]  // remove duplicates
+  addVisible (state, payload) {
+    let obj = {}
+    for (var k of payload.branches) {  
+      obj[k] = payload.parent? state.show[payload.parent]:0
+    }
+    state.show = {...state.show, ...obj}
   },
   removeVisible (state, key) {
-    var index = state.show.indexOf(key) // -1 if none
-    if (index>-1) {
-      state.show.splice(index, 1)
+    if (key in state.show) {
+      Vue.delete(state.show, key)
+      //state.show = _.pickBy(state.show, (v,k)=> k!==key)
+      /*
+      delete state.show[key]
+      state.show = {...state.show} */
     }
   },
-  dxCreate (state, payload) {
-    state.dx[payload.key] = payload.value
-  },
   dx (state, payload) {
-    state.dx[payload.key] += payload.value
+    state.show[payload.key] += payload.value
   },
 }
 
@@ -382,5 +384,5 @@ export const getters = {
     return _.max(_.values(dxArr)) 
     // there may be more complexity to this than i initially thought.
     // given negative numbers, i wont know which direction things branch with abs...
-  }
+  },
 }
