@@ -363,8 +363,15 @@ export const mutations = {
     state.show = [... new Set(updated)]  // remove duplicates
   },
   removeVisible (state, key) {
-    state.show.splice(state.show.indexOf(key), 1)
+    var index = state.show.indexOf(key) // -1 if none
+    if (index>-1) {
+      state.show.splice(index, 1)
+    }
   },
+  dxReset (state, key) {
+    state.branches[key].dx = 0
+  },
+  
   dx (state, payload) {
     state.branches[payload.key].dx += payload.value
   },
@@ -388,5 +395,13 @@ export const getters = {
     return _.max(_.values(dxArr)) 
     // there may be more complexity to this than i initially thought.
     // given negative numbers, i wont know which direction things branch with abs...
+  },
+  descendants: (state) => (x) => {
+    var filtered = _.pickBy(state.branches, function(value, key) {
+      if (value['x'].length > x.length && state.show.includes(key)) {
+        return _.isEqual(value['x'].slice(0, x.length), x);
+      } else {return false}
+    });
+    return Object.keys(filtered)
   }
 }

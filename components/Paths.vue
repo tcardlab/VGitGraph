@@ -19,23 +19,10 @@ import { DisplayMixin } from "~/components/DisplayMixin.js";
 export default {
   props: ['items', 'branchName'],
   mixins: [PathsMixin, DisplayMixin],
-  data() {
-    return {
-      isActive: undefined, 
-    }
-  },
-  created (children=this.items.children) {
-    const childLen = children.length
-    if (childLen) {
-      const xBoolArr = children.map(child => this._$[child].x.length===1)
-      const xSum = xBoolArr.reduce((a, b) => a + b, 0)
-      if (xSum>0 && xSum>=childLen){
-        // Root branch is child & none root children hiden
-        this.isActive = false // can be toggled to reveal the rest
-        // Root children is bad form and should be avoided though.
-      } else {
-        this.isActive = true
-      }
+  computed: {
+    isActive() {
+      var displayed = this.$store.state.show
+      return !this.items.children.every((val) => displayed.includes(val))
     }
   },
   methods: {
@@ -102,20 +89,23 @@ export default {
     toggleChildren(children) {
       // This will change when implementing official vuex mutations
       if (children.length) {
-        this.isActive = !this.isActive
-        if (this.isActive === false) {
+        if (this.isActive === true) {
           // assuming all children are spaced appropriately i should 
           // only have to do the 2 most extreme child +/- children
-          for (var key of children){  
-            var x = this._$[key].x
+          for (var key of children){
             this.dXUpdate(this.items.x, key, +1) //add dx value
           }
           this.$store.commit('addVisible', children)
         } else {
-          for (var key of children){
-            this.dXUpdate(this.items.x, key, -1) //subtract dx value
+          // for keys of descendants (i.e. contains parents xlist)
+          var descendants = this.$store.getters.descendants(this.items.x)
+          for (var key of descendants){
+            // //subtract dx value
+            // this.dXUpdate(this.items.x, key, -1)
+            this.$store.commit('dxReset', key)
             this.$store.commit('removeVisible', key) //need to recursively remove for sub children...
           }
+          this.$store.commit('dxReset', this.branchName)
         }
         console.log("state.show: ", this.$store.state.show)
       }
