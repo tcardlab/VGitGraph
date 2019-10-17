@@ -21,7 +21,7 @@
 
       <g :id="branchName+'-Links'" v-for="(items, branchName) in displayed" :key="'link-'+branchName">
         <Links
-          v-for="(actions, turn) in items.path" :key="turn" 
+          v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
           :items="items" :i="actions" :turn="turn" :branchName="branchName"
         />
       </g>
