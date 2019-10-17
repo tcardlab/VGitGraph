@@ -16,11 +16,13 @@
       <!-- Each must loop independantly for proper render order-->
       <Paths
         v-for="(items, branchName) in displayed" :key="'path-'+branchName"
+        class="transition-move"
         :items="items" :branchName="branchName"
       />
 
       <g :id="branchName+'-Links'" v-for="(items, branchName) in displayed" :key="'link-'+branchName">
         <Links
+          class="transition-move"
           v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
           :items="items" :i="actions" :turn="turn" :branchName="branchName"
         />
@@ -28,6 +30,7 @@
 
       <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in displayed" :key="'glyph-'+branchName">
         <Glyphs
+          class="transition-move"
           v-for="(actions, turn) in items.path" :key="turn"
           :items="items" :i="actions" :turn="turn" :branchName="branchName"
         />
@@ -71,5 +74,7 @@ export default {
 <style>
 path.active{
   filter: url(#glow);
+.transition-move {
+  transition: all 1s;
 }
 </style>
