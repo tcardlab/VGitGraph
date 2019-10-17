@@ -71,6 +71,7 @@ export default {
 <style>
 path.active{
   filter: url(#glow);
+}
 .transition-move {
   transition: all 1s;
 }
