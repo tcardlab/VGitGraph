@@ -7,7 +7,7 @@
         :items="items" :branchName="branchName"
       />
 
-      <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
+      <g :id="branchName+'-Links'" v-for="(items, branchName) in filterBranchsByLink(_$)" :key="'link-'+branchName">
         <Links
           class="transition-move"
           v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
@@ -42,6 +42,17 @@ export default {
       return _.pickBy(path, function(value, key) {
                         return Object.keys(value['link']).length>0;
                       });
+    },
+    filterBranchsByLink(displayed) {
+      // filtering parents isnt really worth it 
+      // as in-path links cause false positives
+      var test = _.pickBy(displayed, 
+                  (o) => _.some(o.path, 
+                    (v, k)=>!_.isEmpty(v.link)
+                  )
+                )
+      console.log("link: ", test)
+      return test;
     }
   }
 };
