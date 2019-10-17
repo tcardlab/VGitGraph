@@ -27,6 +27,7 @@ export const DisplayMixin = {
       xConst = xConst.reduce((a, b) => a + b, 0) //children branches [1,2] x=0+dx of 2. etc
       const y = action['y']
       const xDisp = Array.isArray(y) ? y[0]+xConst : xConst // test If overriden (change to displacement later)
+      dx = dx?dx:0 // branches not in show pass NaNs
       return this.scaler(xDisp+dx, 50) 
       // remove 50 so scale uniformly could make x&y scales... added to to-do
     },
