@@ -15,21 +15,24 @@
 
       <!-- Each must loop independantly for proper render order-->
       <Paths
-        v-for="(items, branchName) in displayed" :key="'path-'+branchName"
+        v-show="branchName in $store.state.show"
+        v-for="(items, branchName) in _$" :key="'path-'+branchName"
         class="transition-move"
         :items="items" :branchName="branchName"
       />
 
-      <g :id="branchName+'-Links'" v-for="(items, branchName) in displayed" :key="'link-'+branchName">
+      <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
         <Links
+          v-show="branchName in $store.state.show"
           class="transition-move"
           v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
           :items="items" :i="actions" :turn="turn" :branchName="branchName"
         />
       </g>
 
-      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in displayed" :key="'glyph-'+branchName">
+      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
         <Glyphs
+          v-show="branchName in $store.state.show"
           class="transition-move"
           v-for="(actions, turn) in items.path" :key="turn"
           :items="items" :i="actions" :turn="turn" :branchName="branchName"
@@ -55,11 +58,11 @@ export default {
     this.$store.commit('addVisible', {branches: filtered})
     console.log('Roots: ', this.$store.state.show)
   },
-  computed: {
+  /* computed: {
     displayed() {
       return _.pickBy(this._$, (v,k) => k in this.$store.state.show)
     }
-  },
+  }, */
   methods: {
     filterLinks(path) {
       //_.filter if path is list of objects?
