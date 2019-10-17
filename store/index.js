@@ -386,13 +386,13 @@ export const getters = {
   maxDx: (state) => (key) => {
     /* const path = state.branches[key].path
     const dxArr = _.mapValues(path, function(o) { 
-        return o.y.length==2? Math.abs(o.y[0])+1:1 // should be childs last x val, not 1?
+        return o.y.length==2? Math.abs(o.y[0])+1 : 1 // should be childs last x val, not 1?
       })
     return _.max(_.values(dxArr))  */
     const path = _.values(state.branches[key].path)
     const dxMax = _.maxBy(path, function(el) { 
-      return el.y.length==2? Math.abs(el.y[0])+1:1 // should be childs last x val, not 1?
+      return el.y.length==2? Math.abs(el.y[0])+1 : 1 // should be childs last x val, not 1?
     }).y
-    return dxMax.length==2? Math.abs(el.y[0])+1:1
+    return dxMax.length==2? Math.abs(el.y[0])+1 : 1
   }
 }
