@@ -344,21 +344,16 @@ export const state = () => ({
 });
 
 import Vue from "vue";
+import _ from "lodash";
+
 export const mutations = {
   addVisible (state, payload) {
-    let obj = {}
-    for (var k of payload.branches) {  
-      obj[k] = payload.parent? state.show[payload.parent]:0
-    }
-    state.show = {...state.show, ...obj}
+    const dxInit = payload.parent ? state.show[payload.parent] : 0
+    payload.branches.forEach(k => Vue.set(state.show, k, dxInit))
   },
   removeVisible (state, key) {
     if (key in state.show) {
       Vue.delete(state.show, key)
-      //state.show = _.pickBy(state.show, (v,k)=> k!==key)
-      /*
-      delete state.show[key]
-      state.show = {...state.show} */
     }
   },
   dx (state, payload) {
@@ -366,13 +361,10 @@ export const mutations = {
   },
 }
 
-
-import _ from "lodash";
-
 export const getters = {
   rootBranches: state => {
-    var filtered = _.pickBy(state.branches, function(value, key) {
-      return Object.keys(value['x']).length===1;
+    var filtered = _.pickBy(state.branches, function(branch) {
+      return branch.x.length===1;
     });
     return filtered
   }, 
