@@ -59,7 +59,7 @@ export default {
     console.log('Roots: ', this.$store.state.show)
   },
   /* computed: {
-    displayed() {
+    displayed() { // breaks animation. same if method.
       return _.pickBy(this._$, (v,k) => k in this.$store.state.show)
     }
   }, */
