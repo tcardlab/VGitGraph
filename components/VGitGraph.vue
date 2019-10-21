@@ -15,13 +15,14 @@
 
       <!-- Each must loop independantly for proper render order-->
       <Paths
-        v-show="branchName in $store.state.show"
+        v-show="$store.state.show.includes(branchName)"
         class="transition-move"
         v-for="(items, branchName) in _$" :key="'path-'+branchName"
         :items="items" :branchName="branchName"
       />
 
-      <g :id="branchName+'-Links'" v-for="(items, branchName) in displayed" :key="'link-'+branchName">
+      <g v-show="$store.state.show.includes(branchName)"
+        :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
         <Links
           class="transition-move"
           v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
@@ -30,7 +31,7 @@
       </g>
       <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
         <Glyphs
-          v-show="branchName in $store.state.show"
+          v-show="$store.state.show.includes(branchName)"
           class="transition-move"
           v-for="(actions, turn) in items.path" :key="turn"
           :items="items" :i="actions" :turn="turn"
@@ -63,12 +64,6 @@ export default {
       const displacement = this.$store.getters.maxDx(branchName)
       this.$store.commit('dxCreate', {key:branchName, value:displacement})
     })
-  },
-  computed: {
-    displayed() {
-      // May replace _$ to loop through branches. But it currently breaks transition
-      return _.pickBy(this._$, (v,k) => k in this.$store.state.show)
-    }
   },
   methods: {
     filterLinks(path) {

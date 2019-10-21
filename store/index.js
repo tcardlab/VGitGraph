@@ -23,7 +23,8 @@ perhaps a mixin? I think this makes sense.
 export const state = () => ({  
   display: 0, 
   scale: 50,
-  show: {},
+  show: [],
+  dx: {},
   branches: {
     "P1": {
       x: [1],
@@ -343,38 +344,36 @@ export const state = () => ({
   }
 });
 
-import Vue from "vue";
-import _ from "lodash";
 
 export const mutations = {
   setVisible (state, keyArr) {
     state.show = [...keyArr]
   },
-  // It would seem this wont work. If I combine them, I'd have to 
-  // recalculate max displacement for every toggled branch! 
-  // I can pivot though, combine show and x vals to simplify solveXDisp()
   addVisible (state, key) {  // key or key array
     var updated = state.show.concat(key)
     state.show = [... new Set(updated)]  // remove duplicates
   },
-  /*addVisible (state, payload) {
-    const dxInit = payload.parent ? state.show[payload.parent] : 0
-    payload.branches.forEach(k => Vue.set(state.show, k, dxInit))
-  },*/
   removeVisible (state, key) {
-    if (key in state.show) {
-      Vue.delete(state.show, key)
+    var index = state.show.indexOf(key) // -1 if none
+    if (index>-1) {
+      state.show.splice(index, 1)
     }
   },
+  dxCreate (state, payload) {
+    state.dx[payload.key] = payload.value
+  },
   dx (state, payload) {
-    state.show[payload.key] += payload.value
+    state.dx[payload.key] += payload.value
   },
 }
 
+
+import _ from "lodash";
+
 export const getters = {
   rootBranches: state => {
-    var filtered = _.pickBy(state.branches, function(branch) {
-      return branch.x.length===1;
+    var filtered = _.pickBy(state.branches, function(value, key) {
+      return Object.keys(value['x']).length===1;
     });
     return filtered
   }, 
