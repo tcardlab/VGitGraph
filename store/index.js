@@ -24,7 +24,7 @@ export const state = () => ({
   display: 0, 
   scale: 50,
   show: {},
-  dx: {},
+  displacement: {},
   branches: {
     "P1": {
       x: [1],
@@ -363,7 +363,7 @@ export const mutations = {
     mutations.addVisible(state, keyArr)
   },
   dxCreate (state, payload) {	
-    state.dx[payload.key] = payload.value	
+    state.displacement[payload.key] = payload.value	
   }
 }
 
@@ -406,7 +406,7 @@ export const getters = {
       getters.compareX(xConst, x) === sign  // prior branches closer to zero = sign
     ))
     // sum displacement of prior branches
-    const sum = _.sum(_.map(xArr, (v,k)=>sign * state.dx[k]))
+    const sum = _.sum(_.map(xArr, (v,k)=>sign * state.displacement[k]))
     return sum //? sum:0 //returns nan on zero
   },
   maxDx: (state) => (key) => {
