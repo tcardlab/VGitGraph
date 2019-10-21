@@ -24,6 +24,7 @@ export const state = () => ({
   display: 0, 
   scale: 50,
   show: {},
+  dx: {},
   branches: {
     "P1": {
       x: [1],
@@ -347,20 +348,6 @@ import Vue from "vue";
 import _ from "lodash";
 
 export const mutations = {
-  setVisible (state, keyArr) {
-    state.show = [...keyArr]
-  },
-  // It would seem this wont work. If I combine them, I'd have to 
-  // recalculate max displacement for every toggled branch! 
-  // I can pivot though, combine show and x vals to simplify solveXDisp()
-  /* addVisible (state, key) {  // key or key array
-    var updated = state.show.concat(key)
-    state.show = [... new Set(updated)]  // remove duplicates
-  }, */
-  /*addVisible (state, payload) { // show: {bName: displacement, ...}
-    const dxInit = payload.parent ? state.show[payload.parent] : 0
-    payload.branches.forEach(k => Vue.set(state.show, k, dxInit))
-  },*/
   addVisible (state, key) { // show: {bName: x, ...}
     for (var k of key) {
       Vue.set(state.show, k, state.branches[k].x)
@@ -371,9 +358,13 @@ export const mutations = {
       Vue.delete(state.show, key)
     }
   },
-  dx (state, payload) {
-    state.show[payload.key] += payload.value
+  setVisible (state, keyArr) {
+    state.show = {} 
+    mutations.addVisible(state, keyArr)
   },
+  dxCreate (state, payload) {	
+    state.dx[payload.key] = payload.value	
+  }
 }
 
 export const getters = {
@@ -409,11 +400,10 @@ export const getters = {
   solveXDisp: (state) => (xConst) => {
     const sign = Math.sign(getters.compareX(xConst, [0]))
     // Get prior Branches. (cant loop through just show as x is needed)
-    const xArr = _.pickBy(state.branches, (v,k) => (
-      (!_.isEqual(xConst, [0]) && _.isEqual(v.x, [0])) || // shift all but 0 by 1
-      getters.compareX(v.x, [0]) === sign &&  //  +/- from [0]
-      getters.compareX(xConst, v.x) === sign &&  // prior branches closer to zero = sign
-      k in state.show // only displace by visable
+    const xArr = _.pickBy(state.show, (x,k) => (
+      (!_.isEqual(xConst, [0]) && _.isEqual(x, [0])) || // shift all but 0 by 1
+      getters.compareX(x, [0]) === sign &&  //  +/- from [0]
+      getters.compareX(xConst, x) === sign  // prior branches closer to zero = sign
     ))
     // sum displacement of prior branches
     const sum = _.sum(_.map(xArr, (v,k)=>sign * state.dx[k]))
