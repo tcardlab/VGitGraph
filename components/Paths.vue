@@ -21,20 +21,21 @@ export default {
   mixins: [PathsMixin, DisplayMixin],
   computed: {
     isActive() {
-      var displayed = this.$store.state.show
-      return !this.items.children.every((val) => displayed.includes(val))
+      var display = this.$store.state.show
+      return !this.items.children.every((val) => val in display)
     }
   },
   methods: {
     toggleChildren(children) {
       if (children.length) {
         if (this.isActive === true) {
-          this.$store.commit('addVisible', children)
+          //var payload = {branches:children, parent:this.branchName}
+          this.$store.commit('addVisible', children) // payload
         } else {
           for (var key of children){
             var subChild = this._$[key].children
             var show = this.$store.state.show
-            var activeChildren = subChild.filter(branch => show.includes(branch))
+            var activeChildren = subChild.filter(branch => branch in show)
             // Recusrion for children with descendants
             if (activeChildren.length>0){
               this.toggleChildren(activeChildren, key)
