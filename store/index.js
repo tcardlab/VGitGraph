@@ -361,10 +361,7 @@ export const mutations = {
   },
   dxCreate (state, payload) {
     state.dx[payload.key] = payload.value
-  },
-  dx (state, payload) {
-    state.dx[payload.key] += payload.value
-  },
+  }
 }
 
 
