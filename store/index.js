@@ -353,10 +353,12 @@ export const mutations = {
     var updated = state.show.concat(key)
     state.show = [... new Set(updated)]  // remove duplicates
   },
-  removeVisible (state, key) {
-    var index = state.show.indexOf(key) // -1 if none
-    if (index>-1) {
-      state.show.splice(index, 1)
+  removeVisible (state, keyArr) { // key or key array
+    for (var key of keyArr){
+      var index = state.show.indexOf(key) // -1 if none
+      if (index>-1) {
+        state.show.splice(index, 1)
+      }
     }
   },
   dxCreate (state, payload) {
@@ -369,10 +371,12 @@ import _ from "lodash";
 
 export const getters = {
   rootBranches: state => {
-    var filtered = _.pickBy(state.branches, function(value, key) {
-      return Object.keys(value['x']).length===1;
+    var roots = _.pickBy(state.branches, function(value, key) {
+      return value.x.length===1;
     });
-    return filtered
+    const children = _.flatten(_.map(roots, "children"))
+    roots = _.pickBy(roots, (v,k)=> !children.includes(k))
+    return roots
   }, 
   compareX(arr1, arr2) { 
     const ln = Math.max(arr1.length, arr2.length)

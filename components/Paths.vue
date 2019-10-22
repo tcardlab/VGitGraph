@@ -39,29 +39,13 @@ export default {
       return _.pickBy(this._$, (v,k)=>childArr.includes(k) )
     }
   },
-/*   data() {
-    return{
-      isActive: false
-    }
-  }, */
   methods: {
     toggleChildren(children) {
-      //this.isActive = !this.isActive
       if (children.length) {
         if (this.isActive === true) {
           this.$store.commit('addVisible', children)
         } else {
-          for (var key of children){
-            var subChild = this._$[key].children
-            var show = this.$store.state.show
-            var activeChildren = subChild.filter(branch => show.includes(branch))
-            // Recusrion for children with descendants
-            if (activeChildren.length>0){
-              this.toggleChildren(activeChildren, key)
-            }
-            // Update current parent dx/show
-            this.$store.commit('removeVisible', key)
-          }
+          this.$store.commit('removeVisible', children)
         }
         console.log("state.show: ", this.$store.state.show)
       }
