@@ -353,7 +353,7 @@ export const mutations = {
     var updated = state.show.concat(key)
     state.show = [... new Set(updated)]  // remove duplicates
   },
-  removeVisible (state, keyArr) { // key or key array
+  removeVisible (state, keyArr) {
     for (var key of keyArr){
       var index = state.show.indexOf(key) // -1 if none
       if (index>-1) {
