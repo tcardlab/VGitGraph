@@ -45,6 +45,15 @@ export default {
         if (this.isActive === true) {
           this.$store.commit('addVisible', children)
         } else {
+          for (var key of children){
+            var subChild = this._$[key].children
+            var show = this.$store.state.show
+            var activeChildren = subChild.filter(branch => branch in show)
+            // Recusrion for children with descendants
+            if (activeChildren.length>0){
+              this.toggleChildren(activeChildren, key)
+            }
+          }
           this.$store.commit('removeVisible', children)
         }
         console.log("state.show: ", this.$store.state.show)
