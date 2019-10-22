@@ -23,8 +23,8 @@ perhaps a mixin? I think this makes sense.
 export const state = () => ({  
   display: 0, 
   scale: 50,
-  show: {},
-  displacement: {},
+  show: [],
+  dx: {},
   branches: {
     "P1": {
       x: [1],
@@ -346,24 +346,23 @@ export const state = () => ({
 
 
 export const mutations = {
-  addVisible (state, key) { // show: {bName: x, ...} takes key or key array
-    for (var k of key) {
-      Vue.set(state.show, k, state.branches[k].x)
-    }
+  setVisible (state, keyArr) {
+    state.show = [...keyArr]
   },
-  removeVisible (state, keyArr) {
+  addVisible (state, key) {  // key or key array
+    var updated = state.show.concat(key)
+    state.show = [... new Set(updated)]  // remove duplicates
+  },
+  removeVisible (state, keyArr) { // key or key array
     for (var key of keyArr){
-      if (key in state.show) {
-        Vue.delete(state.show, key)
+      var index = state.show.indexOf(key) // -1 if none
+      if (index>-1) {
+        state.show.splice(index, 1)
       }
     }
   },
-  setVisible (state, keyArr) {
-    state.show = {} 
-    mutations.addVisible(state, keyArr)
-  },
-  dxCreate (state, payload) {	
-    state.displacement[payload.key] = payload.value	
+  dxCreate (state, payload) {
+    state.dx[payload.key] = payload.value
   }
 }
 
@@ -405,13 +404,14 @@ export const getters = {
   solveXDisp: (state) => (xConst) => {
     const sign = Math.sign(getters.compareX(xConst, [0]))
     // Get prior Branches. (cant loop through just show as x is needed)
-    const xArr = _.pickBy(state.show, (x,k) => (
-      (!_.isEqual(xConst, [0]) && _.isEqual(x, [0])) || // shift all but 0 by 1
-      getters.compareX(x, [0]) === sign &&  //  +/- from [0]
-      getters.compareX(xConst, x) === sign  // prior branches closer to zero = sign
+    const xArr = _.pickBy(state.branches, (v,k) => (
+      (!_.isEqual(xConst, [0]) && _.isEqual(v.x, [0])) || // shift all but 0 by 1
+      getters.compareX(v.x, [0]) === sign &&  //  +/- from [0]
+      getters.compareX(xConst, v.x) === sign &&  // prior branches closer to zero = sign
+      state.show.includes(k)  // only displace by visable
     ))
     // sum displacement of prior branches
-    const sum = _.sum(_.map(xArr, (v,k)=>sign * state.displacement[k]))
+    const sum = _.sum(_.map(xArr, (v,k)=>sign * state.dx[k]))
     return sum //? sum:0 //returns nan on zero
   },
   maxDx: (state) => (key) => {
