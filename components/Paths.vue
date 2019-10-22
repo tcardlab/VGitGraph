@@ -1,7 +1,7 @@
 <template>
   <path 
     :class="{active: isActive}"
-    v-on:dblclick="toggleChildren(items.children)"
+    v-on:dblclick="toggleChildren(items.children, branchName)"
 
     :id="branchName"
     :d="dString(items)" 
@@ -21,27 +21,96 @@ export default {
   mixins: [PathsMixin, DisplayMixin],
   computed: {
     isActive() {
-      var display = this.$store.state.show
-      return !this.items.children.every((val) => val in display)
+      var displayed = this.$store.state.show
+      return !this.items.children.every((val) => displayed.includes(val))
     }
   },
   methods: {
-    toggleChildren(children) {
+    compareX(arr1, arr2) { 
+      const ln = Math.max(arr1.length, arr2.length)
+      for(var i=0; i<ln; i++) {
+        var sign = Math.sign(arr1[i]-arr2[i])
+        switch(sign) {
+          case 0: 
+            if (i === ln-1) {
+              return sign  // arr1===arr2
+            } else { break } // keep looping
+          case 1: 
+            return sign  // arr1>arr2
+          case -1:
+            return sign  // arr1<arr2
+          default: // assume one is longer
+            var arr1Large = arr1.length>arr2.length
+            if(arr1Large) {  // arr1 is child
+              return Math.sign(arr1[i])  // branch + or -
+            } else if (!arr1Large) { // arr2 is child
+              return -1*Math.sign(arr2[i]) // branch + or -
+            } // not sure what to do with bad values
+        }
+      }
+    },
+
+
+
+    dXUpdate(parentX, childKey, mod=1){ // +/- modifier
+      const childX = this._$[childKey].x
+      const dx = mod * this.$store.getters.maxDx(childKey)
+
+      const RelativePos = this.compareX(childX, parentX)
+      const pSign = Math.sign(parentX[0])
+      if (pSign===0 && parentX.length===1) {  // x is [0]
+        // add dx to all braches on side of branch
+        for(var branch of Object.keys(this._$)) {
+          var compare = this.compareX(this._$[branch].x, childX)
+          if (compare === Math.sign(childX[1])) {
+            var payload = {type:'dx', key:branch, value:compare*dx}
+            this.$store.commit(payload)
+          }
+        }
+      } else if (pSign !== RelativePos) {  // branches toward 0
+        // add dx to parent, self, and all braches continuing
+        for(var branch of Object.keys(this._$)) {
+          var compare = this.compareX(childX, this._$[branch].x)
+          // children include themselves, as they dont inherit parents X
+          var branchX = this._$[branch].x
+          if (compare !== pSign || _.isEqual(branchX.slice(0, parentX.length), parentX)) { 
+            var payload = {type:'dx', key:branch, value:pSign*dx}
+            this.$store.commit(payload)
+          }
+        }
+      } else if (pSign === RelativePos) {  // branches awayfrom 0
+        // add dx all peripheral braches
+        for(var branch of Object.keys(this._$)) {
+          var compare = this.compareX(this._$[branch].x, childX)
+          if (compare === pSign) {
+            var payload = {type:'dx', key:branch, value:pSign*dx}
+            this.$store.commit(payload)
+          }
+        }
+      }
+    },
+    toggleChildren(children, branchName) {
       if (children.length) {
         if (this.isActive === true) {
-          //var payload = {branches:children, parent:this.branchName}
-          this.$store.commit('addVisible', children) // payload
+          // assuming all children are spaced appropriately i should 
+          // only have to do the 2 most extreme child +/- children
+          for (var key of children){ 
+            this.dXUpdate(this.items.x, key, +1) //add dx value
+          }
+          this.$store.commit('addVisible', children)
         } else {
           for (var key of children){
             var subChild = this._$[key].children
             var show = this.$store.state.show
-            var activeChildren = subChild.filter(branch => branch in show)
+            var activeChildren = subChild.filter(branch => show.includes(branch))
             // Recusrion for children with descendants
             if (activeChildren.length>0){
               this.toggleChildren(activeChildren, key)
             }
             // Update current parent dx/show
+            this.dXUpdate(this._$[branchName].x, key, -1) //-1 subtract dx value
             this.$store.commit('removeVisible', key)
+            
           }
         }
         console.log("state.show: ", this.$store.state.show)
