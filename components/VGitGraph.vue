@@ -15,15 +15,14 @@
 
       <!-- Each must loop independantly for proper render order-->
       <Paths
-        v-show="$store.state.show.includes(branchName)"
         class="transition-move"
-        v-for="(items, branchName) in _$" :key="'path-'+branchName"
+        v-for="(items, branchName) in roots" :key="'path-'+branchName"
         :items="items" :branchName="branchName"
       />
 
-      <g v-show="$store.state.show.includes(branchName)"
-        :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
+      <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
         <Links
+          v-show="$store.state.show.includes(branchName)"
           class="transition-move"
           v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
           :items="items" :i="actions" :turn="turn"
@@ -64,6 +63,11 @@ export default {
       const displacement = this.$store.getters.maxDx(branchName)
       this.$store.commit('dxCreate', {key:branchName, value:displacement})
     })
+  },
+  computed: {
+    roots() {
+      return this.$store.getters.rootBranches
+    }
   },
   methods: {
     filterLinks(path) {

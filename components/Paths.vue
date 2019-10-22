@@ -1,5 +1,7 @@
 <template>
-  <path 
+<g>
+  <path
+    class="transition-move"
     :class="{active: isActive}"
     v-on:dblclick="toggleChildren(items.children)"
 
@@ -9,6 +11,13 @@
     :stroke="items.color" 
     stroke-width="7"
   />
+  <!--Recursive children paths-->
+  <Paths
+    v-show="isActive===false"
+    v-for="(items2, branchName2) in children" :key="'path-'+branchName2"
+    :items="items2" :branchName="branchName2"
+  />
+</g>
 </template>
 
 <script>
@@ -17,16 +26,27 @@ import { PathsMixin } from "./Paths/PathsMixin.js";
 import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
+  name: "Paths",
   props: ['items', 'branchName'],
   mixins: [PathsMixin, DisplayMixin],
   computed: {
     isActive() {
       var displayed = this.$store.state.show
       return !this.items.children.every((val) => displayed.includes(val))
+    },
+    children() {
+      const childArr = this.items.children
+      return _.pickBy(this._$, (v,k)=>childArr.includes(k) )
     }
   },
+/*   data() {
+    return{
+      isActive: false
+    }
+  }, */
   methods: {
     toggleChildren(children) {
+      //this.isActive = !this.isActive
       if (children.length) {
         if (this.isActive === true) {
           this.$store.commit('addVisible', children)
