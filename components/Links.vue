@@ -2,7 +2,7 @@
   <component
     :is="i.link.type"
     v-if="Object.keys($options.components).includes(i.link.type)"
-    :x="getXDisp(items.x, i, items.dx)"
+    :x="getXDisp(items.x, i, $store.getters.solveXDisp(items.x))"
     :y="getYDisp(turn, i)"
     :XYLink="getLink(i.link)"
     :color="items.color"

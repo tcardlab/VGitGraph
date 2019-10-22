@@ -23,11 +23,11 @@ perhaps a mixin? I think this makes sense.
 export const state = () => ({  
   display: 0, 
   scale: 50,
-  show: [],
+  show: {},
+  displacement: {},
   branches: {
     "P1": {
       x: [1],
-      dx: 0,
       children: ["P1.1"],
       color:'#f00fff',
       path: {
@@ -55,7 +55,6 @@ export const state = () => ({
     },
     "P1.1": {
       x: [2, 1],
-      dx: 0,
       children: [],
       color:'#000864',
       path: {
@@ -79,7 +78,6 @@ export const state = () => ({
     },
     "P0": {
       x: [0],
-      dx: 0,
       children: ["P0.1", "P0.-1"],
       color:'#6f0606',
       path: {
@@ -107,7 +105,6 @@ export const state = () => ({
     },
     "P0.1": {
       x: [0, 1],
-      dx: 0,
       children: [],
       color:'#000864',
       path: {
@@ -131,7 +128,6 @@ export const state = () => ({
     },
     "P0.-1": {
       x: [0, -1],
-      dx: 0,
       children: [],
       color:'#000864',
       path: {
@@ -155,7 +151,6 @@ export const state = () => ({
     },
     "P3": {
       x: [-3],
-      dx: 0,
       children: ["P3.1"],
       color:'#6f0fff',
       path: {
@@ -183,7 +178,6 @@ export const state = () => ({
     },
     "P3.1": {
       x: [-3, 1],
-      dx: 0,
       children: [],
       color:'#000864',
       path: {
@@ -207,7 +201,6 @@ export const state = () => ({
     },
     "P2": {
       x: [3],
-      dx: 0,
       children: ["P2.-1", "P2.-2"],
       color:'#6f0fff',
       path: {
@@ -235,7 +228,6 @@ export const state = () => ({
     },
     "P2.-1": {
       x: [3, -1],
-      dx: 0,
       children: ["P2.-1.-1"],
       color:'#000864',
       path: {
@@ -259,7 +251,6 @@ export const state = () => ({
     },
     "P2.-2": {
       x: [3, -2],
-      dx: 0,
       children: [],
       color:'#000864',
       path: {
@@ -283,7 +274,6 @@ export const state = () => ({
     },
     "P2.-1.-1": {
       x: [3, -1, -1],
-      dx: 0,
       children: [],
       color:'#000864',
       path: {
@@ -299,7 +289,6 @@ export const state = () => ({
     },
     "GM": {
       x: [-1],
-      dx: 0,
       children: ['GM2'],
       color: '#008fb5',
       path: {
@@ -327,7 +316,6 @@ export const state = () => ({
     },
     "GM2": {
       x: [-2],
-      dx: 0,
       children: [],
       color:'#0fb500',
       path: {
@@ -356,40 +344,76 @@ export const state = () => ({
   }
 });
 
+import Vue from "vue";
+import _ from "lodash";
 
 export const mutations = {
-  addVisible (state, key) {
-    var updated = state.show.concat(key)
-    state.show = [... new Set(updated)]  // remove duplicates
-  },
-  removeVisible (state, key) {
-    var index = state.show.indexOf(key) // -1 if none
-    if (index>-1) {
-      state.show.splice(index, 1)
+  addVisible (state, key) { // show: {bName: x, ...}
+    for (var k of key) {
+      Vue.set(state.show, k, state.branches[k].x)
     }
   },
-  dx (state, payload) {
-    state.branches[payload.key].dx += payload.value
+  removeVisible (state, key) {
+    if (key in state.show) {
+      Vue.delete(state.show, key)
+    }
   },
+  setVisible (state, keyArr) {
+    state.show = {} 
+    mutations.addVisible(state, keyArr)
+  },
+  dxCreate (state, payload) {	
+    state.displacement[payload.key] = payload.value	
+  }
 }
-
-
-import _ from "lodash";
 
 export const getters = {
   rootBranches: state => {
-    var filtered = _.pickBy(state.branches, function(value, key) {
-      return Object.keys(value['x']).length===1;
+    var filtered = _.pickBy(state.branches, function(branch) {
+      return branch.x.length===1;
     });
     return filtered
   }, 
+  compareX(arr1, arr2) { 
+    const ln = Math.max(arr1.length, arr2.length)
+    for(var i=0; i<ln; i++) {
+      var sign = Math.sign(arr1[i]-arr2[i])
+      switch(sign) {
+        case 0: 
+          if (i === ln-1) {
+            return sign  // arr1===arr2
+          } else { break } // keep looping
+        case 1: 
+          return sign  // arr1>arr2
+        case -1:
+          return sign  // arr1<arr2
+        default: // assume one is longer
+          var arr1Large = arr1.length>arr2.length
+          if(arr1Large) {  // arr1 is child
+            return Math.sign(arr1[i])  // branch + or -
+          } else if (!arr1Large) { // arr2 is child
+            return -1*Math.sign(arr2[i]) // branch + or -
+          } // not sure what to do with bad values
+      }
+    }
+  },
+  solveXDisp: (state) => (xConst) => {
+    const sign = Math.sign(getters.compareX(xConst, [0]))
+    // Get prior Branches. (cant loop through just show as x is needed)
+    const xArr = _.pickBy(state.show, (x,k) => (
+      (!_.isEqual(xConst, [0]) && _.isEqual(x, [0])) || // shift all but 0 by 1
+      getters.compareX(x, [0]) === sign &&  //  +/- from [0]
+      getters.compareX(xConst, x) === sign  // prior branches closer to zero = sign
+    ))
+    // sum displacement of prior branches
+    const sum = _.sum(_.map(xArr, (v,k)=>sign * state.displacement[k]))
+    return sum //? sum:0 //returns nan on zero
+  },
   maxDx: (state) => (key) => {
     const path = state.branches[key].path
     const dxArr = _.mapValues(path, function(o) { 
-        return o.y.length==2? Math.abs(o.y[0])+1:1 // should be childs last x val, not 1?
+        return o.y.length==2? Math.abs(o.y[0])+1:1
       })
-    return _.max(_.values(dxArr)) 
-    // there may be more complexity to this than i initially thought.
-    // given negative numbers, i wont know which direction things branch with abs...
+    return _.max(_.values(dxArr))
   }
 }
