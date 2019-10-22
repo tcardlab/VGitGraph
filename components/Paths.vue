@@ -36,7 +36,7 @@ export default {
     },
     children() {
       const childArr = this.items.children
-      return _.pickBy(this._$, (v,k)=>childArr.includes(k) )
+      return _.pickBy(this._$, (v,k)=>childArr.includes(k))
     }
   },
   methods: {
