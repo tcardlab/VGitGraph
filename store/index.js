@@ -346,18 +346,12 @@ export const state = () => ({
 
 
 export const mutations = {
-  maxDx (state, key) {
-    const path = state.branches[key].path
-    const dxArr = _.mapValues(path, function(o) { 
-        return o.y.length==2? Math.abs(o.y[0])+1:1
-      })
-    return _.max(_.values(dxArr))
+  setVisible (state, keyArr) {
+    state.show = [...keyArr]
   },
-  addVisible (state, key) { // show: {bName: x, ...} takes key or key array
-    for (var k of key) {
-      const x = mutations.maxDx(state, k)
-      Vue.set(state.show, k, x)
-    }
+  addVisible (state, key) {  // key or key array
+    var updated = state.show.concat(key)
+    state.show = [... new Set(updated)]  // remove duplicates
   },
   removeVisible (state, keyArr) { // key or key array
     for (var key of keyArr){
@@ -367,12 +361,8 @@ export const mutations = {
       }
     }
   },
-  setVisible (state, keyArr) {
-    state.show = {} 
-    mutations.addVisible(state, keyArr)
-  },
-  dxCreate (state, payload) {	
-    state.show[payload.key] = payload.value	
+  dxCreate (state, payload) {
+    state.dx[payload.key] = payload.value
   }
 }
 
@@ -415,14 +405,20 @@ export const getters = {
     const sign = Math.sign(getters.compareX(xConst, [0]))
     // Get prior Branches. (cant loop through just show as x is needed)
     const xArr = _.pickBy(state.branches, (v,k) => (
-      k in state.show && ( // only displace by visable
-        (!_.isEqual(xConst, [0]) && _.isEqual(v.x, [0])) || // shift all but 0 by 1
-        getters.compareX(v.x, [0]) === sign &&  //  +/- from [0]
-        getters.compareX(xConst, v.x) === sign  // prior branches closer to zero = sign
-      )
+      (!_.isEqual(xConst, [0]) && _.isEqual(v.x, [0])) || // shift all but 0 by 1
+      getters.compareX(v.x, [0]) === sign &&  //  +/- from [0]
+      getters.compareX(xConst, v.x) === sign &&  // prior branches closer to zero = sign
+      state.show.includes(k)  // only displace by visable
     ))
     // sum displacement of prior branches
-    const sum = _.sum(_.map(xArr, (v,k)=>sign * state.show[k]))
+    const sum = _.sum(_.map(xArr, (v,k)=>sign * state.dx[k]))
     return sum //? sum:0 //returns nan on zero
+  },
+  maxDx: (state) => (key) => {
+    const path = state.branches[key].path
+    const dxArr = _.mapValues(path, function(o) { 
+        return o.y.length==2? Math.abs(o.y[0])+1:1
+      })
+    return _.max(_.values(dxArr))
   }
 }
