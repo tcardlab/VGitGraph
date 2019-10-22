@@ -40,7 +40,7 @@ export default {
       return Object.keys(this._$).sort()
     },
     branchState(){
-      var show = this.$store.state.show.sort()
+      var show = Object.keys(this.$store.state.show).sort()
       if ( _.isEqual(show, this.roots) ){
         return 0
       } else if ( _.isEqual(show, this.all)) {

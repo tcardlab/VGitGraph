@@ -22,7 +22,7 @@
 
       <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
         <Links
-          v-show="$store.state.show.includes(branchName)"
+          v-show="branchName in $store.state.show"
           class="transition-move"
           v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
           :items="items" :i="actions" :turn="turn"
@@ -30,7 +30,7 @@
       </g>
       <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
         <Glyphs
-          v-show="$store.state.show.includes(branchName)"
+          v-show="branchName in $store.state.show"
           class="transition-move"
           v-for="(actions, turn) in items.path" :key="turn"
           :items="items" :i="actions" :turn="turn"
