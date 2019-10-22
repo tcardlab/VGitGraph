@@ -15,13 +15,12 @@
 
       <!-- Each must loop independantly for proper render order-->
       <Paths
-        v-show="branchName in $store.state.show"
         class="transition-move"
-        v-for="(items, branchName) in _$" :key="'path-'+branchName"
+        v-for="(items, branchName) in roots" :key="'path-'+branchName"
         :items="items" :branchName="branchName"
       />
 
-      <g :id="branchName+'-Links'" v-for="(items, branchName) in displayed" :key="'link-'+branchName">
+      <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
         <Links
           v-show="branchName in $store.state.show"
           class="transition-move"
@@ -66,9 +65,8 @@ export default {
     })
   },
   computed: {
-    displayed() {
-      // May replace _$ to loop through branches. But it currently breaks transition
-      return _.pickBy(this._$, (v,k) => k in this.$store.state.show)
+    roots() {
+      return this.$store.getters.rootBranches
     }
   },
   methods: {

@@ -344,18 +344,18 @@ export const state = () => ({
   }
 });
 
-import Vue from "vue";
-import _ from "lodash";
 
 export const mutations = {
-  addVisible (state, key) { // show: {bName: x, ...}
+  addVisible (state, key) { // show: {bName: x, ...} takes key or key array
     for (var k of key) {
       Vue.set(state.show, k, state.branches[k].x)
     }
   },
-  removeVisible (state, key) {
-    if (key in state.show) {
-      Vue.delete(state.show, key)
+  removeVisible (state, keyArr) {
+    for (var key of keyArr){
+      if (key in state.show) {
+        Vue.delete(state.show, key)
+      }
     }
   },
   setVisible (state, keyArr) {
@@ -367,12 +367,17 @@ export const mutations = {
   }
 }
 
+
+import _ from "lodash";
+
 export const getters = {
   rootBranches: state => {
-    var filtered = _.pickBy(state.branches, function(branch) {
-      return branch.x.length===1;
+    var roots = _.pickBy(state.branches, function(value, key) {
+      return value.x.length===1;
     });
-    return filtered
+    const children = _.flatten(_.map(roots, "children"))
+    roots = _.pickBy(roots, (v,k)=> !children.includes(k))
+    return roots
   }, 
   compareX(arr1, arr2) { 
     const ln = Math.max(arr1.length, arr2.length)

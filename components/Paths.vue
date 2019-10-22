@@ -1,5 +1,7 @@
 <template>
-  <path 
+<g>
+  <path
+    class="transition-move"
     :class="{active: isActive}"
     v-on:dblclick="toggleChildren(items.children)"
 
@@ -9,6 +11,13 @@
     :stroke="items.color" 
     stroke-width="7"
   />
+  <!--Recursive children paths-->
+  <Paths
+    v-show="isActive===false"
+    v-for="(items2, branchName2) in children" :key="'path-'+branchName2"
+    :items="items2" :branchName="branchName2"
+  />
+</g>
 </template>
 
 <script>
@@ -17,32 +26,26 @@ import { PathsMixin } from "./Paths/PathsMixin.js";
 import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
+  name: "Paths",
   props: ['items', 'branchName'],
   mixins: [PathsMixin, DisplayMixin],
   computed: {
     isActive() {
-      var display = this.$store.state.show
-      return !this.items.children.every((val) => val in display)
+      var displayed = this.$store.state.show
+      return !this.items.children.every((val) => displayed.includes(val))
+    },
+    children() {
+      const childArr = this.items.children
+      return _.pickBy(this._$, (v,k)=>childArr.includes(k) )
     }
   },
   methods: {
     toggleChildren(children) {
       if (children.length) {
         if (this.isActive === true) {
-          //var payload = {branches:children, parent:this.branchName}
-          this.$store.commit('addVisible', children) // payload
+          this.$store.commit('addVisible', children)
         } else {
-          for (var key of children){
-            var subChild = this._$[key].children
-            var show = this.$store.state.show
-            var activeChildren = subChild.filter(branch => branch in show)
-            // Recusrion for children with descendants
-            if (activeChildren.length>0){
-              this.toggleChildren(activeChildren, key)
-            }
-            // Update current parent dx/show
-            this.$store.commit('removeVisible', key)
-          }
+          this.$store.commit('removeVisible', children)
         }
         console.log("state.show: ", this.$store.state.show)
       }
