@@ -351,7 +351,8 @@ export const mutations = {
     const dxInit = payload.parent ? state.show[payload.parent] : 0
     payload.branches.forEach(k => Vue.set(state.show, k, dxInit))
   },
-  removeVisible (state, key) {
+  removeVisible (state, keyArr) {
+    for(var key of keyArr)
     if (key in state.show) {
       Vue.delete(state.show, key)
     }
@@ -370,6 +371,14 @@ export const getters = {
     });
     return filtered
   }, 
+  /* rootBranches: state => {
+    var roots = _.pickBy(state.branches, function(value, key) {
+      return value.x.length===1;
+    });
+    const children = _.flatten(_.map(roots, "children"))
+    roots = _.pickBy(roots, (v,k)=> !children.includes(k))
+    return roots
+  },  */
   maxDx: (state) => (key) => {
     const path = state.branches[key].path
     const dxArr = _.mapValues(path, function(o) { 

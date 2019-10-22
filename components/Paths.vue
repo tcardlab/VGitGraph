@@ -1,4 +1,5 @@
 <template>
+<g>
   <path 
     :class="{active: isActive}"
     v-on:dblclick="toggleChildren(items.children, branchName)"
@@ -9,6 +10,13 @@
     :stroke="items.color" 
     stroke-width="7"
   />
+  <Paths
+    v-if="isActive===false"
+    v-for="(items2, branchName2) in children" :key="'path-'+branchName2"
+    class="transition-move"
+    :items="items2" :branchName="branchName2" :isChild="items.x"
+  />
+</g>
 </template>
 
 <script>
@@ -17,12 +25,32 @@ import { PathsMixin } from "./Paths/PathsMixin.js";
 import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
-  props: ['items', 'branchName'],
+  name: 'Paths',
+  props: ['items', 'branchName', 'isChild'],
   mixins: [PathsMixin, DisplayMixin],
+  mounted() {
+    if(typeof this.isChild === typeof [] && this.items.x.length>1){ 
+      // ^issue here P3 will be updated if GM2 shown so i stopped GM2 
+      // from updating on created. However, it now wont update at all...
+      // the result is P3 dx is only ever subtracted from. 
+      console.log('hi')
+      this.dXUpdate(this.isChild, this.branchName, +1)
+      // clled on branch update too...
+    }
+  },
+  beforeDestroy() {
+    if(typeof this.isChild === typeof [1,2]){
+      console.log('hi2')
+      this.dXUpdate(this.isChild, this.branchName, -1)
+    }
+  },
   computed: {
     isActive() {
       var display = this.$store.state.show
       return !this.items.children.every((val) => val in display)
+    },
+    children() {
+      return _.pickBy( this._$, (v,branch)=>this.items.children.includes(branch))
     }
   },
   methods: {
@@ -51,7 +79,7 @@ export default {
     },
     dXUpdate(parentX, childKey, mod=1){ // +/- modifier
       const childX = this._$[childKey].x
-      const dx = mod * this.$store.getters.maxDx(childKey)
+      var dx = mod * this.$store.getters.maxDx(childKey)
 
       const RelativePos = this.compareX(childX, parentX)
       const pSign = this.compareX(parentX, [0])
@@ -61,11 +89,11 @@ export default {
         var compare = this.compareX(branchX, childX)
         if (pSign===0 || RelativePos===pSign) { // shift peripherals 
           if (RelativePos === compare) { 
-            payload.push({type:'dx', key:branch, value:compare*dx})
+            payload.push({key:branch, value:compare*dx})
           }
         } else { // shift peripherals, parent and children
           if(pSign===compare || _.isEqual(branchX.slice(0, parentX.length), parentX)) {
-            payload.push({type:'dx', key:branch, value:pSign*dx})
+            payload.push({key:branch, value:pSign*dx})
           }
         }
       }
@@ -74,26 +102,10 @@ export default {
     toggleChildren(children, branchName) {
       if (children.length) {
         if (this.isActive === true) {
-          // assuming all children are spaced appropriately i should 
-          // only have to do the 2 most extreme child +/- children
           var payload = {branches:children, parent:branchName}
           this.$store.commit('addVisible', payload)
-          for (var key of children){
-            this.dXUpdate(this.items.x, key, +1)  // add dx value
-          }
         } else {
-          for (var key of children){
-            var subChild = this._$[key].children
-            var show = this.$store.state.show
-            var activeChildren = subChild.filter(branch => branch in show)
-            // Recusrion for children with descendants
-            if (activeChildren.length>0){
-              this.toggleChildren(activeChildren, key)
-            }
-            // Update current parent dx/show
-            this.dXUpdate(this._$[branchName].x, key, -1) // -1 subtract dx value
-            this.$store.commit('removeVisible', key)
-          }
+          this.$store.commit('removeVisible', children)
         }
         console.log("state.show: ", this.$store.state.show)
       }

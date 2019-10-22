@@ -15,7 +15,7 @@
 
       <!-- Each must loop independantly for proper render order-->
       <Paths
-        v-for="(items, branchName) in displayed" :key="'path-'+branchName"
+        v-for="(items, branchName) in roots" :key="'path-'+branchName"
         class="transition-move"
         :items="items" :branchName="branchName"
       />
@@ -58,6 +58,9 @@ export default {
   computed: {
     displayed() {
       return _.pickBy(this._$, (v,k) => k in this.$store.state.show)
+    },
+    roots() {
+      return this.$store.getters.rootBranches
     }
   },
   methods: {
