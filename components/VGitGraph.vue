@@ -17,7 +17,7 @@
       <Paths
         class="transition-move"
         v-for="(items, branchName) in roots" :key="'path-'+branchName"
-        :items="items" :branchName="branchName"
+        :items="items" :branchName="branchName" :parentActive="true"
       />
 
       <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
@@ -30,7 +30,7 @@
       </g>
       <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
         <Glyphs
-          v-show="$store.state.show.includes(branchName)"
+          v-show="branchName in $store.state.show"
           class="transition-move"
           v-for="(actions, turn) in items.path" :key="turn"
           :items="items" :i="actions" :turn="turn"

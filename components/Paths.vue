@@ -15,7 +15,7 @@
   <Paths
     v-show="isActive===false"
     v-for="(items2, branchName2) in children" :key="'path-'+branchName2"
-    :items="items2" :branchName="branchName2"
+    :items="items2" :branchName="branchName2" :parentActive="isActive"
   />
 </g>
 </template>
@@ -27,17 +27,17 @@ import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
   name: "Paths",
-  props: ['items', 'branchName'],
+  props: ['items', 'branchName', 'parentActive'],
   mixins: [PathsMixin, DisplayMixin],
   computed: {
     isActive() {
       var displayed = this.$store.state.show
-      return !this.items.children.every((val) => displayed.includes(val))
+      return !this.items.children.every((val) => val in displayed)
     },
     children() {
       const childArr = this.items.children
       return _.pickBy(this._$, (v,k)=>childArr.includes(k) )
-    }
+    },
   },
   methods: {
     toggleChildren(children) {
@@ -45,6 +45,15 @@ export default {
         if (this.isActive === true) {
           this.$store.commit('addVisible', children)
         } else {
+          for (var key of children){
+            var subChild = this._$[key].children
+            var show = this.$store.state.show
+            var activeChildren = subChild.filter(branch => branch in show)
+            // Recusrion for children with descendants
+            if (activeChildren.length>0){
+              this.toggleChildren(activeChildren, key)
+            }
+          }
           this.$store.commit('removeVisible', children)
         }
         console.log("state.show: ", this.$store.state.show)

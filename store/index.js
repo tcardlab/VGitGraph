@@ -23,8 +23,7 @@ perhaps a mixin? I think this makes sense.
 export const state = () => ({  
   display: 0, 
   scale: 50,
-  show: [],
-  dx: {},
+  show: {},
   branches: {
     "P1": {
       x: [1],
@@ -361,9 +360,8 @@ export const mutations = {
   },
   removeVisible (state, keyArr) { // key or key array
     for (var key of keyArr){
-      var index = state.show.indexOf(key) // -1 if none
-      if (index>-1) {
-        state.show.splice(index, 1)
+      if (key in state.show) {
+        Vue.delete(state.show, key)
       }
     }
   },
@@ -376,7 +374,7 @@ export const mutations = {
   }
 }
 
-
+import Vue from "vue"
 import _ from "lodash";
 
 export const getters = {
