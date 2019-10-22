@@ -357,7 +357,9 @@ export const mutations = {
     }
   },
   dx (state, payload) {
-    state.show[payload.key] += payload.value
+    for(var branch of payload) {
+      state.show[branch.key] += branch.value
+    }
   },
 }
 

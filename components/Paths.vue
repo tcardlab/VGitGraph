@@ -50,45 +50,83 @@ export default {
       }
     },
 
+    solveDX() {
+      const sign = this.compareX(xConst, [0])
+      // Get prior Branches. (cant loop through just show as x is needed)
+      const xArr = _.pickBy(this._$, (v,k) => (
+          getters.compareX(v.x, [0]) === sign &&  //  +/- from [0]
+          getters.compareX(xConst, v.x) === sign  // prior branches closer to zero = sign
+      ))
+      // sum displacement of prior branches
+      const sum = _.sum(_.map(xArr, (v,k)=>sign * state.show[k]))
+      return sum
+    },
 
+    /* dXUpdate(parentX, childKey, mod=1){ // +/- modifier
+      const childX = this._$[childKey].x
+      const dx = mod * this.$store.getters.maxDx(childKey)
+
+      const RelativePos = this.compareX(childX, parentX)
+      const pSign = this.compareX(parentX, [0])
+      var payload = []
+      for(var branch of Object.keys(this.$store.state.show)) {
+        var branchX = this._$[branch].x
+        var compare = this.compareX(branchX, childX)
+        if ((pSign===0 || RelativePos===pSign) && RelativePos === compare) {
+          payload.push({type:'dx', key:branch, value:compare*dx})
+        } else if (RelativePos!==pSign && (pSign===compare || _.isEqual(branchX.slice(0, parentX.length), parentX))){
+          payload.push({type:'dx', key:branch, value:pSign*dx})
+        }
+      }
+      this.$store.commit('dx', payload)
+    }, */
+
+    /* dXUpdate(parentX, childKey, mod=1) {  // +/- modifier
+      const childX = this._$[childKey].x
+      const dx = mod * this.$store.getters.maxDx(childKey)
+
+      const RelativePos = this.compareX(childX, parentX)
+      const pSign = this.compareX(parentX, [0])
+      var payload = Object.keys(this.$store.state.show).map((branch)=> {
+        var branchX = this._$[branch].x
+        var compare = this.compareX(this._$[branch].x, childX)
+        if (pSign===0 || RelativePos===pSign) { // shift peripherals 
+          if (RelativePos === compare) { 
+            return {type:'dx', key:branch, value:compare*dx}
+          }
+        } else { // shift peripherals, parent and children
+          if(pSign===compare || _.isEqual(branchX.slice(0, parentX.length), parentX)) {
+            return {type:'dx', key:branch, value:pSign*dx}
+          }
+        }
+      }).filter(el => el !== undefined)
+      this.$store.commit('dx', payload)
+    }, */
 
     dXUpdate(parentX, childKey, mod=1){ // +/- modifier
       const childX = this._$[childKey].x
       const dx = mod * this.$store.getters.maxDx(childKey)
 
       const RelativePos = this.compareX(childX, parentX)
-      const pSign = Math.sign(parentX[0])
-      if (pSign===0 && parentX.length===1) {  // x is [0]
-        // add dx to all braches on side of branch
-        for(var branch of Object.keys(this.$store.state.show)) {
-          var compare = this.compareX(this._$[branch].x, childX)
-          if (compare === Math.sign(childX[1])) {
-            var payload = {type:'dx', key:branch, value:compare*dx}
-            this.$store.commit(payload)
+      const pSign = this.compareX(parentX, [0])
+      var payload = []
+      for(var branch of Object.keys(this.$store.state.show)) {
+        var branchX = this._$[branch].x
+        var compare = this.compareX(branchX, childX)
+        if (pSign===0 || RelativePos===pSign) { // shift peripherals 
+          if (RelativePos === compare) { 
+            payload.push({type:'dx', key:branch, value:compare*dx})
           }
-        }
-      } else if (pSign !== RelativePos) {  // branches toward 0
-        // add dx to parent, self, and all braches continuing
-        for(var branch of Object.keys(this.$store.state.show)) {
-          var compare = this.compareX(childX, this._$[branch].x)
-          // children include themselves, as they dont inherit parents X
-          var branchX = this._$[branch].x
-          if (compare !== pSign || _.isEqual(branchX.slice(0, parentX.length), parentX)) { 
-            var payload = {type:'dx', key:branch, value:pSign*dx}
-            this.$store.commit(payload)
-          }
-        }
-      } else if (pSign === RelativePos) {  // branches awayfrom 0
-        // add dx all peripheral braches
-        for(var branch of Object.keys(this.$store.state.show)) {
-          var compare = this.compareX(this._$[branch].x, childX)
-          if (compare === pSign) {
-            var payload = {type:'dx', key:branch, value:pSign*dx}
-            this.$store.commit(payload)
+        } else { // shift peripherals, parent and children
+          if(pSign===compare || _.isEqual(branchX.slice(0, parentX.length), parentX)) {
+            payload.push({type:'dx', key:branch, value:pSign*dx})
           }
         }
       }
+      this.$store.commit('dx', payload)
     },
+
+
     toggleChildren(children, branchName) {
       if (children.length) {
         if (this.isActive === true) {
