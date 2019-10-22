@@ -23,7 +23,8 @@ perhaps a mixin? I think this makes sense.
 export const state = () => ({  
   display: 0, 
   scale: 50,
-  show: {},
+  show: [],
+  dx: {},
   branches: {
     "P1": {
       x: [1],
@@ -343,8 +344,6 @@ export const state = () => ({
   }
 });
 
-import Vue from "vue";
-import _ from "lodash";
 
 export const mutations = {
   maxDx (state, key) {
@@ -354,15 +353,18 @@ export const mutations = {
       })
     return _.max(_.values(dxArr))
   },
-  addVisible (state, key) { // show: {bName: x, ...}
+  addVisible (state, key) { // show: {bName: x, ...} takes key or key array
     for (var k of key) {
       const x = mutations.maxDx(state, k)
       Vue.set(state.show, k, x)
     }
   },
-  removeVisible (state, key) {
-    if (key in state.show) {
-      Vue.delete(state.show, key)
+  removeVisible (state, keyArr) { // key or key array
+    for (var key of keyArr){
+      var index = state.show.indexOf(key) // -1 if none
+      if (index>-1) {
+        state.show.splice(index, 1)
+      }
     }
   },
   setVisible (state, keyArr) {
@@ -374,12 +376,17 @@ export const mutations = {
   }
 }
 
+
+import _ from "lodash";
+
 export const getters = {
   rootBranches: state => {
-    var filtered = _.pickBy(state.branches, function(branch) {
-      return branch.x.length===1;
+    var roots = _.pickBy(state.branches, function(value, key) {
+      return value.x.length===1;
     });
-    return filtered
+    const children = _.flatten(_.map(roots, "children"))
+    roots = _.pickBy(roots, (v,k)=> !children.includes(k))
+    return roots
   }, 
   compareX(arr1, arr2) { 
     const ln = Math.max(arr1.length, arr2.length)
