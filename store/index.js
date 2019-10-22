@@ -367,7 +367,7 @@ export const mutations = {
   }
 }
 
-
+import Vue from "vue"
 import _ from "lodash";
 
 export const getters = {

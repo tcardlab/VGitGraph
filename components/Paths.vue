@@ -32,7 +32,7 @@ export default {
   computed: {
     isActive() {
       var displayed = this.$store.state.show
-      return !this.items.children.every((val) => displayed.includes(val))
+      return !this.items.children.every((val) => val in displayed)
     },
     children() {
       const childArr = this.items.children
