@@ -29,28 +29,32 @@ export default {
   props: ['items', 'branchName', 'isChild'],
   mixins: [PathsMixin, DisplayMixin],
   mounted() {
-    if(typeof this.isChild === typeof [] && this.items.x.length>1){ 
+    var display = this.$store.state.show
+    this.isActive = !this.items.children.every((val) => val in display)
+
+    if(typeof this.isChild === typeof []){ 
       // ^issue here P3 will be updated if GM2 shown so i stopped GM2 
       // from updating on created. However, it now wont update at all...
       // the result is P3 dx is only ever subtracted from. 
-      console.log('hi')
+      var payload = {branches:this.items.children, parent:this.branchName}
+      this.$store.commit('addVisible', payload)
       this.dXUpdate(this.isChild, this.branchName, +1)
-      // clled on branch update too...
     }
   },
   beforeDestroy() {
-    if(typeof this.isChild === typeof [1,2]){
-      console.log('hi2')
+    if(typeof this.isChild === typeof []){
+      this.$store.commit('removeVisible', this.items.children)
       this.dXUpdate(this.isChild, this.branchName, -1)
     }
   },
   computed: {
-    isActive() {
-      var display = this.$store.state.show
-      return !this.items.children.every((val) => val in display)
-    },
     children() {
       return _.pickBy( this._$, (v,branch)=>this.items.children.includes(branch))
+    }
+  },
+  data() {
+    return {
+      isActive: true,
     }
   },
   methods: {
@@ -101,12 +105,7 @@ export default {
     },
     toggleChildren(children, branchName) {
       if (children.length) {
-        if (this.isActive === true) {
-          var payload = {branches:children, parent:branchName}
-          this.$store.commit('addVisible', payload)
-        } else {
-          this.$store.commit('removeVisible', children)
-        }
+        this.isActive = !this.isActive
         console.log("state.show: ", this.$store.state.show)
       }
     },
