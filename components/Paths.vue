@@ -59,11 +59,12 @@ export default {
       for(var branch of Object.keys(this.$store.state.show)) {
         var branchX = this._$[branch].x
         var compare = this.compareX(branchX, childX)
-        if (pSign===0 || RelativePos===pSign) { // shift peripherals 
-          if (RelativePos === compare) { 
+        if (pSign===0 || RelativePos===pSign) { // branches outward
+          if (RelativePos === compare) { // shift peripherals 
             payload.push({type:'dx', key:branch, value:compare*dx})
           }
-        } else { // shift peripherals, parent and children
+        } else { // branches inward
+          // shift peripherals, parent and children
           if(pSign===compare || _.isEqual(branchX.slice(0, parentX.length), parentX)) {
             payload.push({type:'dx', key:branch, value:pSign*dx})
           }
