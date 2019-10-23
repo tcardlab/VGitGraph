@@ -357,17 +357,31 @@ export const mutations = {
     }
   },
   dx (state, payload) {
-    state.show[payload.key] += payload.value
+    for(var branch of payload) {
+      state.show[branch.key] += branch.value
+    }
   },
 }
 
 export const getters = {
-  rootBranches: state => {
+  rootBranches: state => { 
+    // with children 
+    // (good way to escape collapse)
     var filtered = _.pickBy(state.branches, function(branch) {
       return branch.x.length===1;
     });
     return filtered
   }, 
+  /* rootBranches: state => { // no children
+    // Not as forgiving as summed method. 
+    // thus a gap is left for GM2
+    var roots = _.pickBy(state.branches, function(value, key) {
+      return value.x.length===1;
+    });
+    const children = _.flatten(_.map(roots, "children"))
+    roots = _.pickBy(roots, (v,k)=> !children.includes(k))
+    return roots
+  },  */
   maxDx: (state) => (key) => {
     const path = state.branches[key].path
     const dxArr = _.mapValues(path, function(o) { 
