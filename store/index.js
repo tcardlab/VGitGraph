@@ -405,7 +405,7 @@ export const getters = {
     }
   },
   solveXDisp: (state) => (xConst) => {
-    const sign = Math.sign(getters.compareX(xConst, [0]))
+    const sign = getters.compareX(xConst, [0])
     // Get prior Branches. (cant loop through just show as x is needed)
     const xArr = _.pickBy(state.branches, (v,k) => (
       k in state.show && ( // only displace by visable
