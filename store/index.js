@@ -398,7 +398,7 @@ export const getters = {
     }
   },
   solveXDisp: (state) => (xConst) => {
-    const sign = Math.sign(getters.compareX(xConst, [0]))
+    const sign = getters.compareX(xConst, [0])
     // Get prior Branches. (cant loop through just show as x is needed)
     const xArr = _.pickBy(state.show, (x,k) => (
       (!_.isEqual(xConst, [0]) && _.isEqual(x, [0])) || // shift all but 0 by 1
