@@ -15,25 +15,27 @@
 
       <!-- Each must loop independantly for proper render order-->
       <Paths
-        v-show="branchName in $store.state.show"
         class="transition-move"
         v-for="(items, branchName) in _$" :key="'path-'+branchName"
         :items="items" :branchName="branchName"
       />
 
-      <g :id="branchName+'-Links'" v-for="(items, branchName) in displayed" :key="'link-'+branchName">
+      <g :id="branchName+'-Links'" v-for="(items, branchName) in displayed" :key="'link-'+branchName"
+         v-show="branchName in $store.state.show"
+      >
         <Links
-          v-show="branchName in $store.state.show"
           class="transition-move"
           v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
           :items="items" :i="actions" :turn="turn"
         />
       </g>
-      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
+
+      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName"
+         v-show="branchName in $store.state.show"
+      >
         <Glyphs
-          v-show="branchName in $store.state.show"
           class="transition-move"
-          v-for="(actions, turn) in items.path" :key="turn"
+          v-for="(actions, turn) in items.path" :key="'glyph-'+turn"
           :items="items" :i="actions" :turn="turn"
         />
       </g>
@@ -87,6 +89,6 @@ path.active{
   filter: url(#glow);
 }
 .transition-move {
-  transition: all 1s;
+  transition: all 0.5s ease-out; 
 }
 </style>

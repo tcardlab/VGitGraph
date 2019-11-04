@@ -2,6 +2,8 @@
   <path 
     :class="{active: isActive}"
     v-on:dblclick="toggleChildren(items.children)"
+    
+    :visibility="branchName in $store.state.show ? 'visible':'hidden'"
 
     :id="branchName"
     :d="dString(items)" 
