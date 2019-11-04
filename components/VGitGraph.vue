@@ -28,11 +28,12 @@
           :items="items" :i="actions" :turn="turn"
         />
       </g>
-      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
+      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName"
+         v-show="branchName in $store.state.show"
+      >
         <Glyphs
-          v-show="branchName in $store.state.show"
           class="transition-move"
-          v-for="(actions, turn) in items.path" :key="turn"
+          v-for="(actions, turn) in items.path" :key="'glyph-'+turn"
           :items="items" :i="actions" :turn="turn"
         />
       </g>
