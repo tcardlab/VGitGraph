@@ -407,7 +407,7 @@ export const getters = {
     ))
     // sum displacement of prior branches
     const sum = _.sum(_.map(xArr, (v,k)=>sign * state.displacement[k]))
-    return sum //? sum:0 //returns nan on zero
+    return sum
   },
   maxDx: (state) => (key) => {
     const path = state.branches[key].path
