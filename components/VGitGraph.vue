@@ -14,12 +14,20 @@
 
 
       <!-- Each must loop independantly for proper render order-->
-      <Paths
+      <!-- <Paths
         v-show="$store.state.show.includes(branchName)"
         class="transition-move"
         v-for="(items, branchName) in _$" :key="'path-'+branchName"
         :items="items" :branchName="branchName"
-      />
+      /> -->
+
+      <transition-group name="test-transition" tag="g">
+        <Paths
+        v-for="(items, branchName) in _$" :key="'path-'+branchName"
+        v-show="$store.state.show.includes(branchName)"
+        :items="items" :branchName="branchName"
+        />
+      </transition-group>
 
       <g v-show="$store.state.show.includes(branchName)"
         :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
@@ -81,6 +89,9 @@ path.active{
   filter: url(#glow);
 }
 .transition-move {
+  transition: all 1s;
+}
+.test-transition-move {
   transition: all 1s;
 }
 </style>
