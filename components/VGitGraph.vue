@@ -13,13 +13,18 @@
       </defs>
 
 
-      <!-- Each must loop independantly for proper render order-->
-      <Paths
-        v-show="branchName in $store.state.show"
-        class="transition-move"
-        v-for="(items, branchName) in _$" :key="'path-'+branchName"
-        :items="items" :branchName="branchName"
-      />
+      <!-- 
+        This is VERY delicate code, transition-move has very unpredicatable behavior.
+        Transition group doesnt work as v-show=false yeilds x&y=0. 
+        Thus, they appear from the top left corner of the screen.
+      -->
+      <g :id="'g-'+branchName" v-for="(items, branchName) in _$" :key="'path-'+branchName"
+         v-show="branchName in $store.state.show">
+        <Paths
+          class="transition-move"
+          :items="items" :branchName="branchName"
+        />
+      </g>
 
       <g :id="branchName+'-Links'" v-for="(items, branchName) in displayed" :key="'link-'+branchName">
         <Links
@@ -29,14 +34,16 @@
           :items="items" :i="actions" :turn="turn"
         />
       </g>
-      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName">
+
+      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName"
+         v-show="branchName in $store.state.show">
         <Glyphs
-          v-show="branchName in $store.state.show"
           class="transition-move"
           v-for="(actions, turn) in items.path" :key="turn"
           :items="items" :i="actions" :turn="turn"
         />
       </g>
+
     </svg>
 </template>
 
