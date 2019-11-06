@@ -13,7 +13,6 @@ export default {
   computed: {
     roots() {
       return Object.keys(this.$store.getters.rootBranches).sort()
-      // check that no roots are children of other roots.?
     },
     all(){
       return Object.keys(this._$).sort()
