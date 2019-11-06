@@ -1,6 +1,7 @@
 export const PathsMixin = {
   methods: {
     ExtendOrReplace(d, x, y, marker, string) {
+      // If repeat, overwrite. Otherwise, extened dString.
       let last_index = d.length-1
       if (d.length>0 && d[last_index][0] === marker) {
         d[last_index] = (string) // Overwrite repeat
