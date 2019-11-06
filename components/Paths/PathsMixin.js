@@ -1,8 +1,14 @@
 export const PathsMixin = {
   methods: {
     moveTo(d, x, y){
-      return d.push(`M${x} ${y}`)
-    }, 
+      let last_index = d.length-1
+      if (d.length>0 && d[last_index][0] === "M") {
+        d[last_index] = (`M${x} ${y}`) // Overwrite Move-to
+        return d
+      } else {
+        return d.push(`M${x} ${y}`) // Add Move-to
+      }
+    },
     Branch(d, x, y, priorXYDisp, scale) {
       var [xprior, yprior] = priorXYDisp;
       var maxHeight = yprior + +this.$store.state.scale
