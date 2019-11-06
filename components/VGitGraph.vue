@@ -1,17 +1,6 @@
 <template>
     <svg overflow="visible">
-      <defs>
-        <!-- https://stackoverflow.com/questions/36284828/svg-adding-shadow-filter-makes-straight-line-invisible -->
-        <filter id="glow" x="-500" y="-500" height="1000" width="1000" filterUnits="userSpaceOnUse">
-          <fegaussianblur class="blur" result="coloredBlur" stddeviation="4"/>
-          <femerge>
-            <femergenode in="coloredBlur"></femergenode>
-            <!-- <femergenode in="coloredBlur"></femergenode> -->
-            <femergenode in="SourceGraphic"></femergenode>
-          </femerge>
-        </filter>
-      </defs>
-
+      <CustomDefs/>
 
       <!-- 
         This is VERY delicate code, transition-move has very unpredicatable behavior.
@@ -49,12 +38,14 @@
 
 <script>
 import _ from "lodash";
+import CustomDefs from "~/components/CustomDefs.vue";
 import Paths from "~/components/Paths.vue";
 import Links from "~/components/Links.vue";
 import Glyphs from "~/components/Glyphs.vue";
 
 export default {
   components: {
+    CustomDefs,
     Paths,
     Links,
     Glyphs
@@ -89,9 +80,6 @@ export default {
 </script>
 
 <style>
-path.active{
-  filter: url(#glow);
-}
 .transition-move {
   transition: all 1s;
 }
