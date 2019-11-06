@@ -22,8 +22,6 @@ perhaps a mixin? I think this makes sense.
 export const state = () => ({  
   display: 0, 
   scale: 50,
-  show: {},
-  displacement: {},
   branches: {
     "P1": {
       x: [1],

@@ -3,10 +3,10 @@ import _ from "lodash";
 
 export const namespaced = false
 
-/* export const state = () => ({  
+export const state = () => ({  
   show: {},
   displacement: {},
-}) */
+})
 
 export const mutations = {
   addVisible (state, key) { // show: {bName: x, ...}
