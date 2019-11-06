@@ -10,7 +10,9 @@ export const PathsMixin = {
       d.push(`C${xprior} ${midY} ${x} ${midY} ${x} ${maxHeight}`);
       if (maxHeight<y){
         this.Line(d, x, y)
-      }
+      } else(this.Line(d, x, y)) 
+      // zero length line necessary for animation. 
+      // Otherwise its not the same path
       return d
     },
     Line(d, x ,y) {

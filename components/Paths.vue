@@ -1,6 +1,9 @@
 <template>
   <path 
-    :id = "branchName"
+    :class="{active: isActive}"
+    v-on:dblclick="toggleChildren(items.children)"
+
+    :id="branchName"
     :d="dString(items)" 
     fill="none" 
     :stroke="items.color" 
@@ -16,13 +19,41 @@ import { DisplayMixin } from "~/components/DisplayMixin.js";
 export default {
   props: ['items', 'branchName'],
   mixins: [PathsMixin, DisplayMixin],
+  computed: {
+    isActive() {
+      var display = this.$store.state.show
+      return !this.items.children.every((val) => val in display)
+    }
+  },
   methods: {
+    toggleChildren(children) {
+      if (children.length) {
+        if (this.isActive === true) {
+          //var payload = {branches:children, parent:this.branchName}
+          this.$store.commit('addVisible', children) // payload
+        } else {
+          for (var key of children){
+            var subChild = this._$[key].children
+            var show = this.$store.state.show
+            var activeChildren = subChild.filter(branch => branch in show)
+            // Recusrion for children with descendants
+            if (activeChildren.length>0){
+              this.toggleChildren(activeChildren, key)
+            }
+            // Update current parent dx/show
+            this.$store.commit('removeVisible', key)
+          }
+        }
+        console.log("state.show: ", this.$store.state.show)
+      }
+    },
+
     getPath(bItems) { // –> [[x, y], ...]
       // continuity data is held in 'y' of path items 
       // it is used in dString logic.
-      const xConst = bItems.x[0]
+      const xConst = bItems.x.reduce((a, b) => a + b, 0) // sum here?
       const yArr = _.map(bItems.path, 'y')
-      const coords = yArr.map(i => Array.isArray(i) ? i : [xConst, i])
+      const coords = yArr.map(i => Array.isArray(i) ? [xConst+i[0], i[1]] : [xConst, i])
       return coords
     },
 

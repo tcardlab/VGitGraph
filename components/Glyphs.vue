@@ -1,7 +1,7 @@
 <template>
   <component 
     :is="i.glyph? i.glyph: 'Dot'" 
-    :x="getXDisp(items.x, i)"
+    :x="getXDisp(items.x, i, $store.getters.solveXDisp(items.x))"
     :y="getYDisp(turn, i)"
     :color="items.color"
   />
