@@ -25,6 +25,7 @@ export const state = () => ({
   scale: 50,
   show: {},
   displacement: {},
+  timeSet: {},
   branches: {
     "P1": {
       x: [1],
@@ -81,7 +82,7 @@ export const state = () => ({
       children: ["P0.1", "P0.-1"],
       color:'#6f0606',
       path: {
-        0: { y: [0, 0], unix: 1569580240,
+        0: { y: [0, 0], unix: 1568073600,
           glyph: "Book", event: "url",
           link: { }
         },
@@ -108,7 +109,7 @@ export const state = () => ({
       children: [],
       color:'#000864',
       path: {
-        8: { y: 4, unix: 1569580240,
+        8: { y: 4, unix: 1568764800,
           glyph: "", event: "url",
           link: { coord: ["P0", 5], type: "Path" } // hard link
         },
@@ -364,6 +365,14 @@ export const mutations = {
   },
   dxCreate (state, payload) {	
     state.displacement[payload.key] = payload.value	
+  }, 
+  initTimeArr(state) {
+    var timeArr = _.map(state.branches, (branch)=>{
+      return _.map(branch.path, 'unix')
+    })
+    var timeSet = _.sortedUniq(_.flatten(timeArr).sort())
+    console.log(timeSet)
+    state.timeSet = timeSet
   }
 }
 
