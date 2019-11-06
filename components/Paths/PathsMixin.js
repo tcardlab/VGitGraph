@@ -3,10 +3,10 @@ export const PathsMixin = {
     ExtendOrReplace(d, x, y, marker, string) {
       let last_index = d.length-1
       if (d.length>0 && d[last_index][0] === marker) {
-        d[last_index] = (string) // Overwrite
+        d[last_index] = (string) // Overwrite repeat
         return d
       } else {
-        return d.push(string) // Add
+        return d.push(string) // Extend dString
       }
     },
     moveTo(d, x, y){
@@ -19,9 +19,7 @@ export const PathsMixin = {
       var maxHeight = yprior + +this.$store.state.scale
       var midY = (yprior + maxHeight) / 2;
       d.push(`C${xprior} ${midY} ${x} ${midY} ${x} ${maxHeight}`);
-      if (maxHeight<y){
-        this.Line(d, x, y)
-      } else(this.Line(d, x, y)) 
+      this.Line(d, x, y)
       // zero length line necessary for animation. 
       // Otherwise its not the same path
       return d
