@@ -1,39 +1,15 @@
 <template>
   <div>
-    <div>
-      <label>Display</label>
-      <input v-model="$store.state.display" type="range" min="0" max="2" />
-      <span>{{ ['Paths', 'Turns', 'Time'][$store.state.display] }}</span>
-    </div>
-
-    <div>
-      <label>Children</label>
-      <input :value="branchState" type="range" min="0" max="2" v-on:input="onChg($event)" />
-      <span>{{ ['Collapse', 'Custom', 'Expand'][branchState] }}</span>
-    </div>
-    <CollapseState/>
-
-    <div>
-      <label>Scale</label>
-      <input v-model="$store.state.scale" type="range" min="20" max="80" />
-      <span>{{ $store.state.scale }}</span>
-    </div>
-
-    <VGitGraph/>
-
+    <label>Children</label>
+    <input :value="branchState" type="range" min="0" max="2" v-on:input="onChg($event)" />
+    <span>{{ ['Collapse', 'Custom', 'Expand'][branchState] }}</span>
   </div>
 </template>
 
 <script>
-import VGitGraph from "~/components/VGitGraph.vue";
-import CollapseState from "~/components/CollapseState.vue";
 import _ from "lodash";
 
 export default {
-  components: {
-    VGitGraph,
-    CollapseState
-  },
   computed: {
     roots() {
       return Object.keys(this.$store.getters.rootBranches).sort()
@@ -73,5 +49,5 @@ export default {
       }
     }
   }
-};
+}
 </script>
