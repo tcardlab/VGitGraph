@@ -1,13 +1,18 @@
 export const PathsMixin = {
   methods: {
-    moveTo(d, x, y){
+    ExtendOrReplace(d, x, y, marker, string) {
       let last_index = d.length-1
-      if (d.length>0 && d[last_index][0] === "M") {
-        d[last_index] = (`M${x} ${y}`) // Overwrite Move-to
+      if (d.length>0 && d[last_index][0] === marker) {
+        d[last_index] = (string) // Overwrite
         return d
       } else {
-        return d.push(`M${x} ${y}`) // Add Move-to
+        return d.push(string) // Add
       }
+    },
+    moveTo(d, x, y){
+      const marker = 'M'
+      const string = `${marker}${x} ${y}`
+      return this.ExtendOrReplace(d, x, y, marker, string)
     },
     Branch(d, x, y, priorXYDisp, scale) {
       var [xprior, yprior] = priorXYDisp;
@@ -22,13 +27,9 @@ export const PathsMixin = {
       return d
     },
     Line(d, x ,y) {
-      let last_index = d.length-1
-      if (d[last_index][0] === "L") {
-        d[last_index] = (`L${x} ${y}`) // Extend prior line
-        return d
-      } else {
-        return d.push(`L${x} ${y}`) // Start new line
-      }
+      const marker = 'L'
+      const string = `${marker}${x} ${y}`
+      return this.ExtendOrReplace(d, x, y, marker, string)
     }, 
 
     // In-path Link
