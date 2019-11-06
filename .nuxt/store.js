@@ -19,6 +19,7 @@ void (function updateModules() {
   store.modules = store.modules || {}
 
   resolveStoreModules(require('../store/storeRoute.js'), 'storeRoute.js')
+  resolveStoreModules(require('../store/toggleBranches.js'), 'toggleBranches.js')
 
   // If the environment supports hot reloading...
 
@@ -27,6 +28,7 @@ void (function updateModules() {
     module.hot.accept([
       '../store/index.js',
       '../store/storeRoute.js',
+      '../store/toggleBranches.js',
     ], () => {
       // Update `root.modules` with the latest definitions.
       updateModules()
