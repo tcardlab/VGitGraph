@@ -365,7 +365,15 @@ export const mutations = {
   },
   dxCreate (state, payload) {	
     state.displacement[payload.key] = payload.value	
-  }
+  },
+  setFiltered (state, keyArr) {
+    state.filtered = {} 
+    if (keyArr){
+      for (var k of keyArr) {
+        Vue.set(state.filtered, k, state.branches[k].x)
+      }
+    }
+  },
 }
 
 export const getters = {

@@ -41,8 +41,7 @@ export default {
           return k.toLowerCase().includes(this.search.toLowerCase())
         })
       }
-      this.$store.commit('setVisible', filtered)
-      //this.$store.state.filtered = filtered
+      this.$store.commit('setFiltered', this.search!==""?filtered:false)
       return filtered
     }
   },

@@ -8,7 +8,7 @@
         Thus, they appear from the top left corner of the screen.
       -->
       <g :id="'g-'+branchName" v-for="(items, branchName) in _$" :key="'path-'+branchName"
-         v-show="branchName in $store.state.show">
+         v-show="display(branchName)">
         <Paths
           class="transition-move"
           :items="items" :branchName="branchName"
@@ -17,7 +17,7 @@
 
       <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
         <Links
-          v-show="branchName in $store.state.show"
+          v-show="display(branchName)"
           class="transition-move"
           v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
           :items="items" :i="actions" :turn="turn"
@@ -25,7 +25,7 @@
       </g>
 
       <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName"
-         v-show="branchName in $store.state.show">
+         v-show="display(branchName)">
         <Glyphs
           class="transition-move"
           v-for="(actions, turn) in items.path" :key="turn"
@@ -74,7 +74,13 @@ export default {
         this.$store.commit('dxCreate', {key:branchName, value:displacement})
       })
     },
-
+    display(branchName) {
+      if(!_.isEmpty(this.$store.state.filtered)) {
+        return branchName in this.$store.state.filtered
+      } else {
+        return branchName in this.$store.state.show
+      }
+    }
   }
 };
 </script>
