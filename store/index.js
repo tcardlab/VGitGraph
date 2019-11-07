@@ -409,7 +409,8 @@ export const getters = {
   solveXDisp: (state) => (xConst) => {
     const sign = getters.compareX(xConst, [0])
     // Get prior Branches. (cant loop through just show as x is needed)
-    const xArr = _.pickBy(state.show, (x,k) => (
+    var displayed = _.isEmpty(state.filtered)?state.show:state.filtered
+    const xArr = _.pickBy(displayed, (x,k) => (
       (!_.isEqual(xConst, [0]) && _.isEqual(x, [0])) || // shift all but 0 by 1
       getters.compareX(x, [0]) === sign &&  //  +/- from [0]
       getters.compareX(xConst, x) === sign  // prior branches closer to zero = sign
