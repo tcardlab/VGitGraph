@@ -25,6 +25,7 @@ export const state = () => ({
   scale: 50,
   show: {},
   displacement: {},
+  filtered: false,
   branches: {
     "P1": {
       x: [1],

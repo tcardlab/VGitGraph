@@ -24,15 +24,26 @@
 
 <script>
 export default {
+  data:() => {
+    return {
+      dropdown: false,
+      search:'',
+      selected:false
+    }
+  },
   computed: {
     filteredList() {
+      var filtered = []
       if(this.selected){
-        return [this.selected]
+        filtered.push(this.selected)
       } else {
-        return Object.keys(this._$).filter(k => {
+        filtered = Object.keys(this._$).filter(k => {
           return k.toLowerCase().includes(this.search.toLowerCase())
         })
       }
+      this.$store.commit('setVisible', filtered)
+      //this.$store.state.filtered = filtered
+      return filtered
     }
   },
   methods:{
@@ -44,13 +55,6 @@ export default {
     initQuery(){
       this.dropdown = true
       this.selected = false
-    }
-  },
-  data:() => {
-    return {
-      dropdown: false,
-      search:'',
-      selected:false
     }
   }
 }
