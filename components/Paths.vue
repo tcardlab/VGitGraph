@@ -21,8 +21,10 @@ export default {
   mixins: [PathsMixin, DisplayMixin],
   computed: {
     isActive() {
-      var display = this.$store.state.show
-      return !this.items.children.every((val) => val in display)
+      if (_.isEmpty(this.$store.state.filtered)){
+        var display = this.$store.state.show
+        return !this.items.children.every((val) => val in display)
+      } else {return false} 
     }
   },
   methods: {

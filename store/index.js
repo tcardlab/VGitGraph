@@ -417,6 +417,16 @@ export const getters = {
     ))
     // sum displacement of prior branches
     const sum = _.sum(_.map(xArr, (v,k)=>sign * state.displacement[k]))
+    
+    if (!_.isEmpty(state.filtered)){
+      if (_.keys(state.filtered).length===1){
+        return 0
+      } else {
+        const pseudoZero = '0' in _.invert(state.filtered)? 0 : sign
+        return sum + pseudoZero
+      }
+    }
+    
     return sum
   },
   maxDx: (state) => (key) => {
