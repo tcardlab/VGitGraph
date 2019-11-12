@@ -406,6 +406,13 @@ export const getters = {
       }
     }
   },
+  pseudoZero(displayObject, sign) {
+    // not empty and seearch results.len > 1
+    if (_.keys(displayObject).length>1){ 
+      // if x=[0] is in displayObject
+      return '0' in _.invert(displayObject)? 0 : sign
+    } else {return 0}
+  },
   solveXDisp: (state) => (xConst) => {
     const sign = getters.compareX(xConst, [0])
     // Get prior Branches. (cant loop through just show as x is needed)
@@ -417,17 +424,7 @@ export const getters = {
     ))
     // sum displacement of prior branches
     const sum = _.sum(_.map(xArr, (v,k)=>sign * state.displacement[k]))
-    
-    if (!_.isEmpty(state.filtered)){
-      if (_.keys(state.filtered).length===1){
-        return 0
-      } else {
-        const pseudoZero = '0' in _.invert(state.filtered)? 0 : sign
-        return sum + pseudoZero
-      }
-    }
-    
-    return sum
+    return sum + getters.pseudoZero(state.filtered, sign) // mod displacement for search results
   },
   maxDx: (state) => (key) => {
     const path = state.branches[key].path
