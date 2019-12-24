@@ -35,6 +35,9 @@ export const DisplayMixin = {
         case 1:
           return this.scaler(+key)
         case 2:
+          const yUnix = this.$store.state.timeSet.indexOf(action.unix)
+          return this.scaler(yUnix)
+        case 3:
           // future cases
         default: 
           const y = action['y']
