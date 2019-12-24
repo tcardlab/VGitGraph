@@ -64,7 +64,8 @@ export default {
       return filtered
     },
     initRoots() {
-      var filtered = Object.keys(this.$store.getters.rootBranches)
+      //var filtered = Object.keys(this.$store.getters.rootBranches)
+      var filtered = _.keys(_.pickBy(this._$, (branch)=>{return branch.x.length===1}))
       this.$store.commit('addVisible', filtered)
       console.log('otp: ', this.$store.state.show)
     },

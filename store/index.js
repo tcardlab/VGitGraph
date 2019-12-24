@@ -369,11 +369,13 @@ export const mutations = {
 
 export const getters = {
   rootBranches: state => {
-    var filtered = _.pickBy(state.branches, function(branch) {
-      return branch.x.length===1;
+    var roots = _.pickBy(state.branches, function(value, key) {
+      return value.x.length===1;
     });
-    return filtered
-  }, 
+    const children = _.flatten(_.map(roots, "children"))
+    roots = _.pickBy(roots, (v,k)=> !children.includes(k))
+    return roots
+  },  
   compareX(arr1, arr2) { 
     const ln = Math.max(arr1.length, arr2.length)
     for(var i=0; i<ln; i++) {
