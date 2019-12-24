@@ -1,7 +1,7 @@
 <template>
   <path 
     :class="{active: isActive}"
-    v-on:dblclick="toggleChildren(items.children)"
+    v-on:click="toggleChildren(items.children)"
 
     :id="branchName"
     :d="dString(items)" 
