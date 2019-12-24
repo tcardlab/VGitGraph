@@ -51,6 +51,7 @@ export default {
     Glyphs
   },
   created() {
+    this.$store.commit('initTimeArr')
     this.initRoots()
     this.initDisplacement()
     // dx must be defined before any x values are calculated. Nan causes SSR err.
