@@ -1,5 +1,8 @@
 <template>
   <div>
+
+    <Search/>
+
     <div>
       <label>Display</label>
       <input v-model="$store.state.display" type="range" min="0" max="2" />
@@ -15,7 +18,6 @@
     </div>
 
     <VGitGraph/>
-
     <svg overflow="visible" v-if="+$store.state.display===2">
       <text v-for="(unix, index) in $store.state.timeSet" :key="unix"
       x="0" :y="scaler(index)" dy="6" class="small"
@@ -23,20 +25,22 @@
         {{ new Date(unix*1000).toLocaleDateString("en-US") }}
       </text>
     </svg>
-
   </div>
 </template>
 
 <script>
 import VGitGraph from "~/components/VGitGraph.vue";
 import CollapseState from "~/components/CollapseState.vue";
+import Search from "~/components/Search.vue";
 import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
   components: {
     VGitGraph,
-    CollapseState
+    CollapseState,
+    Search,
   },
   mixins: [DisplayMixin]
 }
+
 </script>

@@ -26,6 +26,7 @@ export const state = () => ({
   scaling:1,
   show: {},
   displacement: {},
+  filtered: false,
   timeSet: {},
   branches: {
     "P1": {
@@ -366,6 +367,14 @@ export const mutations = {
   },
   dxCreate (state, payload) {	
     state.displacement[payload.key] = payload.value	
+  },
+  setFiltered (state, keyArr) {
+    state.filtered = {} 
+    if (keyArr){
+      for (var k of keyArr) {
+        Vue.set(state.filtered, k, state.branches[k].x)
+      }
+    }
   }, 
   initTimeArr(state) {
     var timeArr = _.map(state.branches, (branch)=>{
@@ -407,17 +416,25 @@ export const getters = {
       }
     }
   },
+  pseudoZero(displayObject, sign) {
+    // not empty and seearch results.len > 1
+    if (_.keys(displayObject).length>1){ 
+      // if x=[0] is in displayObject
+      return '0' in _.invert(displayObject)? 0 : sign
+    } else {return 0}
+  },
   solveXDisp: (state) => (xConst) => {
     const sign = getters.compareX(xConst, [0])
     // Get prior Branches. (cant loop through just show as x is needed)
-    const xArr = _.pickBy(state.show, (x,k) => (
+    var displayed = _.isEmpty(state.filtered)?state.show:state.filtered
+    const xArr = _.pickBy(displayed, (x,k) => (
       (!_.isEqual(xConst, [0]) && _.isEqual(x, [0])) || // shift all but 0 by 1
       getters.compareX(x, [0]) === sign &&  //  +/- from [0]
       getters.compareX(xConst, x) === sign  // prior branches closer to zero = sign
     ))
     // sum displacement of prior branches
     const sum = _.sum(_.map(xArr, (v,k)=>sign * state.displacement[k]))
-    return sum
+    return sum + getters.pseudoZero(state.filtered, sign) // mod displacement for search results
   },
   maxDx: (state) => (key) => {
     const path = state.branches[key].path
