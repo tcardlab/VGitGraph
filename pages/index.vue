@@ -10,7 +10,7 @@
 
     <div>
       <label>Scale</label>
-      <input v-model="$store.state.scale" type="range" min="20" max="80" />
+      <input v-model="$store.state.scale" type="range" min="20" max="80" @focus="$store.state.scaling=0" @blur="$store.state.scaling=1"/>
       <span>{{ $store.state.scale }}</span>
     </div>
 
@@ -28,5 +28,6 @@ export default {
     VGitGraph,
     CollapseState
   },
+  
 }
 </script>

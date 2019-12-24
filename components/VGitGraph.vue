@@ -10,7 +10,7 @@
       <g :id="'g-'+branchName" v-for="(items, branchName) in _$" :key="'path-'+branchName"
          v-show="branchName in $store.state.show">
         <Paths
-          class="transition-move"
+          class="transition-move" :style="cssProps"
           :items="items" :branchName="branchName"
         />
       </g>
@@ -18,7 +18,7 @@
       <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
         <Links
           v-show="branchName in $store.state.show"
-          class="transition-move"
+          class="transition-move" :style="cssProps"
           v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
           :items="items" :i="actions" :turn="turn"
         />
@@ -27,7 +27,7 @@
       <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _$" :key="'glyph-'+branchName"
          v-show="branchName in $store.state.show">
         <Glyphs
-          class="transition-move"
+          class="transition-move" :style="cssProps"
           v-for="(actions, turn) in items.path" :key="turn"
           :items="items" :i="actions" :turn="turn"
         />
@@ -56,6 +56,11 @@ export default {
     // dx must be defined before any x values are calculated. Nan causes SSR err.
     // if in paths.vue, dx may not be defined when links or glyph call it
   },
+  computed:{
+    cssProps() { 
+      return {'--duration': `${this.$store.state.scaling}s`}
+    }
+  },
   methods: {
     filterLinks(path) {
       var filtered = _.pickBy(path, function(value, key) {
@@ -81,6 +86,7 @@ export default {
 
 <style>
 .transition-move {
-  transition: all 1s;
+  transition-property: all; 
+  transition-duration: var(--duration);
 }
 </style>
