@@ -7,6 +7,7 @@
         Transition group doesnt work as v-show=false yeilds x&y=0. 
         Thus, they appear from the top left corner of the screen.
       -->
+      <transition-group name="fade" tag="g">
       <g :id="'g-'+branchName" v-for="(items, branchName) in _$" :key="'path-'+branchName"
          v-show="branchName in $store.state.show">
         <Paths
@@ -14,6 +15,7 @@
           :items="items" :branchName="branchName"
         />
       </g>
+      </transition-group>
 
       <g :id="branchName+'-Links'" v-for="(items, branchName) in _$" :key="'link-'+branchName">
         <Links
@@ -82,5 +84,11 @@ export default {
 <style>
 .transition-move {
   transition: all 1s;
+}
+.fade-enter-to, .fade-leave-active {
+  transition: opacity 0.5s ease-in-out;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>
