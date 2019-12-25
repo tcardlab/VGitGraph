@@ -1,7 +1,7 @@
 <template>
   <div>
-    {{ branches }}
-
+    {{ branches }} <br><br>
+    {{ foo['P1']['5'] }}
     <div>
       <label>Scale</label>
       <input v-model="DisplayMixin.scale" type="range" min="20" max="80" @focus="$store.state.scaling=0" @blur="$store.state.scaling=1"/>

@@ -29,7 +29,7 @@
         <Glyphs
           class="transition-move" :style="cssProps"
           v-for="(actions, turn) in items.path" :key="turn"
-          :items="items" :i="actions" :turn="turn"
+          :items="items" :i="actions" :coords="foo[branchName][turn]"
         />
       </g>
 
@@ -42,6 +42,7 @@ import CustomDefs from "~/components/CustomDefs.vue";
 import Paths from "~/components/Paths.vue";
 import Links from "~/components/Links.vue";
 import Glyphs from "~/components/Glyphs.vue";
+import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
   components: {
@@ -50,6 +51,7 @@ export default {
     Links,
     Glyphs
   },
+  mixins: [DisplayMixin],
   created() {
     this.$store.commit('initTimeArr')
     this.initRoots()

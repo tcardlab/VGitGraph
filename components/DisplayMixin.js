@@ -2,7 +2,7 @@
 
 export const DisplayMixin = {
   data() {
-    return{
+    return {
       DisplayMixin:{
         scale: 50,
         display: 0, 
@@ -21,29 +21,32 @@ export const DisplayMixin = {
     }
   },
   created() {
+    //Todo: init all branch sets once setup.
     this.updateCache()
   },
-  /* computed: {
-    scale() {
-      return this.DisplayMixin.scale
-    },
-    //this.$data.branches[this.$store.state.display] = this.getDispPath(this._$['P1'])
-  }, */
   watch: {
-    /* scale() {
-      //console.log('Foo Changed!');
-    }, */
     DisplayMixin: {
       // https://stackoverflow.com/a/42134176
       handler(val){
         this.updateCache()
       },
       deep: true
+    },
+    branches: {
+      // https://stackoverflow.com/a/42134176
+      handler(val){
+        //
+      },
+      deep: true
     }
-
-
   },
-  // Should probably store display variable in data{} of this file...
+  computed: {
+    foo() {
+      const display = this.branches[this.DisplayMixin.display]
+      console.log(display)
+      return display
+    }
+  },
   methods: {
     updateCache(){
       for(let [key, bItems] of  Object.entries(this._$)) {
@@ -51,8 +54,18 @@ export const DisplayMixin = {
           //init display cache if necessary
           this.$data.branches[this.DisplayMixin.display] = {}
         }
-        this.$data.branches[this.DisplayMixin.display][key] = this.getDispPath(bItems)
+        this.$data.branches[this.DisplayMixin.display][key] = this.cacheCalc(bItems) //getDispPath
       }
+    },
+    cacheCalc(bItems){ // –> [[x, y], ...]
+      const xConst = bItems.x
+      var xDisp = this.$store.getters.solveXDisp(xConst)
+      const kvArr = Object.entries(bItems.path)
+      let output = Object.fromEntries( 
+                      // Path data should be an array, can revert to getDispPath() once implemented.
+                      kvArr.map(([k, v]) => [k, this.getXYDisp(k, xConst, xDisp, v)])
+                   )
+      return output
     },
     // Modifier functions
     scaler(input, scale=this.DisplayMixin.scale){//+this.$store.state.scale){ // –> scale #s of any given input.
