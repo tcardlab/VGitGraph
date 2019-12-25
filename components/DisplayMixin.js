@@ -1,8 +1,61 @@
+// 1) func to init displayed chache 
+
 export const DisplayMixin = {
+  data() {
+    return{
+      DisplayMixin:{
+        scale: 50,
+        display: 0, 
+      },
+      branches: {
+        /* date: {
+          "P1": {1: ['x', 'y'], 2: ['x2', 'y2'], },
+          "P2": {1: ['x', 'y'], 2: ['x2', 'y2'], },
+        },
+        turn: {
+          "P1": {1: ['x', 'y'], 2: ['x2', 'y2'], },
+          "P2": {1: ['x', 'y'], 2: ['x2', 'y2'], },
+        },
+        contunuity: null, */
+      }
+    }
+  },
+  created() {
+    this.updateCache()
+  },
+  /* computed: {
+    scale() {
+      return this.DisplayMixin.scale
+    },
+    //this.$data.branches[this.$store.state.display] = this.getDispPath(this._$['P1'])
+  }, */
+  watch: {
+    /* scale() {
+      //console.log('Foo Changed!');
+    }, */
+    DisplayMixin: {
+      // https://stackoverflow.com/a/42134176
+      handler(val){
+        this.updateCache()
+      },
+      deep: true
+    }
+
+
+  },
   // Should probably store display variable in data{} of this file...
   methods: {
+    updateCache(){
+      for(let [key, bItems] of  Object.entries(this._$)) {
+        if (!(this.DisplayMixin.display in this.$data.branches)) {
+          //init display cache if necessary
+          this.$data.branches[this.DisplayMixin.display] = {}
+        }
+        this.$data.branches[this.DisplayMixin.display][key] = this.getDispPath(bItems)
+      }
+    },
     // Modifier functions
-    scaler(input, scale=+this.$store.state.scale){ // –> scale #s of any given input.
+    scaler(input, scale=this.DisplayMixin.scale){//+this.$store.state.scale){ // –> scale #s of any given input.
       switch(input.constructor){
         case Number:
           return input * scale

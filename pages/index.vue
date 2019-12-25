@@ -1,5 +1,17 @@
 <template>
   <div>
+    {{ branches }}
+
+    <div>
+      <label>Scale</label>
+      <input v-model="DisplayMixin.scale" type="range" min="20" max="80" @focus="$store.state.scaling=0" @blur="$store.state.scaling=1"/>
+      <span>{{ DisplayMixin.scale }}</span>
+    </div>
+    <div>
+      <label>Display</label>
+      <input v-model="DisplayMixin.display" type="range" min="0" max="2"/>
+      <span>{{ DisplayMixin.display }}</span>
+    </div>
 
     <Search/>
 
