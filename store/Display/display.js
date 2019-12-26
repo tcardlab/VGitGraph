@@ -69,7 +69,7 @@ export default {
                    )
       return output
     }
-  },
+  }, 
 
   mutations: {
     set(state, payload) {
