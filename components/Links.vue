@@ -2,8 +2,8 @@
   <component
     :is="i.link.type"
     v-if="Object.keys($options.components).includes(i.link.type)"
-    :x="getXDisp(items.x, i, $store.getters.solveXDisp(items.x))"
-    :y="getYDisp(turn, i)"
+    :x="coords[0]"
+    :y="coords[1]"
     :XYLink="getLink(i.link)"
     :color="items.color"
   />
@@ -14,8 +14,8 @@ import Dotted from "./Links/Dotted.vue";
 import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
-  props:['items', 'i', 'turn'],
-  mixins: [DisplayMixin],
+  props:['items', 'i', 'turn', 'coords'],
+  mixins: [ DisplayMixin ],
   components: {
     Dotted: Dotted,
   }, 

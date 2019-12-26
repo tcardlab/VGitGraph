@@ -20,7 +20,7 @@
           v-show="display(branchName)"
           class="transition-move" :style="cssProps"
           v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
-          :items="items" :i="actions" :turn="turn"
+          :items="items" :i="actions" :turn="turn" :coords="branchCache[branchName][turn]"
         />
       </g>
 
@@ -29,7 +29,7 @@
         <Glyphs
           class="transition-move" :style="cssProps"
           v-for="(actions, turn) in items.path" :key="turn"
-          :items="items" :i="actions" :turn="turn"
+          :items="items" :i="actions" :turn="turn" :coords="branchCache[branchName][turn]"
         />
       </g>
 
@@ -43,6 +43,8 @@ import Paths from "~/components/Paths.vue";
 import Links from "~/components/Links.vue";
 import Glyphs from "~/components/Glyphs.vue";
 
+import { DisplayMixin } from "~/components/DisplayMixin.js";
+
 export default {
   components: {
     CustomDefs,
@@ -50,9 +52,12 @@ export default {
     Links,
     Glyphs
   },
+  mixins: [ DisplayMixin ],
   created() {
     this.$store.commit('initTimeArr')
     this.initRoots()
+    //this.$store.commit('updateCache')
+    this.updateCache()
     this.initDisplacement()
     // dx must be defined before any x values are calculated. Nan causes SSR err.
     // if in paths.vue, dx may not be defined when links or glyph call it
@@ -60,6 +65,9 @@ export default {
   computed:{
     cssProps() { 
       return {'--duration': `${this.$store.state.scaling}s`}
+    },
+    branchCache() {
+      return this._Display.cache[this._Display.display]
     }
   },
   methods: {

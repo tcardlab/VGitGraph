@@ -5,12 +5,12 @@
     {{this.$store.getters.displayChange }}
     <div>
       <label>Scale</label>
-      <input v-model="_Display.scale" type="range" min="20" max="80" @focus="$store.state.scaling=0" @blur="$store.state.scaling=1"/>
+      <input v-model="scaleTest" type="range" min="20" max="80" @focus="$store.state.scaling=0" @blur="$store.state.scaling=1"/>
       <span>{{ _Display.scale }}</span>
     </div>
     <div>
       <label>Display</label>
-      <input v-model="_Display.display" type="range" min="0" max="2"/>
+      <input v-model="displayTest" type="range" min="0" max="2"/>
       <span>{{ _Display.display }}</span>
     </div>
 
@@ -45,6 +45,7 @@
 import VGitGraph from "~/components/VGitGraph.vue";
 import CollapseState from "~/components/CollapseState.vue";
 import Search from "~/components/Search.vue";
+import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
   components: {
@@ -52,7 +53,7 @@ export default {
     CollapseState,
     Search,
   },
-  //mixins: [DisplayMixin]
+  mixins: [DisplayMixin],
 }
 
 </script>

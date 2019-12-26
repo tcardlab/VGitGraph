@@ -1,34 +1,32 @@
 export const DisplayMixin = {
-  created() {
-    //Todo: init all branch sets once setup.
-    this.updateCache()
-    this.$store.watch(() => this.$store.getters.displayChange, n => { //this._Display.scale
-      console.log('hi')
-      this.updateCache()
-    })
-  },
-  watch: {
-    DisplayMixin: {
-      // https://stackoverflow.com/a/42134176
-      handler(val){
-        this.updateCache()
+  computed: {
+    scaleTest: {
+      get () {
+        return this._Display.scale
       },
-      deep: true
+      set (value) {
+        let payload = {key: "scale", value: value}
+        this.$store.commit('set', payload)
+        this.updateCache()
+      }
+    },
+    displayTest: {
+      get () {
+        return this._Display.display
+      },
+      set (value) {
+        let payload = {key: "display", value: value}
+        this.$store.commit('set', payload)
+        this.updateCache()
+      }
     }
   },
-  computed: {
-    foo() {
-      const display = this.branches[this.DisplayMixin.display]
-      console.log(display)
-      return display
-    },
-  },
+
   methods: {
     updateCache(){
-      console.log('BREAK###################################')
       for(let [key, bItems] of  Object.entries(this._$)) {
+        
         var Payload = {key: key, val: this.cacheCalc(bItems)}
-        console.log(Payload)
         this.$store.commit('updateBranch', Payload)
       }
     },
