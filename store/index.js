@@ -1,3 +1,9 @@
+import DisplayMixin from "./Display/display.js"
+export const modules = {
+  DisplayMixin
+}  
+
+
 export const strict = false;
 
 /* Due to the need of relative links when y-display changes, I need a key 
