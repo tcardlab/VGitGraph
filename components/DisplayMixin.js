@@ -31,13 +31,6 @@ export const DisplayMixin = {
         this.updateCache()
       },
       deep: true
-    },
-    branches: {
-      // https://stackoverflow.com/a/42134176
-      handler(val){
-        //
-      },
-      deep: true
     }
   },
   computed: {
