@@ -29,9 +29,11 @@
         <Glyphs
           class="transition-move" :style="cssProps"
           v-for="(actions, turn) in items.path" :key="turn"
-          :items="items" :i="actions" :coords="foo[branchName][turn]"
+          :items="items" :i="actions" :coords="branches[DisplayMixin.display][branchName][turn]"
         />
       </g>
+
+      <text> {{branches}} </text>
 
     </svg>
 </template>
