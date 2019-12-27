@@ -27,7 +27,7 @@ perhaps a mixin? I think this makes sense.
 */
 
 export const state = () => ({  
-  display: 0, 
+  display: 0,
   scale: 50,
   scaling:1,
   show: {},

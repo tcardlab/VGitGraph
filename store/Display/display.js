@@ -11,7 +11,7 @@ export default {
 
   getters: {
     // Modifier functions
-    scaler(input, scale=state.scale){ // –> scale #s of any given input.
+    scaler: ( state, getters, rootGetters ) => (input, scale=state.scale) => { // –> scale #s of any given input.
       switch(input.constructor){
         case Number:
           return input * scale
@@ -31,19 +31,19 @@ export default {
       }
     },
     // Independant functions
-    getXDisp(xConst, action, xDisp){ // –> # 
+    getXDisp: ( state, getters, rootGetters ) =>  (xConst, action, xDisp) => { // –> # 
       xConst = xConst.reduce((a, b) => a + b, 0) //children branches [1,2] x=0+dx of 2. etc
       const y = action['y']
       const dx = Array.isArray(y) ? y[0] : 0
       return getters.scaler(xDisp+dx, 50) 
       // remove 50 so scale uniformly could make x&y scales... added to to-do
     },
-    getYDisp(key, action){ // –> #
-      switch(+this.$store.state.display) {
+    getYDisp: ( state, getters, rootState ) => (key, action) => { // –> #
+      switch(+state.display) {
         case 1:
           return getters.scaler(+key)
         case 2:
-          const yUnix = this.$store.state.timeSet.indexOf(action.unix)
+          const yUnix = rootState.timeSet.indexOf(action.unix)
           return getters.scaler(yUnix)
         case 3:
           // future cases
@@ -54,14 +54,14 @@ export default {
       }
     },
     // Dependent Functions - More than necessary, but there if needed
-    getXYDisp(key, xConst, xDisp, action){ // –> [x, y] 
+    getXYDisp: ( state, getters, rootGetters ) => (key, xConst, xDisp, action) => { // –> [x, y] 
       var xDisp = getters.getXDisp(xConst, action, xDisp)
       var yDisp = getters.getYDisp(key, action)
       return [xDisp, yDisp]
     },
-    cacheCalc({ getters, rootGetters }){ // –> [[x, y], ...]
+    cacheCalc: ( state, getters, rootGetters ) => (bItems) =>{ // –> [[x, y], ...]
       const xConst = bItems.x
-      var xDisp = rootGetters.solveXDisp(xConst)
+      var xDisp = getters.solveXDisp(xConst)
       const kvArr = Object.entries(bItems.path)
       let output = Object.fromEntries( 
                       // Path data should be an array, can revert to getDispPath() once implemented.
@@ -87,7 +87,7 @@ export default {
   },
 
   actions: {
-    updateCache({ dispatch, rootState }) {
+    updateCache({ commit, getters, rootState }) {
       for(let [key, bItems] of  Object.entries(rootState.branches)) {
         var Payload = {key: key, val: getters.cacheCalc(bItems)}
         commit('updateBranch', Payload)

@@ -19,6 +19,16 @@ export const DisplayMixin = {
         this.$store.commit('set', payload)
         this.updateCache()
       }
+    },
+    childrenTest: {
+      get () {
+        return this._Display.children
+      },
+      set (value) {
+        let payload = {key: "children", value: value}
+        this.$store.commit('set', payload)
+        this.updateCache()
+      }
     }
   },
 
@@ -71,7 +81,7 @@ export const DisplayMixin = {
       // remove 50 so scale uniformly could make x&y scales... added to to-do
     },
     getYDisp(key, action){ // –> #
-      switch(+this.$store.state.display) {
+      switch(+this._Display.display) {
         case 1:
           return this.scaler(+key)
         case 2:

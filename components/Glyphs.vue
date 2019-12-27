@@ -13,7 +13,7 @@ import Dot from "./Glyphs/Dot.vue";
 import Book from "./Glyphs/Book.vue";
 
 export default {
-  props:['items', 'i', 'turn', 'coords'],
+  props:['items', 'i', 'coords'],
   components: {
     Dot: Dot,
     Book: Book

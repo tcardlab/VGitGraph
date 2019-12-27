@@ -14,7 +14,7 @@ import Dotted from "./Links/Dotted.vue";
 import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
-  props:['items', 'i', 'turn', 'coords'],
+  props:['items', 'i', 'coords'],
   mixins: [ DisplayMixin ],
   components: {
     Dotted: Dotted,

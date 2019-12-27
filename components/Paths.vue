@@ -17,7 +17,7 @@ import { PathsMixin } from "./Paths/PathsMixin.js";
 import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
-  props: ['items', 'branchName'],
+  props: ['items', 'branchName', 'coords'],
   mixins: [PathsMixin, DisplayMixin],
   computed: {
     isActive() {
@@ -47,6 +47,7 @@ export default {
           }
         }
         console.log("state.show: ", this.$store.state.show)
+        this.$store.dispatch('updateCache') // cant update 1 branch due to down stream effects.
       }
     },
 
@@ -62,7 +63,7 @@ export default {
     dString(bItems) {
       var d = [];
       var path = this.getPath(bItems)
-      var dispCoords = this.getDispPath(bItems)
+      var dispCoords = Object.values(this.coords)
 
       for (var i of _.range(path.length)) {
         let [x, y] = path[i] // Logic variables

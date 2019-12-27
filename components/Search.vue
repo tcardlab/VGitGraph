@@ -42,6 +42,7 @@ export default {
         })
       }
       this.$store.commit('setFiltered', this.search!==""?filtered:false)
+      this.$store.dispatch('updateCache')
       return filtered
     }
   },

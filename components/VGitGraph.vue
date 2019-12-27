@@ -11,7 +11,7 @@
          v-show="display(branchName)">
         <Paths
           class="transition-move" :style="cssProps"
-          :items="items" :branchName="branchName"
+          :items="items" :branchName="branchName" :coords="branchCache[branchName]"
         />
       </g>
 
@@ -20,7 +20,7 @@
           v-show="display(branchName)"
           class="transition-move" :style="cssProps"
           v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
-          :items="items" :i="actions" :turn="turn" :coords="branchCache[branchName][turn]"
+          :items="items" :i="actions" :coords="branchCache[branchName][turn]"
         />
       </g>
 
@@ -29,7 +29,7 @@
         <Glyphs
           class="transition-move" :style="cssProps"
           v-for="(actions, turn) in items.path" :key="turn"
-          :items="items" :i="actions" :turn="turn" :coords="branchCache[branchName][turn]"
+          :items="items" :i="actions" :coords="branchCache[branchName][turn]"
         />
       </g>
 
@@ -56,11 +56,10 @@ export default {
   created() {
     this.$store.commit('initTimeArr')
     this.initRoots()
-    //this.$store.commit('updateCache')
-    this.updateCache()
     this.initDisplacement()
     // dx must be defined before any x values are calculated. Nan causes SSR err.
     // if in paths.vue, dx may not be defined when links or glyph call it
+    this.$store.dispatch('updateCache') // call last, after initializations
   },
   computed:{
     cssProps() { 
