@@ -26,7 +26,7 @@
       <VGitGraph/>
       <svg overflow="visible" v-if="+displayTest===2">
         <text v-for="(unix, index) in $store.state.timeSet" :key="unix"
-        x="0" :y="scaler(index)" dy="6" class="small"
+        x="0" :y="$store.getters.scaler(index)" dy="6" class="small"
         > 
           {{ new Date(unix*1000).toLocaleDateString("en-US") }}
         </text>
