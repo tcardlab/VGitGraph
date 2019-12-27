@@ -68,7 +68,22 @@ export default {
                       kvArr.map(([k, v]) => [k, getters.getXYDisp(k, xConst, xDisp, v)])
                    )
       return output
-    }
+    },
+    // Relative Link Function
+    getLink: ( state, getters, rootState ) => (link) => {
+      if (Object.keys(rootState.branches).includes(link.coord[0])) {
+        // relative link - if given branch exists
+        var [branchName, event] = link.coord
+        var branch = rootState.branches[branchName]
+        var action = branch.path[event]
+        var xDisp = getters.solveXDisp(branch['x'])
+        var XYLink = getters.getXYDisp(event, branch['x'], xDisp, action)
+      } else {
+        // hard link
+        var XYLink = getters.scaler(link.coord)
+      }
+      return XYLink
+    },
   }, 
 
   mutations: {

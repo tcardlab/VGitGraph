@@ -4,7 +4,7 @@
     v-if="Object.keys($options.components).includes(i.link.type)"
     :x="coords[0]"
     :y="coords[1]"
-    :XYLink="getLink(i.link)"
+    :XYLink="$store.getters.getLink(i.link)"
     :color="items.color"
   />
 </template>

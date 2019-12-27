@@ -110,7 +110,7 @@ export const DisplayMixin = {
       return kvArr.map(kv => this.getXYDisp(kv[0], xConst, xDisp, kv[1]))
     },
 
-    // Relative Link Function
+    /* // Relative Link Function
     getLink(link) {
       if (Object.keys(this._$).includes(link.coord[0])) {
         // relative link - if given branch exists
@@ -124,6 +124,6 @@ export const DisplayMixin = {
         var XYLink = this.scaler(link.coord)
       }
       return XYLink
-    },
+    }, */
   }
 }

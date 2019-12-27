@@ -35,7 +35,7 @@ export const PathsMixin = {
     inPathLink(bItems, index){
       var link = Object.values(bItems.path)[index].link
       if (Object.keys(link).length > 0 && link.type==="Path"){
-        return this.getLink(link)
+        return this.$store.getters.getLink(link)
       } else {
         return false
       }
