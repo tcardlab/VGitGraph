@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  data:() => {
+  data() {
     return {
       dropdown: false,
       search:'',

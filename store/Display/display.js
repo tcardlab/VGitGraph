@@ -2,7 +2,7 @@ import Vue from "vue";
 
 export default {
   state() {
-    return{
+    return {
       scale: 50,
       display: 0,
       cache: {},
@@ -30,6 +30,7 @@ export default {
           return input
       }
     },
+
     // Independant functions
     getXDisp: ( state, getters, rootGetters ) =>  (xConst, action, xDisp) => { // –> # 
       xConst = xConst.reduce((a, b) => a + b, 0) //children branches [1,2] x=0+dx of 2. etc
@@ -53,7 +54,7 @@ export default {
           return getters.scaler(yDisp)
       }
     },
-    // Dependent Functions - More than necessary, but there if needed
+    // Dependent Functions
     getXYDisp: ( state, getters, rootGetters ) => (key, xConst, xDisp, action) => { // –> [x, y] 
       var xDisp = getters.getXDisp(xConst, action, xDisp)
       var yDisp = getters.getYDisp(key, action)
@@ -84,7 +85,7 @@ export default {
       }
       return XYLink
     },
-  }, 
+  },
 
   mutations: {
     set(state, payload) {
