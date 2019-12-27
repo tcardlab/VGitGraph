@@ -5,15 +5,20 @@
     <div>
       <div>
         <label>Scale</label> <!-- @focus="$store.state.scaling=0"  -->
-        <input v-model="scaleTest" type="range" min="20" max="80" @mousemove="$store.state.scaling=0" @mousedown="$store.state.scaling=1"/>
+        <input 
+          v-model="scaleTest" type="range" min="20" max="80" 
+          @mousedown="$store.state.scaling=1" 
+          @mousemove="$store.state.scaling=0" 
+          @mouseleave="$store.state.scaling=1"
+        />
         <span>{{ _Display.scale }}</span>
       </div>
       <div>
         <label>Display</label>
-        <input v-model="displayTest" type="range" min="0" max="2"/>
+        <input v-model="displayTest" type="range" min="0" max="2" />
         <span>{{ ['Paths', 'Turns', 'Time'][_Display.display] }}</span>
       </div>
-      <CollapseState/>
+      <CollapseState />
       <Search/>
     </div>
 

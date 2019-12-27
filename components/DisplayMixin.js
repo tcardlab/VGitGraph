@@ -7,7 +7,7 @@ export const DisplayMixin = {
       set (value) {
         let payload = {key: "scale", value: value}
         this.$store.commit('set', payload)
-        this.updateCache()
+        this.$store.dispatch('updateCache') 
       }
     },
     displayTest: {
@@ -17,30 +17,20 @@ export const DisplayMixin = {
       set (value) {
         let payload = {key: "display", value: value}
         this.$store.commit('set', payload)
-        this.updateCache()
-      }
-    },
-    childrenTest: {
-      get () {
-        return this._Display.children
-      },
-      set (value) {
-        let payload = {key: "children", value: value}
-        this.$store.commit('set', payload)
-        this.updateCache()
+        this.$store.dispatch('updateCache') 
       }
     }
   },
 
   methods: {
-    updateCache(){
+    /* updateCache(){
       for(let [key, bItems] of  Object.entries(this._$)) {
         
         var Payload = {key: key, val: this.cacheCalc(bItems)}
         this.$store.commit('updateBranch', Payload)
       }
-    },
-    cacheCalc(bItems){ // –> [[x, y], ...]
+    }, */
+    /* cacheCalc(bItems){ // –> [[x, y], ...]
       const xConst = bItems.x
       var xDisp = this.$store.getters.solveXDisp(xConst)
       const kvArr = Object.entries(bItems.path)
@@ -49,7 +39,7 @@ export const DisplayMixin = {
                       kvArr.map(([k, v]) => [k, this.getXYDisp(k, xConst, xDisp, v)])
                    )
       return output
-    },
+    }, */
 
     // Modifier functions
     scaler(input, scale=this._Display.scale){ // –> scale #s of any given input.
