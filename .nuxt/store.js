@@ -18,6 +18,7 @@ void (function updateModules() {
   // Enforce store modules
   store.modules = store.modules || {}
 
+  resolveStoreModules(require('../store/state.js'), 'state.js')
   resolveStoreModules(require('../store/storeRoute.js'), 'storeRoute.js')
   resolveStoreModules(require('../store/Display/display.js'), 'Display/display.js')
 
@@ -27,6 +28,7 @@ void (function updateModules() {
     // Whenever any Vuex module is updated...
     module.hot.accept([
       '../store/index.js',
+      '../store/state.js',
       '../store/storeRoute.js',
       '../store/Display/display.js',
     ], () => {
