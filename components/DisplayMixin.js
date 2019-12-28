@@ -1,46 +1,53 @@
 // 1) func to init displayed chache 
-import Vue from "vue"
 
 export const DisplayMixin = {
   data() {
     return {
       DisplayMixin:{
         scale: 50,
-        display: 0,
+        display: 0, 
       },
-      branches: {}
+      branches: {
+        /* date: {
+          "P1": {1: ['x', 'y'], 2: ['x2', 'y2'], },
+          "P2": {1: ['x', 'y'], 2: ['x2', 'y2'], },
+        },
+        turn: {
+          "P1": {1: ['x', 'y'], 2: ['x2', 'y2'], },
+          "P2": {1: ['x', 'y'], 2: ['x2', 'y2'], },
+        },
+        contunuity: null, */
+      }
     }
   },
   created() {
+    //Todo: init all branch sets once setup.
     this.updateCache()
   },
+  watch: {
+    DisplayMixin: {
+      // https://stackoverflow.com/a/42134176
+      handler(val){
+        this.updateCache()
+      },
+      deep: true
+    }
+  },
   computed: {
-    testScale: { 
-      get() {
-        return this.DisplayMixin.scale
-      },
-      set(value) {
-        this.DisplayMixin.scale = value
-        this.updateCache()
-      }
-    },
-    testDisplay: { 
-      get() {
-        return this.DisplayMixin.display
-      },
-      set(value) {
-        this.DisplayMixin.display = value
-        this.updateCache()
-      }
-    },
+    foo() {
+      const display = this.branches[this.DisplayMixin.display]
+      console.log(display)
+      return display
+    }
   },
   methods: {
     updateCache(){
       for(let [key, bItems] of  Object.entries(this._$)) {
-        if (!(this.DisplayMixin.display in this.branches)) { 
-          Vue.set(this.branches, this.DisplayMixin.display, {})
+        if (!(this.DisplayMixin.display in this.$data.branches)) {
+          //init display cache if necessary
+          this.$data.branches[this.DisplayMixin.display] = {}
         }
-        Vue.set(this.branches[this.DisplayMixin.display], key, this.cacheCalc(bItems))
+        this.$data.branches[this.DisplayMixin.display][key] = this.cacheCalc(bItems) //getDispPath
       }
     },
     cacheCalc(bItems){ // –> [[x, y], ...]

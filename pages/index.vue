@@ -1,15 +1,16 @@
 <template>
   <div>
     {{ branches }} <br><br>
+    {{ foo['P1']['5'] }}
     <div>
       <label>Scale</label>
-      <input v-model="testScale" type="range" min="20" max="80" @focus="$store.state.scaling=0" @blur="$store.state.scaling=1"/>
-      <span>{{ testScale }}</span>
+      <input v-model="DisplayMixin.scale" type="range" min="20" max="80" @focus="$store.state.scaling=0" @blur="$store.state.scaling=1"/>
+      <span>{{ DisplayMixin.scale }}</span>
     </div>
     <div>
       <label>Display</label>
-      <input v-model="testDisplay" type="range" min="0" max="2"/>
-      <span>{{ testDisplay }}</span>
+      <input v-model="DisplayMixin.display" type="range" min="0" max="2"/>
+      <span>{{ DisplayMixin.display }}</span>
     </div>
 
     <Search/>
