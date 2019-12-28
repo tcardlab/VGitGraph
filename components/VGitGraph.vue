@@ -57,7 +57,7 @@ export default {
     // dx must be defined before any x values are calculated. Nan causes SSR err.
     // if in paths.vue, dx may not be defined when links or glyph call it
     this.$store.dispatch('updateCache') // call last, after initializations
-    console.log('cache: ', this._Display.cache)
+    //console.log('cache: ', this._Coords.cache)
   },
   computed:{
     cssProps() { 
