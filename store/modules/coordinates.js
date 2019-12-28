@@ -9,6 +9,7 @@ export default {
       displacement: {},
     }
   },
+
   getters:{
     pseudoZero: () => (displayObject, sign) => {
       // not empty and seearch results.len > 1
@@ -42,7 +43,6 @@ export default {
       xConst = xConst.reduce((a, b) => a + b, 0) //children branches [1,2] x=0+dx of 2. etc
       const y = action['y']
       const dx = Array.isArray(y) ? y[0] : 0
-      //console.log('disp,dx:', xDisp, dx)
       return getters.scaler(xDisp+dx, 50)
       // remove 50 so scale uniformly could make x&y scales... added to to-do
     },
