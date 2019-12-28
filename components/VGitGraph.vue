@@ -60,7 +60,7 @@ export default {
   },
   computed:{
     cssProps() { 
-      return {'--duration': `${this.$store.state.scaling}s`}
+      return {'--duration': `${this._Display.scaling}s`}
     },
     branchCache() {
       return this._Display.cache[this._Display.display]

@@ -4,6 +4,7 @@ export default {
   state() {
     return {
       scale: 50,
+      scaling:1,
       display: 0,
       cache: {},
     }
@@ -89,8 +90,8 @@ export default {
 
   mutations: {
     set(state, payload) {
-      state[payload.key] = payload.value;
-
+      Vue.set(state, payload.key, payload.value)
+      //state[payload.key] = payload.value;
     },
     updateBranch(state, payload) {
       var display = state.display

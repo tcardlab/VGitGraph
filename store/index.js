@@ -10,7 +10,7 @@ export const modules = {
   DisplayMixin
 }  
 
-export const strict = false;
+//export const strict = false;
 
 
 export const mutations = {

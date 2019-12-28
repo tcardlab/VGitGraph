@@ -4,7 +4,7 @@
 <br><br>
     <div>
       <VGitGraph/>
-      <svg overflow="visible" v-if="+displayTest===2">
+      <svg overflow="visible" v-if="+_Display.display===2">
         <text v-for="(unix, index) in $store.state.timeSet" :key="unix"
         x="0" :y="$store.getters.scaler(index)" dy="6" class="small"
         > 

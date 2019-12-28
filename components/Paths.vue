@@ -14,11 +14,10 @@
 <script>
 import _ from "lodash";
 import { PathsMixin } from "./Paths/PathsMixin.js";
-import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
   props: ['items', 'branchName', 'coords'],
-  mixins: [PathsMixin, DisplayMixin],
+  mixins: [PathsMixin],
   computed: {
     isActive() {
       if (_.isEmpty(this.$store.state.filtered)){

@@ -3,17 +3,17 @@
     <div>
       <label>Scale</label> <!-- @focus="$store.state.scaling=0"  -->
       <input 
-        v-model="scaleTest" type="range" min="20" max="80" 
-        @mousedown="$store.state.scaling=1" 
-        @mousemove="$store.state.scaling=0" 
-        @mouseleave="$store.state.scaling=1"
+        v-model="scale" type="range" min="20" max="80" 
+        @mousedown="setDuration(1)" 
+        @mousemove="setDuration(0)" 
+        @mouseleave="setDuration(1)"
       />
       <span>{{ _Display.scale }}</span>
     </div>
 
     <div>
       <label>Display</label>
-      <input v-model="displayTest" type="range" min="0" max="2" />
+      <input v-model="display" type="range" min="0" max="2" />
       <span>{{ ['Paths', 'Turns', 'Time'][_Display.display] }}</span>
     </div>
 
@@ -27,33 +27,32 @@
 <script>
 import CollapseState from "~/components/UI/CollapseState.vue";
 import Search from "~/components/UI/Search.vue";
-import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
   components: {
     CollapseState,
     Search,
   },
-  mixins: [DisplayMixin],
+  methods: {
+    setDuration(sec) {
+      this.$store.commit('set',{key:'scaling', value: sec})
+    }
+  },
   computed: {
-    scaleTest: {
+    scale: {
       get () {
         return this._Display.scale
       },
       set (value) {
-        let payload = {key: "scale", value: value}
-        this.$store.commit('set', payload)
-        this.$store.dispatch('updateCache') 
+        this.$store.commit('set', {key: "scale", value: value})
       }
     },
-    displayTest: {
+    display: {
       get () {
         return this._Display.display
       },
       set (value) {
-        let payload = {key: "display", value: value}
-        this.$store.commit('set', payload)
-        this.$store.dispatch('updateCache') 
+        this.$store.commit('set', {key: "display", value: value})
       }
     }
   }
@@ -64,6 +63,7 @@ export default {
 *{
   text-align: left;
 }
+
 .UI {
  position: absolute;
  z-index: 500;
