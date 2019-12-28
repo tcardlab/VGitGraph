@@ -1,27 +1,7 @@
 <template>
   <div>
-    {{_Display}}
+    <VInterface/>
 <br><br>
-    <div>
-      <div>
-        <label>Scale</label> <!-- @focus="$store.state.scaling=0"  -->
-        <input 
-          v-model="scaleTest" type="range" min="20" max="80" 
-          @mousedown="$store.state.scaling=1" 
-          @mousemove="$store.state.scaling=0" 
-          @mouseleave="$store.state.scaling=1"
-        />
-        <span>{{ _Display.scale }}</span>
-      </div>
-      <div>
-        <label>Display</label>
-        <input v-model="displayTest" type="range" min="0" max="2" />
-        <span>{{ ['Paths', 'Turns', 'Time'][_Display.display] }}</span>
-      </div>
-      <CollapseState />
-      <Search/>
-    </div>
-
     <div>
       <VGitGraph/>
       <svg overflow="visible" v-if="+displayTest===2">
@@ -32,22 +12,22 @@
         </text>
       </svg>
     </div>
+<br><br>
+    <p style="pointer-events: none;">
+      {{_Display}}
+    </p>
   </div>
 </template>
 
 <script>
 import VGitGraph from "~/components/VGitGraph.vue";
-import CollapseState from "~/components/CollapseState.vue";
-import Search from "~/components/Search.vue";
-import { DisplayMixin } from "~/components/DisplayMixin.js";
+import VInterface from "~/components/VInterface";
 
 export default {
   components: {
     VGitGraph,
-    CollapseState,
-    Search,
+    VInterface
   },
-  mixins: [DisplayMixin],
 }
 
 </script>

@@ -43,8 +43,6 @@ import Paths from "~/components/Paths.vue";
 import Links from "~/components/Links.vue";
 import Glyphs from "~/components/Glyphs.vue";
 
-import { DisplayMixin } from "~/components/DisplayMixin.js";
-
 export default {
   components: {
     CustomDefs,
@@ -52,7 +50,6 @@ export default {
     Links,
     Glyphs
   },
-  mixins: [ DisplayMixin ],
   created() {
     this.$store.commit('initTimeArr')
     this.initRoots()

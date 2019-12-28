@@ -5,12 +5,13 @@ import _ from "lodash";
 import state from "./state.js"
 
 // Modules
-import DisplayMixin from "./Display/display.js"
+import DisplayMixin from "./modules/display.js"
 export const modules = {
   DisplayMixin
 }  
 
 export const strict = false;
+
 
 export const mutations = {
   addVisible (state, key) { // show: {bName: x, ...}
