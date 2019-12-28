@@ -10,29 +10,6 @@ export default {
     }
   },
   getters:{
-    compareX: () => (arr1, arr2) => { 
-      const ln = Math.max(arr1.length, arr2.length)
-      for(var i=0; i<ln; i++) {
-        var sign = Math.sign(arr1[i]-arr2[i])
-        switch(sign) {
-          case 0: 
-            if (i === ln-1) {
-              return sign  // arr1===arr2
-            } else { break } // keep looping
-          case 1: 
-            return sign  // arr1>arr2
-          case -1:
-            return sign  // arr1<arr2
-          default: // assume one is longer
-            var arr1Large = arr1.length>arr2.length
-            if(arr1Large) {  // arr1 is child
-              return Math.sign(arr1[i])  // branch + or -
-            } else if (!arr1Large) { // arr2 is child
-              return -1*Math.sign(arr2[i]) // branch + or -
-            } // not sure what to do with bad values
-        }
-      }
-    },
     pseudoZero: () => (displayObject, sign) => {
       // not empty and seearch results.len > 1
       if (_.keys(displayObject).length>1){ 
@@ -40,14 +17,14 @@ export default {
         return '0' in _.invert(displayObject)? 0 : sign
       } else {return 0}
     },
-    solveXDisp: (state, getters, rootState) => (xConst) => {
-      const sign = getters.compareX(xConst, [0])
+    solveXDisp: (state, getters, rootState, rootGetters) => (xConst) => {
+      const sign = rootGetters.compareX(xConst, [0])
       // Get prior Branches. (cant loop through just show as x is needed)
       var displayed = _.isEmpty(rootState.Display.filtered)?rootState.Display.show:rootState.Display.filtered
       const xArr = _.pickBy(displayed, (x,k) => (
         (!_.isEqual(xConst, [0]) && _.isEqual(x, [0])) || // shift all but 0 by 1
-        getters.compareX(x, [0]) === sign &&  //  +/- from [0]
-        getters.compareX(xConst, x) === sign  // prior branches closer to zero = sign
+        rootGetters.compareX(x, [0]) === sign &&  //  +/- from [0]
+        rootGetters.compareX(xConst, x) === sign  // prior branches closer to zero = sign
       ))
       // sum displacement of prior branches
       const sum = _.sum(_.map(xArr, (v,k)=>sign * state.displacement[k]))
@@ -129,6 +106,9 @@ export default {
       }
       Vue.set(state.cache[display], payload.key, payload.val)
     },
+    setTime(state, arr){
+      Vue.set(state, 'timeSet', arr)
+    }
   },
 
   actions: {
@@ -138,13 +118,12 @@ export default {
         commit('updateBranch', Payload)
       }
     },
-    initTimeArr({state, rootState}) {
+    initTimeArr({commit, state, rootState}) {
       var timeArr = _.map(rootState.branches, (branch) => {
         return _.map(branch.path, 'unix')
       })
       var timeSet = _.sortedUniq(_.flatten(timeArr).sort())
-      console.log('timeSet', timeSet)
-      state.timeSet = timeSet
+      commit('setTime', timeSet)
     },
   }
 }

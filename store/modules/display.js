@@ -31,21 +31,21 @@ export default {
   },
   
   actions: {
-    setFiltered({state, rootState}, keyArr) {
-      state.filtered = {} 
+    setFiltered({commit, state, rootState}, keyArr) {
+      commit('set', {key: 'filtered', value: {}})
       if (keyArr){
         for (var k of keyArr) {
-          Vue.set(state.filtered, k, rootState.branches[k].x)
+          commit('filtered', {key: k, value: rootState.branches[k].x})
         }
       }
     },
-    addVisible({state, rootState}, key) { // show: {bName: x, ...}
+    addVisible({commit, state, rootState}, key) { // show: {bName: x, ...}
       for (var k of key) {
-        Vue.set(state.show, k, rootState.branches[k].x)
+        commit('show', {key: k, value: rootState.branches[k].x})
       }
     },
-    setVisible({dispatch, state}, keyArr) {
-      state.show = {} 
+    setVisible({commit, dispatch, state}, keyArr) {
+      commit('set', {key: 'show', value: {}})
       dispatch('addVisible', keyArr)
     },
   }

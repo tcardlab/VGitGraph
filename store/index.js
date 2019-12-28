@@ -12,7 +12,7 @@ export const modules = {
   Display
 }  
 
-export const strict = false;
+//export const strict = false;
 
 export const getters = {
   // Init functions
@@ -23,7 +23,29 @@ export const getters = {
     return filtered
   }, 
   // Helper functions
-  
+  compareX: () => (arr1, arr2) => { 
+    const ln = Math.max(arr1.length, arr2.length)
+    for(var i=0; i<ln; i++) {
+      var sign = Math.sign(arr1[i]-arr2[i])
+      switch(sign) {
+        case 0: 
+          if (i === ln-1) {
+            return sign  // arr1===arr2
+          } else { break } // keep looping
+        case 1: 
+          return sign  // arr1>arr2
+        case -1:
+          return sign  // arr1<arr2
+        default: // assume one is longer
+          var arr1Large = arr1.length>arr2.length
+          if(arr1Large) {  // arr1 is child
+            return Math.sign(arr1[i])  // branch + or -
+          } else if (!arr1Large) { // arr2 is child
+            return -1*Math.sign(arr2[i]) // branch + or -
+          } // not sure what to do with bad values
+      }
+    }
+  },
   scaler: ( state, getters, rootGetters ) => (input, scale=state.Display.scale) => { // –> scale #s of any given input.
     switch(input.constructor){
       case Number:
