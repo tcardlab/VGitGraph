@@ -6,19 +6,14 @@
     :color="items.color"
   />
 </template>
-<!-- 
-:x="getXDisp(items.x, i, $store.getters.solveXDisp(items.x))"
-:y="getYDisp(turn, i)"
--->
+
 <script>
 import _ from "lodash";
 import Dot from "./Glyphs/Dot.vue";
 import Book from "./Glyphs/Book.vue";
-//import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
-  props:['items', 'i', 'coords'], //'turn', 'branchName'
-  //mixins: [DisplayMixin],
+  props:['items', 'i', 'coords'],
   components: {
     Dot: Dot,
     Book: Book

@@ -17,7 +17,7 @@ export const PathsMixin = {
     },
     Branch(d, x, y, priorXYDisp, scale) {
       var [xprior, yprior] = priorXYDisp;
-      var maxHeight = yprior + +this.$store.state.scale
+      var maxHeight = yprior + +this._Display.scale
       var midY = (yprior + maxHeight) / 2;
       d.push(`C${xprior} ${midY} ${x} ${midY} ${x} ${maxHeight}`);
       this.Line(d, x, y)
@@ -35,7 +35,7 @@ export const PathsMixin = {
     inPathLink(bItems, index){
       var link = Object.values(bItems.path)[index].link
       if (Object.keys(link).length > 0 && link.type==="Path"){
-        return this.getLink(link)
+        return this.$store.getters.getLink(link)
       } else {
         return false
       }

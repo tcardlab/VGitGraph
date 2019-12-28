@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  data:() => {
+  data() {
     return {
       dropdown: false,
       search:'',
@@ -37,11 +37,12 @@ export default {
       if(this.selected){
         filtered.push(this.selected)
       } else {
-        filtered = Object.keys(this._$).filter(k => {
+        filtered = Object.keys(this._Branches).filter(k => {
           return k.toLowerCase().includes(this.search.toLowerCase())
         })
       }
-      this.$store.commit('setFiltered', this.search!==""?filtered:false)
+      this.$store.dispatch('setFiltered', this.search!==""?filtered:false)
+      this.$store.dispatch('updateCache')
       return filtered
     }
   },
