@@ -15,10 +15,10 @@ export default {
       return Object.keys(this.$store.getters.rootBranches).sort()
     },
     all(){
-      return Object.keys(this._$).sort()
+      return Object.keys(this._Branches).sort()
     },
     branchState(){
-      var show = Object.keys(this.$store.state.show).sort()
+      var show = Object.keys(this._Display.show).sort()
       if ( _.isEqual(show, this.roots) ){
         return 0
       } else if ( _.isEqual(show, this.all)) {
@@ -30,10 +30,10 @@ export default {
   },
   methods: {
     collapse() {
-      this.$store.commit('setVisible', this.roots)
+      this.$store.dispatch('setVisible', this.roots)
     },
     expand() {
-      this.$store.commit('setVisible', this.all)
+      this.$store.dispatch('setVisible', this.all)
     },
     onChg(e) {
       switch(+e.target.value) {

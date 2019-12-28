@@ -20,8 +20,8 @@ export default {
   mixins: [PathsMixin],
   computed: {
     isActive() {
-      if (_.isEmpty(this.$store.state.filtered)){
-        var display = this.$store.state.show
+      if (_.isEmpty(this._Display.filtered)){
+        var display = this._Display.show
         return !this.items.children.every((val) => val in display)
       } else {return false} 
     }
@@ -31,11 +31,11 @@ export default {
       if (children.length) {
         if (this.isActive === true) {
           //var payload = {branches:children, parent:this.branchName}
-          this.$store.commit('addVisible', children) // payload
+          this.$store.dispatch('addVisible', children) // payload
         } else {
           for (var key of children){
-            var subChild = this._$[key].children
-            var show = this.$store.state.show
+            var subChild = this._Branches[key].children
+            var show = this._Display.show
             var activeChildren = subChild.filter(branch => branch in show)
             // Recusrion for children with descendants
             if (activeChildren.length>0){
@@ -45,7 +45,7 @@ export default {
             this.$store.commit('removeVisible', key)
           }
         }
-        console.log("state.show: ", this.$store.state.show)
+        console.log("_Display.show: ", this._Display.show)
         this.$store.dispatch('updateCache') // cant update 1 branch due to down stream effects.
       }
     },

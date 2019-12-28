@@ -18,13 +18,6 @@ easier as json and that file are the only ones that need editing.
 perhaps a mixin? I think this makes sense.
 */
 export default () => ({
-    //display: 0,
-    //scale: 50,
-    //scaling:1,
-    show: {},
-    displacement: {},
-    filtered: false,
-    timeSet: {},
     branches: {
       "P1": {
         x: [1],

@@ -20,6 +20,7 @@ void (function updateModules() {
 
   resolveStoreModules(require('../store/state.js'), 'state.js')
   resolveStoreModules(require('../store/storeRoute.js'), 'storeRoute.js')
+  resolveStoreModules(require('../store/modules/coordinates.js'), 'modules/coordinates.js')
   resolveStoreModules(require('../store/modules/display.js'), 'modules/display.js')
 
   // If the environment supports hot reloading...
@@ -30,6 +31,7 @@ void (function updateModules() {
       '../store/index.js',
       '../store/state.js',
       '../store/storeRoute.js',
+      '../store/modules/coordinates.js',
       '../store/modules/display.js',
     ], () => {
       // Update `root.modules` with the latest definitions.

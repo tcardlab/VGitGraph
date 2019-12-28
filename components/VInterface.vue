@@ -1,7 +1,7 @@
 <template>
   <div class="UI">
     <div>
-      <label>Scale</label> <!-- @focus="$store.state.scaling=0"  -->
+      <label>Scale</label>
       <input 
         v-model="scale" type="range" min="20" max="80" 
         @mousedown="setDuration(1)" 

@@ -5,7 +5,7 @@
     <div>
       <VGitGraph/>
       <svg overflow="visible" v-if="+_Display.display===2">
-        <text v-for="(unix, index) in $store.state.timeSet" :key="unix"
+        <text v-for="(unix, index) in _Coords.timeSet" :key="unix"
         x="0" :y="$store.getters.scaler(index)" dy="6" class="small"
         > 
           {{ new Date(unix*1000).toLocaleDateString("en-US") }}
@@ -14,7 +14,10 @@
     </div>
 <br><br>
     <p style="pointer-events: none;">
-      {{_Display}}
+      Scale: {{_Display.scale }} 
+      Scaling: {{_Display.scaling}} 
+      Display: {{_Display.display}}
+      {{_Coords.cache}}
     </p>
   </div>
 </template>
