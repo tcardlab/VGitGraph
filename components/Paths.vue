@@ -18,18 +18,21 @@ import { PathsMixin } from "./Paths/PathsMixin.js";
 export default {
   props: ['items', 'branchName', 'coords'],
   mixins: [PathsMixin],
-  path: [],
-  created() {
-    this.path = this.getPath()
-  },
-  
   computed: {
     isActive() {
       if (_.isEmpty(this._Display.filtered)){
         var display = this._Display.show
         return !this.items.children.every((val) => val in display)
       } else {return false} 
-    }
+    },
+    getPath() { // –> [[x, y], ...]
+      // continuity data is held in 'y' of path items 
+      // it is used in dString logic.
+      const xConst = this.items.x.reduce((a, b) => a + b, 0)
+      const yArr = _.map(this.items.path, 'y')
+      const coords = yArr.map(i => Array.isArray(i) ? [xConst+i[0], i[1]] : [xConst, i])
+      return coords
+    },
   },
   methods: {
     toggleChildren(children) {
@@ -55,18 +58,9 @@ export default {
       }
     },
 
-    getPath() { // –> [[x, y], ...]
-      // continuity data is held in 'y' of path items 
-      // it is used in dString logic.
-      const xConst = this.items.x.reduce((a, b) => a + b, 0)
-      const yArr = _.map(this.items.path, 'y')
-      const coords = yArr.map(i => Array.isArray(i) ? [xConst+i[0], i[1]] : [xConst, i])
-      return coords
-    },
-
     dString() {
       var d = [];
-      var path = this.path //this.getPath
+      var path = this.getPath
       var dispCoords = Object.values(this.coords)
 
       for (var i of _.range(path.length)) {

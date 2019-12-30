@@ -68,6 +68,7 @@ export default {
       return [xDisp, yDisp]
     },
     cacheCalc: ( state, getters, rootGetters ) => (bItems) =>{ // –> [[x, y], ...]
+      // necessary to cache between svg layers (psths, links, & glyphs).
       const xConst = bItems.x
       var xDisp = getters.solveXDisp(xConst)
       const kvArr = Object.entries(bItems.path)
