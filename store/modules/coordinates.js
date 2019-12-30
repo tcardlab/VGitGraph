@@ -39,39 +39,39 @@ export default {
       return _.max(_.values(dxArr))
     },
     // Independant functions
-    getXDisp: ( state, getters, rootGetters ) =>  (xConst, action, xDisp) => { // –> # 
+    getXDisp: ( state, getters, rootGetters ) =>  (xConst, action, xDisp, scale=50) => { // –> # 
       xConst = xConst.reduce((a, b) => a + b, 0) //children branches [1,2] x=0+dx of 2. etc
       const y = action['y']
       const dx = Array.isArray(y) ? y[0] : 0
-      return getters.scaler(xDisp+dx, 50)
+      return getters.scaler(xDisp+dx, scale)
       // remove 50 so scale uniformly could make x&y scales... added to to-do
     },
-    getYDisp: ( state, getters, rootState ) => (key, action) => { // –> #
-      switch(+rootState.Display.display) {
+    getYDisp: ( state, getters, rootState ) => (key, action, display=rootState.Display.display, scale=rootState.Display.scale) => { // –> #
+      switch(+display) {
         case 1:
-          return getters.scaler(+key)
+          return getters.scaler(+key, scale)
         case 2:
           const yUnix = state.timeSet.indexOf(action.unix)
-          return getters.scaler(yUnix)
+          return getters.scaler(yUnix, scale)
         case 3:
           // future cases
         default:
           const y = action['y']
           const yDisp = Array.isArray(y) ? y[1] : y
-          return getters.scaler(yDisp)
+          return getters.scaler(yDisp, scale)
       }
     },
     // Dependent Functions
-    getXYDisp: ( state, getters, rootGetters ) => (key, xConst, xDisp, action) => { // –> [x, y] 
+    getXYDisp: ( state, getters, rootState, rootGetters ) => (key, xConst, xDisp, action, display=rootState.Display.display, scale=rootState.Display.scale) => { // –> [x, y] 
       var xDisp = getters.getXDisp(xConst, action, xDisp)
-      var yDisp = getters.getYDisp(key, action)
+      var yDisp = getters.getYDisp(key, action, display, scale)
       return [xDisp, yDisp]
     },
     cacheCalc: ( state, getters, rootGetters ) => (bItems) =>{ // –> [[x, y], ...]
       const xConst = bItems.x
       var xDisp = getters.solveXDisp(xConst)
       const kvArr = Object.entries(bItems.path)
-      let output = Object.fromEntries( 
+      let output = Object.fromEntries(
                       // Path data should be an array, can revert to getDispPath() once implemented.
                       kvArr.map(([k, v]) => [k, getters.getXYDisp(k, xConst, xDisp, v)])
                    )

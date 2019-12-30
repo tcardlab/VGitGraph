@@ -61,7 +61,7 @@ export default {
 
     dString(bItems) {
       var d = [];
-      var path = this.getPath(bItems)
+      var path = this.getPath(bItems) // NVM this.$store.getters.getXYDisp('', bItems.x, 0, action, display=0, scale=0) //
       var dispCoords = Object.values(this.coords)
 
       for (var i of _.range(path.length)) {
