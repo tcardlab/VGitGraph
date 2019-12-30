@@ -77,14 +77,14 @@ export default {
     initRoots() {
       var filtered = Object.keys(this.$store.getters.rootBranches)
       this.$store.dispatch('addVisible', filtered)
-      console.log('otp: ', this._Display.show)
+      //console.log('otp: ', this._Display.show)
     },
     initDisplacement() {
       _.forEach(this._Branches, (v, branchName) => {
         const displacement = this.$store.getters.maxDx(branchName)
         this.$store.commit('dxCreate', {key:branchName, value:displacement})
       })
-      console.log('displacement:', this._Coords.displacement)
+      //console.log('displacement:', this._Coords.displacement)
     },
     display(branchName) {
       if(!_.isEmpty(this._Display.filtered)) {

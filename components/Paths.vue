@@ -4,7 +4,7 @@
     v-on:click="toggleChildren(items.children)"
 
     :id="branchName"
-    :d="dString(items)" 
+    :d="dString()" 
     fill="none" 
     :stroke="items.color" 
     stroke-width="7"
@@ -18,6 +18,11 @@ import { PathsMixin } from "./Paths/PathsMixin.js";
 export default {
   props: ['items', 'branchName', 'coords'],
   mixins: [PathsMixin],
+  path: [],
+  created() {
+    this.path = this.getPath()
+  },
+  
   computed: {
     isActive() {
       if (_.isEmpty(this._Display.filtered)){
@@ -45,23 +50,23 @@ export default {
             this.$store.commit('removeVisible', key)
           }
         }
-        console.log("_Display.show: ", this._Display.show)
+        //console.log("_Display.show: ", this._Display.show)
         this.$store.dispatch('updateCache') // cant update 1 branch due to down stream effects.
       }
     },
 
-    getPath(bItems) { // –> [[x, y], ...]
+    getPath() { // –> [[x, y], ...]
       // continuity data is held in 'y' of path items 
       // it is used in dString logic.
-      const xConst = bItems.x.reduce((a, b) => a + b, 0) // sum here?
-      const yArr = _.map(bItems.path, 'y')
+      const xConst = this.items.x.reduce((a, b) => a + b, 0)
+      const yArr = _.map(this.items.path, 'y')
       const coords = yArr.map(i => Array.isArray(i) ? [xConst+i[0], i[1]] : [xConst, i])
       return coords
     },
 
-    dString(bItems) {
+    dString() {
       var d = [];
-      var path = this.getPath(bItems)
+      var path = this.path //this.getPath
       var dispCoords = Object.values(this.coords)
 
       for (var i of _.range(path.length)) {
@@ -85,7 +90,7 @@ export default {
         }
 
         // In-path link: Prefix link dStrting at given point if type==path
-        var XYLink = this.inPathLink(bItems, i)
+        var XYLink = this.inPathLink(this.items, i)
         if (XYLink !== false) { 
           this.moveTo(d, ...XYLink)
           this.Branch(d, xDisp, yDisp, XYLink)
