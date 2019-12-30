@@ -4,7 +4,7 @@
     v-on:click="toggleChildren(items.children)"
 
     :id="branchName"
-    :d="dString(items)" 
+    :d="dString()" 
     fill="none" 
     :stroke="items.color" 
     stroke-width="7"
@@ -50,19 +50,10 @@ export default {
       }
     },
 
-    getPath(bItems) { // –> [[x, y], ...]
-      // continuity data is held in 'y' of path items 
-      // it is used in dString logic.
-      const xConst = bItems.x.reduce((a, b) => a + b, 0) // sum here?
-      const yArr = _.map(bItems.path, 'y')
-      const coords = yArr.map(i => Array.isArray(i) ? [xConst+i[0], i[1]] : [xConst, i])
-      return coords
-    },
-
-    dString(bItems) {
+    dString() {
       var d = [];
-      var path = this.getPath(bItems)
-      var dispCoords = Object.values(this.coords)
+      var path = Object.values(this._Coords.cache[0][this.branchName])
+      var dispCoords = Object.values(this.coords).map(xy => this.$store.getters.scaler(xy))
 
       for (var i of _.range(path.length)) {
         let [x, y] = path[i] // Logic variables
@@ -85,7 +76,7 @@ export default {
         }
 
         // In-path link: Prefix link dStrting at given point if type==path
-        var XYLink = this.inPathLink(bItems, i)
+        var XYLink = this.inPathLink(this.items, i)
         if (XYLink !== false) { 
           this.moveTo(d, ...XYLink)
           this.Branch(d, xDisp, yDisp, XYLink)

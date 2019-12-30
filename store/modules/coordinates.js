@@ -43,22 +43,22 @@ export default {
       xConst = xConst.reduce((a, b) => a + b, 0) //children branches [1,2] x=0+dx of 2. etc
       const y = action['y']
       const dx = Array.isArray(y) ? y[0] : 0
-      return getters.scaler(xDisp+dx, 50)
+      return xDisp+dx
       // remove 50 so scale uniformly could make x&y scales... added to to-do
     },
     getYDisp: ( state, getters, rootState ) => (key, action) => { // –> #
       switch(+rootState.Display.display) {
         case 1:
-          return getters.scaler(+key)
+          return +key
         case 2:
           const yUnix = state.timeSet.indexOf(action.unix)
-          return getters.scaler(yUnix)
+          return yUnix
         case 3:
           // future cases
         default:
           const y = action['y']
           const yDisp = Array.isArray(y) ? y[1] : y
-          return getters.scaler(yDisp)
+          return yDisp
       }
     },
     // Dependent Functions
