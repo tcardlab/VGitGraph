@@ -1,21 +1,23 @@
 <template>
-  <circle 
-    :cx="x" :cy="y" r="5" 
-    stroke-width="2" 
+  <circle
+    :cx="x" :cy="y" r="5"
+    stroke-width="2"
     :stroke="color"
     :style="cssProps"
-  />
+  >
+   <title> {{ label }} </title>
+  </circle>
 </template>
 
 <script>
 export default {
-  props: ["x", "y", "color"],
+  props: ['x', 'y', 'color', 'label'],
   computed: {
-    cssProps() { 
-      return {'--hover-color': this.color}
+    cssProps () {
+      return { '--hover-color': this.color }
     }
-	}
-};
+  }
+}
 </script>
 
 <style>

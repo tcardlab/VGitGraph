@@ -7,6 +7,8 @@ export default {
       cache: {},
       timeSet: {},
       displacement: {},
+      xMinMax: [0, 0], // would be best in display
+      yMinMax: [0, 0], // would be best in display
     }
   },
 
@@ -49,16 +51,16 @@ export default {
     getYDisp: ( state, getters, rootState ) => (key, action) => { // –> #
       switch(+rootState.Display.display) {
         case 1:
-          return getters.scaler(+key)
+          return -getters.scaler(+key)
         case 2:
           const yUnix = state.timeSet.indexOf(action.unix)
-          return getters.scaler(yUnix)
+          return -getters.scaler(yUnix)
         case 3:
           // future cases
         default:
           const y = action['y']
           const yDisp = Array.isArray(y) ? y[1] : y
-          return getters.scaler(yDisp)
+          return -getters.scaler(yDisp)
       }
     },
     // Dependent Functions
@@ -108,7 +110,14 @@ export default {
     },
     setTime(state, arr){
       Vue.set(state, 'timeSet', arr)
-    }
+    },
+    MinMax(state, payload) { // would be best in display
+      var index = payload.xVSy==='x'? 0:1
+      var branches = Object.values(state.cache[payload.display]).map(obj=>Object.values(obj))
+      var coords = branches.flat().map(e=>e[index]) // [[branch1 coords], [branch2], ...] => [#'s, ...]
+      var MinMax = [ Math.min(...coords), Math.max(...coords)]
+      state[payload.xVSy + 'MinMax'] = MinMax
+    },
   },
 
   actions: {
@@ -117,6 +126,8 @@ export default {
         var Payload = {key: key, val: getters.cacheCalc(bItems), display: rootState.Display.display }
         commit('updateBranch', Payload)
       }
+      //commit('MinMax', {xVSy: 'x', display: rootState.Display.display} )
+      commit('MinMax', {xVSy: 'y', display: rootState.Display.display} )
     },
     initTimeArr({commit, state, rootState}) {
       var timeArr = _.map(rootState.branches, (branch) => {

@@ -1,35 +1,73 @@
 <template>
-    <svg overflow="visible">
+    <svg 
+      width="100%"
+      :height="y"
+      :style="cssProps"
+      class="transition-duration"
+      overflow="visible"
+      
+    >
       <CustomDefs/>
+
+      <rect width="100%" height="100%" fill="#999"/>
 
       <!-- 
         This is VERY delicate code, transition-move has very unpredicatable behavior.
         Transition group doesnt work as v-show=false yeilds x&y=0. 
         Thus, they appear from the top left corner of the screen.
       -->
-      <g :id="'g-'+branchName" v-for="(items, branchName) in _Branches" :key="'path-'+branchName"
-         v-show="display(branchName)">
+      <g 
+        v-show="display(branchName)"
+        v-for="(items, branchName) in _Branches" 
+        :style="cssProps"
+        :id="'g-'+branchName"
+        :key="'path-'+branchName"
+        class="transition-scale"
+      >
         <Paths
-          class="transition-move" :style="cssProps"
-          :items="items" :branchName="branchName" :coords="branchCache[branchName]"
+          :items="items" 
+          :style="cssProps"
+          :branchName="branchName"
+          :coords="branchCache[branchName]"  
+          class="transition-move" 
         />
       </g>
 
-      <g :id="branchName+'-Links'" v-for="(items, branchName) in _Branches" :key="'link-'+branchName">
+      <g 
+        v-for="(items, branchName) in _Branches"
+        :style="cssProps"
+        :id="branchName+'-Links'"
+        :key="'link-'+branchName"
+        class="transition-scale"
+      >
         <Links
           v-show="display(branchName)"
-          class="transition-move" :style="cssProps"
           v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
-          :items="items" :i="actions" :coords="branchCache[branchName][turn]"
+          :i="actions"
+          :turn="turn"
+          :items="items"
+          :style="cssProps" 
+          :coords="branchCache[branchName][turn]"
+          class="transition-move"
         />
       </g>
 
-      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _Branches" :key="'glyph-'+branchName"
-         v-show="display(branchName)">
+      <g  
+        v-show="display(branchName)"
+        v-for="(items, branchName) in _Branches" 
+        :style="cssProps"
+        :id="branchName+'-Glyphs'"
+        :key="'glyph-'+branchName"
+        class="transition-scale"
+      >
         <Glyphs
-          class="transition-move" :style="cssProps"
-          v-for="(actions, turn) in items.path" :key="turn"
-          :items="items" :i="actions" :coords="branchCache[branchName][turn]"
+        v-for="(actions, turn) in items.path"
+        :key="turn"
+        :i="actions"
+        :items="items"
+        :style="cssProps"
+        :coords="branchCache[branchName][turn]"
+        class="transition-move" 
         />
       </g>
 
@@ -44,6 +82,7 @@ import Links from "~/components/Links.vue";
 import Glyphs from "~/components/Glyphs.vue";
 
 export default {
+  props: ['width', 'height', 'x', 'y'],
   components: {
     CustomDefs,
     Paths,
@@ -61,7 +100,10 @@ export default {
   },
   computed:{
     cssProps() { 
-      return {'--duration': `${this._Display.scaling}s`}
+      return {
+        '--duration': `${this._Display.scaling}s`,
+        '--translate': `translate(${this.x}px, ${this.y}px)`,
+      }
     },
     branchCache() {
       return this._Coords.cache[this._Display.display]
@@ -70,7 +112,7 @@ export default {
   methods: {
     filterLinks(path) {
       var filtered = _.pickBy(path, function(value, key) {
-                        return Object.keys(value['link']).length>0;
+                        return Object.keys(value['link']).length > 0;
                       });
       return filtered
     },
@@ -97,8 +139,17 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .transition-move {
+  transition-property: all; 
+  transition-duration: var(--duration);
+}
+.transition-scale {
+  transform: var(--translate);
+  transition-property: all; 
+  transition-duration: var(--duration);
+}
+.transition-duration {
   transition-property: all; 
   transition-duration: var(--duration);
 }

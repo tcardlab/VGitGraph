@@ -1,14 +1,16 @@
 <template>
   <path 
     :class="{active: isActive}"
-    v-on:click="toggleChildren(items.children)"
+    @click="toggleChildren(items.children)"
 
     :id="branchName"
     :d="dString(items)" 
     fill="none" 
     :stroke="items.color" 
     stroke-width="7"
-  />
+  >
+    <title> {{ branchName }} </title>
+  </path>
 </template>
 
 <script>
@@ -32,6 +34,7 @@ export default {
         if (this.isActive === true) {
           //var payload = {branches:children, parent:this.branchName}
           this.$store.dispatch('addVisible', children) // payload
+          console.log('Show branches: ', children)
         } else {
           for (var key of children){
             var subChild = this._Branches[key].children
@@ -39,13 +42,13 @@ export default {
             var activeChildren = subChild.filter(branch => branch in show)
             // Recusrion for children with descendants
             if (activeChildren.length>0){
-              this.toggleChildren(activeChildren, key)
+              this.toggleChildren(activeChildren)
             }
             // Update current parent dx/show
             this.$store.commit('removeVisible', key)
           }
+          console.log('Hide branches: ', children)
         }
-        console.log("_Display.show: ", this._Display.show)
         this.$store.dispatch('updateCache') // cant update 1 branch due to down stream effects.
       }
     },

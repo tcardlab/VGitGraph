@@ -2,8 +2,11 @@
   <div>
     <VInterface/>
 <br><br>
+
+
     <div>
-      <VGitGraph/>
+      <VGitGraph :x="x" :y="_Coords.yMinMax[1]-_Coords.yMinMax[0]"/> <!--+x+dxStore+displacement  -->
+      <!-- Dates -->
       <svg overflow="visible" v-if="+_Display.display===2">
         <text v-for="(unix, index) in _Coords.timeSet" :key="unix"
         x="0" :y="$store.getters.scaler(index)" dy="6" class="small"
@@ -12,8 +15,11 @@
         </text>
       </svg>
     </div>
+
+
 <br><br>
     <p style="pointer-events: none;">
+      test: {{_Coords.yMinMax[1]}} {{_Coords.yMinMax[0]}}
       Scale: {{_Display.scale }} 
       Scaling: {{_Display.scaling}} 
       Display: {{_Display.display}}
@@ -31,6 +37,56 @@ export default {
     VGitGraph,
     VInterface
   },
+  data () {
+    return {
+      info: false,
+      panning: false,
+      //dxStore: this.$q.screen.width / 3
+      dxStore: 100,
+      x: 600,
+      displacement: 300,
+    }
+  },
+  computed:{
+    cssProps() { 
+      return {'--duration': `${this._Display.scaling}s`}
+    },
+  }
+  /* computed: {
+    displacement () {
+      if (this.info && this.panning) {
+        return this.info.offset.x // [this.info.offset.x, this.info.offset.y]
+      } else {
+        return 0
+      }
+    },
+    x () {
+      return this.$store.state['xMinMax'][1] - this.$store.state['xMinMax'][0]
+    }
+  },
+  methods: {
+    handlePan ({ evt, ...info }) {
+      this.info = info
+
+      // native Javascript event
+      // console.log(evt)
+
+      if (info.isFirst) {
+        this.panning = true
+      } else if (info.isFinal) {
+        this.dxStore = this.dxStore + this.displacement
+        this.panning = false
+        this.offset = false
+      }
+    }
+  } */
 }
 
 </script>
+
+<style scoped>
+.transition-scale {
+  transition-property: all; 
+  transition-duration: var(--duration);
+}
+</style>

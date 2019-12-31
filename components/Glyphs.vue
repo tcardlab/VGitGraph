@@ -4,11 +4,11 @@
     :x="coords[0]"
     :y="coords[1]"
     :color="items.color"
+    :label="i.label"
   />
 </template>
 
 <script>
-import _ from "lodash";
 import Dot from "./Glyphs/Dot.vue";
 import Book from "./Glyphs/Book.vue";
 

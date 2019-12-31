@@ -39,11 +39,14 @@ export default {
       switch(+e.target.value) {
         case 0: 
           this.collapse()
+          console.log("Collapse Branches")
           break
         case 2: 
           this.expand()
+          console.log("Expand Branches")
           break
         default: 
+          console.log("Custom Branching")
           break
       }
       this.$store.dispatch('updateCache')

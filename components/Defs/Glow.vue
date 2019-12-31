@@ -1,11 +1,10 @@
 <template>
-  <!-- https://stackoverflow.com/questions/36284828/svg-adding-shadow-filter-makes-straight-line-invisible -->
-  <filter id="glow" x="-500" y="-500" height="1000" width="1000" filterUnits="userSpaceOnUse">
-    <fegaussianblur class="blur" result="coloredBlur" stddeviation="4"/>
-    <femerge>
-      <femergenode in="coloredBlur"></femergenode>
-      <!-- <femergenode in="coloredBlur"></femergenode> -->
-      <femergenode in="SourceGraphic"></femergenode>
-    </femerge>
+  <filter id="glow" x="-50%" y="-100%" height="110%" width="110%" filterUnits="userSpaceOnUse">
+    <!-- camelCase is important -->
+    <feGaussianBlur  result="coloredBlur" stdDeviation="4"/>
+    <feMerge>
+      <feMergeNode in="coloredBlur"/>
+      <feMergeNode in="SourceGraphic"/>
+    </feMerge>
   </filter>
 </template>

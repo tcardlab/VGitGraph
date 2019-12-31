@@ -17,7 +17,7 @@ export const PathsMixin = {
     },
     Branch(d, x, y, priorXYDisp, scale) {
       var [xprior, yprior] = priorXYDisp;
-      var maxHeight = yprior + +this._Display.scale
+      var maxHeight = yprior - +this._Display.scale
       var midY = (yprior + maxHeight) / 2;
       d.push(`C${xprior} ${midY} ${x} ${midY} ${x} ${maxHeight}`);
       this.Line(d, x, y)
