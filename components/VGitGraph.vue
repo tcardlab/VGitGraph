@@ -7,30 +7,37 @@
         Transition group doesnt work as v-show=false yeilds x&y=0. 
         Thus, they appear from the top left corner of the screen.
       -->
-      <g :id="'g-'+branchName" v-for="(items, branchName) in _Branches" :key="'path-'+branchName"
+      <transition-group tag="g" name="branch-transition-group" >
+      <g :id="'g-'+branchName" v-for="(items, branchName) of visibleBranches" :key="'path-'+branchName"
          v-show="display(branchName)">
-        <Paths
-          class="transition-move" :style="cssProps"
-          :items="items" :branchName="branchName" :coords="branchCache[branchName]"
-        />
+          <Paths
+            class="transition-move"
+            :style="cssProps"
+            :items="items" :branchName="branchName" :coords="branchCache[branchName]"
+          />
       </g>
+      </transition-group>
 
-      <g :id="branchName+'-Links'" v-for="(items, branchName) in _Branches" :key="'link-'+branchName">
+      <g :id="branchName+'-Links'" v-for="(items, branchName) of visibleBranches" :key="'link-'+branchName">
         <Links
           v-show="display(branchName)"
           class="transition-move" :style="cssProps"
-          v-for="(actions, turn) in filterLinks(items.path)" :key="turn" 
+          v-for="(actions, turn) in filterLinks(items.path)" :key="branchName+'-Link-'+turn" 
           :items="items" :i="actions" :coords="branchCache[branchName][turn]"
         />
       </g>
 
-      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) in _Branches" :key="'glyph-'+branchName"
-         v-show="display(branchName)">
-        <Glyphs
-          class="transition-move" :style="cssProps"
-          v-for="(actions, turn) in items.path" :key="turn"
-          :items="items" :i="actions" :coords="branchCache[branchName][turn]"
-        />
+      <g :id="branchName+'-Glyphs'" v-for="(items, branchName) of visibleBranches" :key="'glyph-'+branchName"
+         v-show="display(branchName)"> 
+         <transition-group tag="g" name="glyph-transition-group">
+          <Glyphs
+            v-show="display(branchName)"
+            class="transition-move"
+            :style="cssProps"
+            v-for="(actions, turn) in items.path" :key="branchName+'-Glyph-'+turn"
+            :items="items" :i="actions" :coords="branchCache[branchName][turn]"
+          />
+         </transition-group>
       </g>
 
     </svg>
@@ -65,6 +72,9 @@ export default {
     },
     branchCache() {
       return this._Coords.cache[this._Display.display]
+    },
+    visibleBranches() {
+      return this.$store.getters.filteredBranches()
     }
   },
   methods: {

@@ -64,5 +64,5 @@ export const getters = {
         })
         return input
     }
-  },
+  }
 }

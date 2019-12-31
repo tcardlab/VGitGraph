@@ -92,6 +92,11 @@ export default {
       }
       return XYLink
     },
+    filteredBranches: ( state, getters, rootState ) => () => {
+      var displayed = _.isEmpty(rootState.Display.filtered)?rootState.Display.show:rootState.Display.filtered
+      var filteredBranches = _.pickBy(rootState.branches, (v,k) => {return k in displayed})
+      return filteredBranches
+    }
   },
 
   mutations: {
@@ -113,7 +118,8 @@ export default {
 
   actions: {
     updateCache({ commit, getters, rootState }) {
-      for(let [key, bItems] of  Object.entries(rootState.branches)) {
+      var filteredBranches = getters.filteredBranches()
+      for(let [key, bItems] of Object.entries(filteredBranches)) {
         var Payload = {key: key, val: getters.cacheCalc(bItems), display: rootState.Display.display }
         commit('updateBranch', Payload)
       }
