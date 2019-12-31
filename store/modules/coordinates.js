@@ -117,9 +117,9 @@ export default {
   },
 
   actions: {
-    updateCache({ commit, getters, rootState }) {
-      var filteredBranches = getters.filteredBranches()
-      for(let [key, bItems] of Object.entries(filteredBranches)) {
+    updateCache({ commit, getters, rootState }, all=false) {
+      var branches = all ? rootState.branches : getters.filteredBranches()
+      for(let [key, bItems] of Object.entries(branches)) {
         var Payload = {key: key, val: getters.cacheCalc(bItems), display: rootState.Display.display }
         commit('updateBranch', Payload)
       }

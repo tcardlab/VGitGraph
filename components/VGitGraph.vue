@@ -7,16 +7,16 @@
         Transition group doesnt work as v-show=false yeilds x&y=0. 
         Thus, they appear from the top left corner of the screen.
       -->
-      <transition-group tag="g" name="branch-transition-group" >
-      <g :id="'g-'+branchName" v-for="(items, branchName) of visibleBranches" :key="'path-'+branchName"
-         v-show="display(branchName)">
+      
+      <g :id="'g-'+branchName" v-for="(items, branchName) of _Branches" :key="'path-'+branchName"
+      v-show="display(branchName)">
           <Paths
+            
             class="transition-move"
             :style="cssProps"
             :items="items" :branchName="branchName" :coords="branchCache[branchName]"
           />
       </g>
-      </transition-group>
 
       <g :id="branchName+'-Links'" v-for="(items, branchName) of visibleBranches" :key="'link-'+branchName">
         <Links
@@ -39,6 +39,7 @@
           />
          </transition-group>
       </g>
+       
 
     </svg>
 </template>
@@ -63,7 +64,7 @@ export default {
     this.initDisplacement()
     // dx must be defined before any x values are calculated. Nan causes SSR err.
     // if in paths.vue, dx may not be defined when links or glyph call it
-    this.$store.dispatch('updateCache') // call last, after initializations
+    this.$store.dispatch('updateCache', true) // call last, after initializations
     //console.log('cache: ', this._Coords.cache)
   },
   computed:{
@@ -111,5 +112,9 @@ export default {
 .transition-move {
   transition-property: all; 
   transition-duration: var(--duration);
+}
+
+.flip-list-move {
+  transition: transform 1s;
 }
 </style>
