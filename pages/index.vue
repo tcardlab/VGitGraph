@@ -19,7 +19,7 @@
 
 <br><br>
     <p style="pointer-events: none;">
-      test: {{_Coords.yMinMax[1]}} {{_Coords.yMinMax[0]}}
+      yMinMax: {{_Coords.yMinMax}}
       Scale: {{_Display.scale }} 
       Scaling: {{_Display.scaling}} 
       Display: {{_Display.display}}
@@ -83,10 +83,3 @@ export default {
 }
 
 </script>
-
-<style scoped>
-.transition-scale {
-  transition-property: all; 
-  transition-duration: var(--duration);
-}
-</style>
