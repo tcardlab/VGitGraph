@@ -1,7 +1,7 @@
 <template>
     <svg 
       width="100%"
-      :height="y"
+      :height="y + (2 * +padding)"
       :style="cssProps"
       class="transition-duration"
       overflow="visible"
@@ -82,7 +82,7 @@ import Links from "~/components/Links.vue";
 import Glyphs from "~/components/Glyphs.vue";
 
 export default {
-  props: ['width', 'height', 'x', 'y'],
+  props: ['width', 'height', 'x', 'y', 'padding'],
   components: {
     CustomDefs,
     Paths,
@@ -102,7 +102,7 @@ export default {
     cssProps() { 
       return {
         '--duration': `${this._Display.scaling}s`,
-        '--translate': `translate(${this.x}px, ${this.y}px)`,
+        '--translate': `translate(${this.x}px, ${this.y + +this.padding}px)`,
       }
     },
     branchCache() {

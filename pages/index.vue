@@ -1,11 +1,8 @@
 <template>
   <div>
-    <VInterface/>
-<br><br>
-
-
+    <VInterface style="user-select: none;"/>
     <div>
-      <VGitGraph :x="x" :y="_Coords.yMinMax[1]-_Coords.yMinMax[0]"/> <!--+x+dxStore+displacement  -->
+      <VGitGraph padding="25" :x="x" :y="_Coords.yMinMax[1]-_Coords.yMinMax[0]"/> <!--+x+dxStore+displacement  -->
       <!-- Dates -->
       <svg overflow="visible" v-if="+_Display.display===2">
         <text v-for="(unix, index) in _Coords.timeSet" :key="unix"
