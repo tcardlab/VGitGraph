@@ -4,7 +4,7 @@
     <div>
       <VGitGraph padding="25" :x="x" :y="_Coords.yMinMax[1]-_Coords.yMinMax[0]"/> <!--+x+dxStore+displacement  -->
       <!-- Dates -->
-      <svg overflow="visible" v-if="+_Display.display===2">
+      <svg class="dates" overflow="visible" v-if="+_Display.display===2">
         <text v-for="(unix, index) in _Coords.timeSet" :key="unix"
         x="0" :y="$store.getters.scaler(index)" dy="6" class="small"
         > 
@@ -80,3 +80,11 @@ export default {
 }
 
 </script>
+
+<style scoped>
+.dates {
+  position: absolute;
+  right: 75px;
+  top: 25px
+}
+</style>
