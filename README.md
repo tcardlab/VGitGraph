@@ -1,6 +1,16 @@
-# codesandbox-nuxt
+# Nuxt App (VGitGraph)
 
-> Nuxt starter for CodeSandBox (used for https://template.nuxtjs.org)
+This repo utilizes Vue2 and pure SVG to generate collapsable git-like graphs.
+
+## Going Forward
+
+I would like to address some performance issues (both JS and inherent to SVG) as well as implement more generalizable data structures. 
+For these reasons, I will likely start over with Vue3 and explore existing graphing libraries.
+
+## Demo
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/35203441/112740468-4b163d80-8f4b-11eb-9fd3-69c26ce5e9d5.gif" />
+</p>
 
 ## Build Setup
 
