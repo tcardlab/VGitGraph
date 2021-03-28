@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@nuxt/http": "^0.3.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "nuxt": "^2.5.1",
     "reqlim": "^0.0.0",
     "vuex-pathify": "1.4.0"
