@@ -1,8 +1,8 @@
 <template>
   <component 
     :is="i.glyph? i.glyph: 'Dot'" 
-    :x="getXDisp(items.x, i, $store.getters.solveXDisp(items.x))"
-    :y="getYDisp(turn, i)"
+    :x="coords[0]"
+    :y="coords[1]"
     :color="items.color"
   />
 </template>
@@ -11,11 +11,9 @@
 import _ from "lodash";
 import Dot from "./Glyphs/Dot.vue";
 import Book from "./Glyphs/Book.vue";
-import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
-  props:['items', 'i', 'turn'],
-  mixins: [DisplayMixin],
+  props:['items', 'i', 'coords'],
   components: {
     Dot: Dot,
     Book: Book

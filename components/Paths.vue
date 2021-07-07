@@ -1,10 +1,10 @@
 <template>
   <path 
     :class="{active: isActive}"
-    v-on:dblclick="toggleChildren(items.children)"
+    v-on:click="toggleChildren(items.children)"
 
     :id="branchName"
-    :d="dString(items)" 
+    :d="dString()" 
     fill="none" 
     :stroke="items.color" 
     stroke-width="7"
@@ -14,27 +14,36 @@
 <script>
 import _ from "lodash";
 import { PathsMixin } from "./Paths/PathsMixin.js";
-import { DisplayMixin } from "~/components/DisplayMixin.js";
 
 export default {
-  props: ['items', 'branchName'],
-  mixins: [PathsMixin, DisplayMixin],
+  props: ['items', 'branchName', 'coords'],
+  mixins: [PathsMixin],
   computed: {
     isActive() {
-      var display = this.$store.state.show
-      return !this.items.children.every((val) => val in display)
-    }
+      if (_.isEmpty(this._Display.filtered)){
+        var display = this._Display.show
+        return !this.items.children.every((val) => val in display)
+      } else {return false} 
+    },
+    getPath() { // –> [[x, y], ...]
+      // continuity data is held in 'y' of path items 
+      // it is used in dString logic.
+      const xConst = this.items.x.reduce((a, b) => a + b, 0)
+      const yArr = _.map(this.items.path, 'y')
+      const coords = yArr.map(i => Array.isArray(i) ? [xConst+i[0], i[1]] : [xConst, i])
+      return coords
+    },
   },
   methods: {
     toggleChildren(children) {
       if (children.length) {
         if (this.isActive === true) {
           //var payload = {branches:children, parent:this.branchName}
-          this.$store.commit('addVisible', children) // payload
+          this.$store.dispatch('addVisible', children) // payload
         } else {
           for (var key of children){
-            var subChild = this._$[key].children
-            var show = this.$store.state.show
+            var subChild = this._Branches[key].children
+            var show = this._Display.show
             var activeChildren = subChild.filter(branch => branch in show)
             // Recusrion for children with descendants
             if (activeChildren.length>0){
@@ -44,23 +53,15 @@ export default {
             this.$store.commit('removeVisible', key)
           }
         }
-        console.log("state.show: ", this.$store.state.show)
+        //console.log("_Display.show: ", this._Display.show)
+        this.$store.dispatch('updateCache') // cant update 1 branch due to down stream effects.
       }
     },
 
-    getPath(bItems) { // –> [[x, y], ...]
-      // continuity data is held in 'y' of path items 
-      // it is used in dString logic.
-      const xConst = bItems.x.reduce((a, b) => a + b, 0) // sum here?
-      const yArr = _.map(bItems.path, 'y')
-      const coords = yArr.map(i => Array.isArray(i) ? [xConst+i[0], i[1]] : [xConst, i])
-      return coords
-    },
-
-    dString(bItems) {
+    dString() {
       var d = [];
-      var path = this.getPath(bItems)
-      var dispCoords = this.getDispPath(bItems)
+      var path = this.getPath
+      var dispCoords = Object.values(this.coords)
 
       for (var i of _.range(path.length)) {
         let [x, y] = path[i] // Logic variables
@@ -83,7 +84,7 @@ export default {
         }
 
         // In-path link: Prefix link dStrting at given point if type==path
-        var XYLink = this.inPathLink(bItems, i)
+        var XYLink = this.inPathLink(this.items, i)
         if (XYLink !== false) { 
           this.moveTo(d, ...XYLink)
           this.Branch(d, xDisp, yDisp, XYLink)

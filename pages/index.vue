@@ -1,32 +1,36 @@
 <template>
   <div>
+    <VInterface/>
+<br><br>
     <div>
-      <label>Display</label>
-      <input v-model="$store.state.display" type="range" min="0" max="2" />
-      <span>{{ ['Paths', 'Turns', 'Time'][$store.state.display] }}</span>
+      <VGitGraph/>
+      <svg overflow="visible" v-if="+_Display.display===2">
+        <text v-for="(unix, index) in _Coords.timeSet" :key="unix"
+        x="0" :y="$store.getters.scaler(index)" dy="6" class="small"
+        > 
+          {{ new Date(unix*1000).toLocaleDateString("en-US") }}
+        </text>
+      </svg>
     </div>
-
-    <CollapseState/>
-
-    <div>
-      <label>Scale</label>
-      <input v-model="$store.state.scale" type="range" min="20" max="80" />
-      <span>{{ $store.state.scale }}</span>
-    </div>
-
-    <VGitGraph/>
-
+<br><br>
+    <p style="pointer-events: none;">
+      Scale: {{_Display.scale }} 
+      Scaling: {{_Display.scaling}} 
+      Display: {{_Display.display}}
+      {{_Coords.cache}}
+    </p>
   </div>
 </template>
 
 <script>
 import VGitGraph from "~/components/VGitGraph.vue";
-import CollapseState from "~/components/CollapseState.vue";
+import VInterface from "~/components/VInterface";
 
 export default {
   components: {
     VGitGraph,
-    CollapseState
+    VInterface
   },
 }
+
 </script>
